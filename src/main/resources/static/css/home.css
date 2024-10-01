@@ -1,0 +1,104 @@
+body {
+    display: block;
+    margin: 0px;
+}
+
+.home-container {
+    height: 2000px;
+}
+
+#header-container{
+    width: 100%;
+    position: fixed;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #FFF
+}
+.logo-app{
+    width: 20%
+}
+.logo-app img{
+    width: 100%
+}
+#header-container .navigation{
+    display: flex;
+    gap: 10px;
+}
+#header-container .navigation .item a{
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: 600;
+    color: #222;
+    padding: 6px 14px;
+    border-radius: 8px;
+}
+
+#header-container .navigation .item a:hover{
+    background-color: rgba(0, 0, 0, .05);
+}
+
+#banner-container .banner-item img{
+    padding-top: 120px;
+    width: 100%;
+}
+
+.vertical-nav {
+    width: 200px;
+    background-color: #333;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.vertical-nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.vertical-nav ul li {
+    position: relative;
+}
+
+.vertical-nav ul li a {
+    display: block;
+    padding: 12px;
+    text-decoration: none;
+    color: white;
+    background-color: #333;
+    transition: background-color 0.3s;
+}
+
+.vertical-nav ul li a:hover {
+    background-color: #444;
+}
+
+.sub-menu {
+    display: none;
+    position: absolute;
+    left: 200px;
+    top: 0;
+    background-color: #444;
+    white-space: nowrap;
+    padding: 0;
+    border-radius: 4px;
+}
+
+.vertical-nav ul li:hover .sub-menu {
+    display: block;
+}
+
+.sub-menu li {
+    display: inline-block;
+}
+
+.sub-menu li a {
+    padding: 12px;
+    color: #ddd;
+    background-color: #444;
+    border-left: 1px solid #333;
+}
+
+.sub-menu li a:hover {
+    background-color: #555;
+}

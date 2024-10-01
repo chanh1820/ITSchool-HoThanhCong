@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Trang Chủ</title>
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+</head>
+<body>
+    <div class="home-container">
+        <div id="header-container">
+            <div class="logo-app">
+                <img th:src="@{/images/ic_logo_app.png}" alt="logo app">
+            </div>
+            <div class="navigation" >
+                <div class="item">
+                    <a>Trang chủ</a>
+                </div>
+                <div class="item">
+                    <a>Bài học</a>
+                </div>
+                <div class="item">
+                    <a>Trắc nghiệm</a>
+                </div>
+            </div>
+            <div class="account" >
+                <button class="login">
+                    <span>Đăng nhập</span>
+                 </button>
+                <button class="registry">
+                    <span>Đăng ký</span>
+                </button>
+            </div>
+        </div>
+        <div id="banner-container">
+            <div class="banner-item">
+                <img th:src="@{/images/banner_app.png}" alt="banner app">
+            </div>
+        </div>
+        <div id="navigation-container">
+            <nav class="vertical-nav">
+                <ul>
+                    <th:block th:each="parent : ${lessonCollectionParentDTOS}">
+                        <li>
+                            <a th:href="${parent.prefix}" th:text="${parent.lessonName}"></a>
+                            <ul class="sub-menu">
+                                <th:block th:each="child : ${parent.lessonCollectionEntities}">
+                                    <li>
+                                        <a th:href="${child.prefix}" th:text="${child.lessonCollectionName}"></a>
+                                    </li>
+                                </th:block>
+                            </ul>
+                        </li>
+                    </th:block>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</body>
+
+</html>

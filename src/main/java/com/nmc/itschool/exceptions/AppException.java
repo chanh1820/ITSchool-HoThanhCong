@@ -1,6 +1,6 @@
 package com.nmc.itschool.exceptions;
 
-import com.demo.crudemployee.constant.MessageEnum;
+import com.nmc.itschool.constant.MessageEnum;
 import lombok.Getter;
 import lombok.Setter;
 

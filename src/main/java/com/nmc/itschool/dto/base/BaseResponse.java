@@ -1,7 +1,7 @@
 package com.nmc.itschool.dto.base;
 
-import com.demo.crudemployee.constant.MessageEnum;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.nmc.itschool.constant.MessageEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

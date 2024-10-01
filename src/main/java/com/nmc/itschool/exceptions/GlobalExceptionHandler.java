@@ -1,6 +1,6 @@
 package com.nmc.itschool.exceptions;
 
-import com.demo.crudemployee.dto.base.BaseResponse;
+import com.nmc.itschool.dto.base.BaseResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

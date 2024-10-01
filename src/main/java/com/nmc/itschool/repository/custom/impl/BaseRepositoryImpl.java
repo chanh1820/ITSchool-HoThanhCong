@@ -1,13 +1,13 @@
 package com.nmc.itschool.repository.custom.impl;
 
-import com.demo.crudemployee.repository.BaseRepository;
-
+import com.nmc.itschool.repository.BaseRepository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

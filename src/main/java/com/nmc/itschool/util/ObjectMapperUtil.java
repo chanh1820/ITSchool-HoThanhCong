@@ -5,7 +5,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import org.apache.commons.lang3.StringUtils;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import io.micrometer.core.instrument.util.StringUtils;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -14,7 +15,7 @@ import java.util.TimeZone;
 public final class ObjectMapperUtil {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
-            .registerModule(new Jdk8Module());
+            .registerModule(new JavaTimeModule());
 
 
     public static final String writeValueAsString(Object value) {
@@ -79,7 +80,7 @@ public final class ObjectMapperUtil {
         try {
             SimpleDateFormat df = new SimpleDateFormat(formatDate);
 
-            if (StringUtils.isNoneBlank(timeZone)) {
+            if (StringUtils.isNotBlank(timeZone)) {
                 TimeZone tz = TimeZone.getTimeZone(timeZone);
                 df.setTimeZone(tz);
             }
