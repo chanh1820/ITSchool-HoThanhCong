@@ -36,24 +36,26 @@
             </div>
         </div>
         <div id="navigation-container">
-            <nav class="vertical-nav">
-                <ul>
-                    <th:block th:each="parent : ${lessonCollectionParentDTOS}">
-                        <li>
-                            <a th:href="${parent.prefix}" th:text="${parent.lessonName}"></a>
-                            <ul class="sub-menu">
-                                <th:block th:each="child : ${parent.lessonCollectionEntities}">
-                                    <li>
-                                        <a th:href="${child.prefix}" th:text="${child.lessonCollectionName}"></a>
-                                    </li>
-                                </th:block>
-                            </ul>
-                        </li>
-                    </th:block>
+            <nav>
+                <ul class="parent-menu">
+                    <li th:each="lesson : ${lessonCollectionParentDTOS}" class="parent-item">
+                        <a th:href="@{${lesson.prefix}}">[[${lesson.lessonName}]]</a>
+                        <ul class="child-menu">
+                            <li th:each="child : ${lesson.lessonCollectionEntities}" class="child-item">
+                                <a th:href="@{${child.prefix}}">[[${child.lessonCollectionName}]]</a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </nav>
         </div>
+        <div id="content-container">
+            <div class="list-lesson-container">
+
+            </div>
+        </div>
     </div>
+
 </body>
 
 </html>

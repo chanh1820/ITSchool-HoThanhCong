@@ -1,6 +1,7 @@
 body {
     display: block;
     margin: 0px;
+    font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 .home-container {
@@ -43,62 +44,69 @@ body {
     width: 100%;
 }
 
-.vertical-nav {
-    width: 200px;
-    background-color: #333;
-    border-radius: 8px;
-    overflow: hidden;
+#navigation-container{
+    width: 100%;
+    display: flex;
+    justify-content: center
 }
-
-.vertical-nav ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-}
-
-.vertical-nav ul li {
-    position: relative;
-}
-
-.vertical-nav ul li a {
-    display: block;
-    padding: 12px;
-    text-decoration: none;
-    color: white;
-    background-color: #333;
-    transition: background-color 0.3s;
-}
-
-.vertical-nav ul li a:hover {
-    background-color: #444;
-}
-
-.sub-menu {
-    display: none;
-    position: absolute;
-    left: 200px;
-    top: 0;
-    background-color: #444;
-    white-space: nowrap;
-    padding: 0;
+nav {
+    width: fix-content;
+    background-color: #FFDC7F;
+    display: flex;
     border-radius: 4px;
 }
 
-.vertical-nav ul li:hover .sub-menu {
+.parent-menu {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    width:100%;
+    padding:8px;
+}
+
+.parent-menu .parent-item {
+    position: relative;
+    margin-left: 20px;
+    margin-right: 20px;
+    min-width: 10%;;
+}
+
+.parent-menu .parent-item a {
+    display: block;
+    padding: 10px;
+    color: #222;
+    text-decoration: none;
+    min-width: 10%;
+    font-weight:600;
+}
+
+.parent-menu .parent-item:hover .child-menu {
     display: block;
 }
 
-.sub-menu li {
-    display: inline-block;
+.child-menu {
+    list-style-type: none;
+    position: absolute;
+    display: none;
+    top: 100%;
+    left: 0;
+    background-color: #FFDC7F;
+    padding: 0;
+    margin: 0;
+    border-radius: 4px;
 }
 
-.sub-menu li a {
-    padding: 12px;
-    color: #ddd;
-    background-color: #444;
-    border-left: 1px solid #333;
+.child-menu .child-item a {
+    display: block;
+    padding: 10px;
+    color: #222;
+    font-weight:600;
+    text-decoration: none;
+    min-width: 200px
 }
 
-.sub-menu li a:hover {
-    background-color: #555;
+.child-menu .child-item a:hover {
+    background-color: #eeba2d;
+    border-radius: 4px;
 }
