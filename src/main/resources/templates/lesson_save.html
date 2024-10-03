@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!--    <form action="#" th:action="@{/upload}" th:method="post" enctype="multipart/form-data">-->
+<!--        <input type="file" name="imageFile" />-->
+<!--        <button type="submit">Upload</button>-->
+<!--    </form>-->
+<!--    <div>-->
+<!--        <p th:text="${message}"></p>-->
+<!--        <img th:src="@{'/uploads/' + ${fileName}}" alt="Uploaded Image" />-->
+<!--    </div>-->
+<h1>Upload New Lesson</h1>
+
+<form action="#" th:action="@{/lesson/api/save}" th:method="post" enctype="multipart/form-data">
+    <div>
+        <label for="lessonCode">Lesson Code:</label>
+        <input type="text" id="lessonCode" name="lessonCode" required>
+    </div>
+    <div>
+        <label for="lessonName">Lesson Name:</label>
+        <input type="text" id="lessonName" name="lessonName" required>
+    </div>
+    <div>
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" required></textarea>
+    </div>
+    <div>
+        <label for="collectionPrefix">Collection Prefix:</label>
+        <textarea id="collectionPrefix" name="collectionPrefix" required></textarea>
+    </div>
+    <div>
+        <label for="collectionParentPrefix">Collection Parent Prefix:</label>
+        <textarea id="collectionParentPrefix" name="collectionParentPrefix" required></textarea>
+    </div>
+    <div>
+        <label for="imageFile">Upload Image (PNG/JPG):</label>
+        <input type="file" id="imageFile" name="imageFile" accept="image/png, image/jpeg" required>
+    </div>
+    <div>
+        <label for="pdfFile">Upload PDF:</label>
+        <input type="file" id="pdfFile" name="pdfFile" accept="application/pdf" required>
+    </div>
+    <button type="submit">Save Lesson</button>
+</form>
+</body>
+</html>

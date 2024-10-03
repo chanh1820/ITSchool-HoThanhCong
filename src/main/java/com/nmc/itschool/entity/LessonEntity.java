@@ -32,6 +32,15 @@ public class LessonEntity {
     @Column(name = "image_url")
     private String imageUrl;
 
+    @Column(name = "pdf_url")
+    private String pdfUrl;
+
+    @Column(name = "collection_prefix")
+    private String collectionPrefix;
+
+    @Column(name = "collection_parent_prefix")
+    private String collectionParentPrefix;
+
     @Column(name = "created_date")
     private LocalDateTime createdDate;
 

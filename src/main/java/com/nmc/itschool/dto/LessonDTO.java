@@ -22,6 +22,12 @@ public class LessonDTO {
 
     private String imageUrl;
 
+    private String pdfUrl;
+
+    private String collectionPrefix;
+
+    private String collectionParentPrefix;
+
     private LocalDateTime createdDate;
 
     private LocalDateTime updatedDate;

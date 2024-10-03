@@ -50,8 +50,18 @@
             </nav>
         </div>
         <div id="content-container">
-            <div class="list-lesson-container">
-
+            <div class="lesson-container">
+                <div class="lessons-grid">
+                    <div class="lesson-item" th:each="lesson : ${lessonDTOS}">
+                        <a th:href="@{'/lesson/'+${lesson.id}}">
+                            <div class="image-lesson">
+                                <img th:src="@{'/uploads/' + ${lesson.imageUrl}}" alt="Lesson Image" class="lesson-image">
+                            </div>
+                            <h3 th:text="${lesson.lessonName}">Lesson Name</h3>
+                            <p th:text="${lesson.description}">Description</p>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
