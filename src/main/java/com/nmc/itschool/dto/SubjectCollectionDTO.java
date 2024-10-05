@@ -1,24 +1,22 @@
 package com.nmc.itschool.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.nmc.itschool.entity.LessonCollectionParentEntity;
+import com.nmc.itschool.entity.SubjectCollectionParentEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class LessonCollectionDTO {
+public class SubjectCollectionDTO {
 
     private Integer id;
 
-    private String lessonCollectionCode;
+    private String subjectCollectionCode;
 
-    private String lessonCollectionName;
+    private String subjectCollectionName;
 
     private String prefix;
 
@@ -28,6 +26,6 @@ public class LessonCollectionDTO {
 
     private Boolean deleteFlag;
 
-    private LessonCollectionParentEntity lessonCollectionParentEntity;
+    private SubjectCollectionParentEntity subjectCollectionParentEntity;
 }
 

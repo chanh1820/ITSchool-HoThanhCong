@@ -2,13 +2,13 @@ package com.nmc.itschool.service.impl;
 
 import com.nmc.itschool.constant.MessageEnum;
 import com.nmc.itschool.dto.LessonDTO;
-import com.nmc.itschool.entity.LessonCollectionEntity;
-import com.nmc.itschool.entity.LessonCollectionParentEntity;
+import com.nmc.itschool.entity.SubjectCollectionEntity;
+import com.nmc.itschool.entity.SubjectCollectionParentEntity;
 import com.nmc.itschool.entity.LessonEntity;
 import com.nmc.itschool.exceptions.AppException;
 import com.nmc.itschool.mapper.LessonMapper;
-import com.nmc.itschool.repository.LessonCollectionParentRepository;
-import com.nmc.itschool.repository.LessonCollectionRepository;
+import com.nmc.itschool.repository.SubjectCollectionParentRepository;
+import com.nmc.itschool.repository.SubjectCollectionRepository;
 import com.nmc.itschool.repository.LessonRepository;
 import com.nmc.itschool.service.LessonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +25,10 @@ public class LessonServiceImpl implements LessonService {
     LessonRepository lessonRepository;
 
     @Autowired
-    LessonCollectionParentRepository lessonCollectionParentRepository;
+    SubjectCollectionParentRepository subjectCollectionParentRepository;
 
     @Autowired
-    LessonCollectionRepository lessonCollectionRepository;
+    SubjectCollectionRepository subjectCollectionRepository;
 
     @Autowired
     LessonMapper lessonMapper;
@@ -43,6 +43,16 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
+    public LessonDTO findBySlug(String slug) {
+        Optional<List<LessonEntity>> otp = lessonRepository.findBySlug(slug);
+        if (otp.isPresent()){
+            return lessonMapper.toDTO(otp.get().get(0));
+        }else {
+            return null;
+        }
+    }
+
+    @Override
     public List<LessonDTO> getAll() {
         Optional<List<LessonEntity>> otp = lessonRepository.getAll();
         if (otp.isPresent()){
@@ -52,11 +62,11 @@ public class LessonServiceImpl implements LessonService {
     }
 
     private void validateSaveLesson(LessonDTO lessonDTO) {
-        Optional<LessonCollectionParentEntity> optParentCollection = lessonCollectionParentRepository.getByPrefix(lessonDTO.getCollectionParentPrefix());
+        Optional<SubjectCollectionParentEntity> optParentCollection = subjectCollectionParentRepository.getByPrefix(lessonDTO.getCollectionParentPrefix());
         if (!optParentCollection.isPresent()){
             throw new AppException(MessageEnum.ERR_PREFIX_PARENT_NOT_MATCH);
         }
-        Optional<LessonCollectionEntity> optChildCollection = lessonCollectionRepository.getByPrefix(lessonDTO.getCollectionPrefix());
+        Optional<SubjectCollectionEntity> optChildCollection = subjectCollectionRepository.getByPrefix(lessonDTO.getCollectionPrefix());
         if (!optChildCollection.isPresent()){
             throw new AppException(MessageEnum.ERR_PREFIX_CHILD_NOT_MATCH);
         }

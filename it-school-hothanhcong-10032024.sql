@@ -16,14 +16,14 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`it-school-hothanhcong` /*!40100 DEFAULT
 
 USE `it-school-hothanhcong`;
 
-/*Table structure for table `lesson_collection_parent_tbl` */
+/*Table structure for table `subject_collection_parent_tbl` */
 
-DROP TABLE IF EXISTS `lesson_collection_parent_tbl`;
+DROP TABLE IF EXISTS `subject_collection_parent_tbl`;
 
-CREATE TABLE `lesson_collection_parent_tbl` (
-  `lesson_collection_parent_id` int NOT NULL AUTO_INCREMENT,
-  `lesson_collection_parent_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `lesson_collection_parent_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+CREATE TABLE `subject_collection_parent_tbl` (
+  `subject_collection_parent_id` int NOT NULL AUTO_INCREMENT,
+  `subject_collection_parent_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `subject_collection_parent_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `prefix` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `created_date` datetime(6) DEFAULT NULL,
   `updated_date` datetime(6) DEFAULT NULL,

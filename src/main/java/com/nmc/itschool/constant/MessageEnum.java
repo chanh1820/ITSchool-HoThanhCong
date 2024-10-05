@@ -6,7 +6,7 @@ public enum MessageEnum {
 
     ERR_PREFIX_PARENT_NOT_MATCH("ERR1001", "Prefix parent not match"),
     ERR_PREFIX_CHILD_NOT_MATCH("ERR1001", "Prefix child not match"),
-    ERR_INVALID_INPUT("ERR10000", "Invalid input data");
+    ERR_LESSON_NOT_FOUND("ERR1002", "Lesson not found");
 
 
     private String messageCode;

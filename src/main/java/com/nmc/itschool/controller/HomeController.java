@@ -1,9 +1,10 @@
 package com.nmc.itschool.controller;
 
-import com.nmc.itschool.dto.LessonCollectionParentDTO;
+import com.nmc.itschool.dto.SubjectCollectionParentDTO;
 import com.nmc.itschool.dto.LessonDTO;
-import com.nmc.itschool.service.LessonCollectionParentService;
+import com.nmc.itschool.service.SubjectCollectionParentService;
 import com.nmc.itschool.service.LessonService;
+import com.nmc.itschool.util.FileUtil;
 import com.nmc.itschool.util.ObjectMapperUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ import java.util.List;
 @RequestMapping("/home")
 public class HomeController {
     @Autowired
-    LessonCollectionParentService lessonCollectionParentService;
+    SubjectCollectionParentService subjectCollectionParentService;
 
     @Autowired
     LessonService lessonService;
@@ -29,18 +30,18 @@ public class HomeController {
         log.info("start homePage");
 
         // get Data
-        List<LessonCollectionParentDTO> lessonCollectionParentDTOS = lessonCollectionParentService.getAll();
+        List<SubjectCollectionParentDTO> subjectCollectionParentDTOS = subjectCollectionParentService.getAll();
         List<LessonDTO> lessonDTOS = lessonService.getAll();
 
         // add data
-        log.info("data: {}", ObjectMapperUtil.writeValueAsString(lessonCollectionParentDTOS));
+        log.info("data: {}", ObjectMapperUtil.writeValueAsString(subjectCollectionParentDTOS));
         log.info("lessonDTOS: {}", ObjectMapperUtil.writeValueAsString(lessonDTOS));
-
-        model.addAttribute("lessonCollectionParentDTOS", lessonCollectionParentDTOS);
+        model.addAttribute("pathFile", FileUtil.getPathUploadFile());
+        model.addAttribute("subjectCollectionParentDTOS", subjectCollectionParentDTOS);
         model.addAttribute("lessonDTOS", lessonDTOS);
 
         log.info("end homePage");
 
-        return "home";  // Trả về tệp home.html trong thư mục templates
+        return "home/home";  // Trả về tệp home.html trong thư mục templates
     }
 }

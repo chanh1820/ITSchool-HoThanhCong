@@ -20,6 +20,8 @@ public class LessonDTO {
 
     private String description;
 
+    private String slug;
+
     private String imageUrl;
 
     private String pdfUrl;

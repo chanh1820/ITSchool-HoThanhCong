@@ -1,6 +1,6 @@
 package com.nmc.itschool.repository;
 
-import com.nmc.itschool.entity.LessonCollectionParentEntity;
+import com.nmc.itschool.entity.SubjectCollectionParentEntity;
 import com.nmc.itschool.entity.LessonEntity;
 import com.nmc.itschool.entity.ScheduleEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,4 +13,8 @@ import java.util.Optional;
 public interface LessonRepository extends JpaRepository<LessonEntity, Integer>{
     @Query(value = "SELECT * FROM lesson_tbl WHERE delete_flag = false" , nativeQuery = true)
     Optional<List<LessonEntity>> getAll();
+
+    @Query(value = "SELECT * FROM lesson_tbl WHERE slug=:slug AND delete_flag = false" , nativeQuery = true)
+    Optional<List<LessonEntity>> findBySlug(String slug);
+
 }

@@ -14,7 +14,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #FFF
+    background: #FFF;
+    z-index:99
 }
 .logo-app{
     width: 20%
@@ -111,21 +112,22 @@ nav {
     border-radius: 4px;
 }
 
-///////////////LESSON
+/*LESSON*/
 
 .lesson-container {
 
-    display: flex;
     justify-content: center;
     margin: 20px;
 }
-
+.lesson-container>h2{
+    margin: 110px 110px 20px 110px;
+}
 .lessons-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 items per row */
+    grid-template-columns: repeat(5, 1fr); /* 4 items per row */
     gap: 20px; /* Space between items */
     /* max-width: 1200px; */
-    margin: 110px;
+    margin: 0px 110px;
 }
 
 .lesson-item {
@@ -140,13 +142,18 @@ nav {
 }
 .lesson-item:hover{
     cursor: pointer;
+    border-color: #F05C66;
+    box-shadow: #F05C66 3px 3px 1px;
+    transition: 0.8s;
 }
 .lesson-item img {
     max-width: 100%;
     height: auto;
     border-radius: 8px;
 }
-
+.lesson-item>a {
+    text-decoration: none;
+}
 .lesson-item h3 {
     color: #ff5722;
     text-align: start;
@@ -158,7 +165,7 @@ nav {
 }
 
 .image-lesson{
-    width: 300px; /* Absolute width */
+    width: 100%; /* Absolute width */
     height: 200px; /* Absolute height */
     overflow: hidden; /* Hide the parts of the image that are outside the container */
     display: flex;

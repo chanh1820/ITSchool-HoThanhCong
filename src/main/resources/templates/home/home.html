@@ -3,6 +3,7 @@
 <head>
     <title>Trang Chủ</title>
     <link rel="stylesheet" th:href="@{/css/home.css}">
+    <link rel="icon" type="image/x-icon" th:href="@{/images/ic_logo_app.png}">
 </head>
 <body>
     <div class="home-container">
@@ -38,11 +39,11 @@
         <div id="navigation-container">
             <nav>
                 <ul class="parent-menu">
-                    <li th:each="lesson : ${lessonCollectionParentDTOS}" class="parent-item">
+                    <li th:each="lesson : ${subjectCollectionParentDTOS}" class="parent-item">
                         <a th:href="@{${lesson.prefix}}">[[${lesson.lessonName}]]</a>
                         <ul class="child-menu">
-                            <li th:each="child : ${lesson.lessonCollectionEntities}" class="child-item">
-                                <a th:href="@{${child.prefix}}">[[${child.lessonCollectionName}]]</a>
+                            <li th:each="child : ${lesson.subjectCollectionEntities}" class="child-item">
+                                <a th:href="@{${child.prefix}}">[[${child.SubjectCollectionName}]]</a>
                             </li>
                         </ul>
                     </li>
@@ -51,11 +52,12 @@
         </div>
         <div id="content-container">
             <div class="lesson-container">
+                <h2>Các bài học mới</h2>
                 <div class="lessons-grid">
                     <div class="lesson-item" th:each="lesson : ${lessonDTOS}">
-                        <a th:href="@{'/lesson/'+${lesson.id}}">
+                        <a th:href="@{'/lesson/detail/'+${lesson.slug}}">
                             <div class="image-lesson">
-                                <img th:src="@{'/uploads/' + ${lesson.imageUrl}}" alt="Lesson Image" class="lesson-image">
+                                <img th:src="@{${pathFile} + ${lesson.imageUrl}}" alt="Lesson Image" class="lesson-image">
                             </div>
                             <h3 th:text="${lesson.lessonName}">Lesson Name</h3>
                             <p th:text="${lesson.description}">Description</p>

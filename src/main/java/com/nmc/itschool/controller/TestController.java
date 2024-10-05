@@ -16,19 +16,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
 
 @Controller
 @Slf4j
-@RequestMapping("/lesson")
-public class LessonController {
+@RequestMapping("/test")
+public class TestController {
 //    private static String UPLOAD_DIR = System.getProperty("user.dir") + "/uploads";
 
     @Autowired

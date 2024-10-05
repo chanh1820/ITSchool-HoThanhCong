@@ -9,21 +9,21 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity()
-@Table(name = "lesson_collection_parent_tbl")
+@Table(name = "subject_collection_parent_tbl")
 @Getter
 @Setter
 @NoArgsConstructor
-@AttributeOverride(name = "id", column = @Column(name = "lesson_collection_parent_id"))
-public class LessonCollectionParentEntity {
+@AttributeOverride(name = "id", column = @Column(name = "subject_collection_parent_id"))
+public class SubjectCollectionParentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "lesson_collection_parent_id", nullable = false)
+    @Column(name = "subject_collection_parent_id", nullable = false)
     private Integer id;
 
-    @Column(name = "lesson_collection_parent_code")
+    @Column(name = "subject_collection_parent_code")
     private String lessonCode;
 
-    @Column(name = "lesson_collection_parent_name")
+    @Column(name = "subject_collection_parent_name")
     private String lessonName;
 
     @Column(name = "prefix")
@@ -38,7 +38,7 @@ public class LessonCollectionParentEntity {
     @Column(name = "delete_flag")
     private Boolean deleteFlag;
 
-    @OneToMany(mappedBy = "lessonCollectionParentEntity")
-    private List<LessonCollectionEntity> lessonCollectionEntities;
+    @OneToMany(mappedBy = "subjectCollectionParentEntity")
+    private List<SubjectCollectionEntity> subjectCollectionEntities;
 }
 

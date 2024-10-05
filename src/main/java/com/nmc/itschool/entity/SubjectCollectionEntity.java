@@ -9,22 +9,22 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity()
-@Table(name = "lesson_collection_tbl")
+@Table(name = "subject_collection_tbl")
 @Getter
 @Setter
 @NoArgsConstructor
-@AttributeOverride(name = "id", column = @Column(name = "lesson_collection_id"))
-public class LessonCollectionEntity {
+@AttributeOverride(name = "id", column = @Column(name = "subject_collection_id"))
+public class SubjectCollectionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "lesson_collection_id", nullable = false)
+    @Column(name = "subject_collection_id", nullable = false)
     private Integer id;
 
-    @Column(name = "lesson_collection_code")
-    private String lessonCollectionCode;
+    @Column(name = "subject_collection_code")
+    private String subjectCollectionCode;
 
-    @Column(name = "lesson_collection_name")
-    private String lessonCollectionName;
+    @Column(name = "subject_collection_name")
+    private String subjectCollectionName;
 
     @Column(name = "prefix")
     private String prefix;
@@ -39,8 +39,8 @@ public class LessonCollectionEntity {
     private Boolean deleteFlag;
 
     @ManyToOne
-    @JoinColumn(name = "lesson_collection_parent_id", referencedColumnName = "lesson_collection_parent_id")
+    @JoinColumn(name = "subject_collection_parent_id", referencedColumnName = "subject_collection_parent_id")
     @JsonIgnore
-    private LessonCollectionParentEntity lessonCollectionParentEntity;
+    private SubjectCollectionParentEntity subjectCollectionParentEntity;
 }
 

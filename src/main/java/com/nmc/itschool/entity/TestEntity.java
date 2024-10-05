@@ -6,25 +6,24 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity()
-@Table(name = "lesson_tbl")
+@Table(name = "test_tbl")
 @Getter
 @Setter
 @NoArgsConstructor
-@AttributeOverride(name = "id", column = @Column(name = "lesson_id"))
-public class LessonEntity {
+@AttributeOverride(name = "id", column = @Column(name = "test_id"))
+public class TestEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "lesson_id", nullable = false)
+    @Column(name = "test_id", nullable = false)
     private Integer id;
 
-    @Column(name = "lesson_code")
-    private String lessonCode;
+    @Column(name = "test_code")
+    private String testCode;
 
-    @Column(name = "lesson_name")
-    private String lessonName;
+    @Column(name = "test_name")
+    private String testName;
 
     @Column(name = "description")
     private String description;
@@ -32,17 +31,23 @@ public class LessonEntity {
     @Column(name = "slug")
     private String slug;
 
-    @Column(name = "image_url")
-    private String imageUrl;
+    @Column(name = "thumbnail_file")
+    private String thumbnailFile;
 
-    @Column(name = "pdf_url")
-    private String pdfUrl;
+    @Column(name = "pdf_file")
+    private String pdfFile;
 
     @Column(name = "collection_prefix")
     private String collectionPrefix;
 
     @Column(name = "collection_parent_prefix")
     private String collectionParentPrefix;
+
+    @Column(name = "public_flag")
+    private Boolean publicFlag;
+
+    @Column(name = "author")
+    private String author;
 
     @Column(name = "created_date")
     private LocalDateTime createdDate;

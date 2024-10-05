@@ -1,12 +1,11 @@
 package com.nmc.itschool.dto;
 
-import com.nmc.itschool.entity.LessonCollectionEntity;
+import com.nmc.itschool.entity.SubjectCollectionEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -14,7 +13,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @ToString
-public class LessonCollectionParentDTO {
+public class SubjectCollectionParentDTO {
 
     private Integer id;
 
@@ -30,6 +29,6 @@ public class LessonCollectionParentDTO {
 
     private Boolean deleteFlag;
 
-    private List<LessonCollectionEntity> lessonCollectionEntities;
+    private List<SubjectCollectionEntity> subjectCollectionEntities;
 }
 
