@@ -3,9 +3,12 @@ package com.nmc.itschool.controller;
 import com.nmc.itschool.constant.MessageEnum;
 import com.nmc.itschool.dto.SubjectCollectionParentDTO;
 import com.nmc.itschool.dto.LessonDTO;
+import com.nmc.itschool.dto.TestDTO;
 import com.nmc.itschool.exceptions.AppException;
 import com.nmc.itschool.service.SubjectCollectionParentService;
 import com.nmc.itschool.service.LessonService;
+import com.nmc.itschool.service.SubjectCollectionService;
+import com.nmc.itschool.service.TestService;
 import com.nmc.itschool.util.FileUtil;
 import com.nmc.itschool.util.ObjectMapperUtil;
 import com.nmc.itschool.util.StringUtil;
@@ -29,75 +32,100 @@ public class TestController {
     @Autowired
     SubjectCollectionParentService subjectCollectionParentService;
     @Autowired
-    LessonService lessonService;
-    @GetMapping("/add")
-    public String saveLessonPage(Model model) {
-        log.info("start saveLessonPage");
+    SubjectCollectionService subjectCollectionService;
+    @Autowired
+    TestService testService;
+    @GetMapping("/create/info")
+    public String addTestInfo(Model model) {
+        log.info("start addTestInfo");
 
         List<SubjectCollectionParentDTO> subjectCollectionParentDTOS = subjectCollectionParentService.getAll();
         log.info("data: {}", ObjectMapperUtil.writeValueAsString(subjectCollectionParentDTOS));
-        model.addAttribute("pathFile", FileUtil.getPathUploadFile());
+//        model.addAttribute("pathFile", FileUtil.getPathResourceFile());
         model.addAttribute("subjectCollectionParentDTOS", subjectCollectionParentDTOS);
 
-        log.info("end saveLessonPage");
+        log.info("end addTestInfo");
 
-        return "lesson_save";  // Trả về tệp home.html trong thư mục templates
+        return "test/test_create_info";  // Trả về tệp home.html trong thư mục templates
     }
 
-    @GetMapping("/detail/{slug}")
+    @GetMapping("/create/info/{slug}")
 //    @RequestMapping(value = "/detail/{slug}", method = RequestMethod.GET)
-    public String detailLesson(Model model, @PathVariable String slug) throws UnsupportedEncodingException {
-        log.info("start detailLesson");
+    public String createDetailQuestion(Model model, @PathVariable String slug) throws UnsupportedEncodingException {
+        log.info("start createDetailQuestion");
 
-        LessonDTO lessonDTO = lessonService.findBySlug(slug);
-        if(lessonDTO != null){
-            model.addAttribute("pathFile", FileUtil.getPathUploadFile());
-            model.addAttribute("lessonDTO", lessonDTO);
+        TestDTO testDTO = testService.findBySlug(slug);
+        if(testDTO != null){
+            model.addAttribute("pathFile", FileUtil.getPathResourceFile());
+            model.addAttribute("testDTO", testDTO);
         }else {
             throw new AppException(MessageEnum.ERR_LESSON_NOT_FOUND);
         }
-        log.info("data: {}", ObjectMapperUtil.writeValueAsString(lessonDTO));
-        log.info("end detailLesson");
+        log.info("data: {}", ObjectMapperUtil.writeValueAsString(testDTO));
+        log.info("end createDetailQuestion");
 
-        return "lesson/lesson_detail";  // Trả về tệp home.html trong thư mục templates
+        return "test/test_create_detail_question";  // Trả về tệp home.html trong thư mục templates
     }
+
+//    @GetMapping("/detail/{slug}")
+////    @RequestMapping(value = "/detail/{slug}", method = RequestMethod.GET)
+//    public String detailLesson(Model model, @PathVariable String slug) throws UnsupportedEncodingException {
+//        log.info("start detailLesson");
+//
+//        TestDTO testDTO = testService.findBySlug(slug);
+//        if(testDTO != null){
+//            model.addAttribute("pathFile", FileUtil.getPathUploadFile());
+//            model.addAttribute("testDTO", testDTO);
+//        }else {
+//            throw new AppException(MessageEnum.ERR_LESSON_NOT_FOUND);
+//        }
+//        log.info("data: {}", ObjectMapperUtil.writeValueAsString(testDTO));
+//        log.info("end detailLesson");
+//
+//        return "test/test_detail";  // Trả về tệp home.html trong thư mục templates
+//    }
 
     @PostMapping("/api/save")
     public String saveLesson(
-            @RequestParam("lessonCode") String lessonCode,
-            @RequestParam("lessonName") String lessonName,
+            @RequestParam("testCode") String testCode,
+            @RequestParam("testName") String testName,
             @RequestParam("description") String description,
-            @RequestParam("collectionPrefix") String collectionPrefix,
             @RequestParam("collectionParentPrefix") String collectionParentPrefix,
-            @RequestParam("imageFile") MultipartFile imageFile,
+            @RequestParam("collectionPrefix") String collectionPrefix,
+            @RequestParam("thumbnailFile") MultipartFile thumbnailFile,
             @RequestParam("pdfFile") MultipartFile pdfFile,
+            @RequestParam("numberChooseTest") String numberChooseTest,
+            @RequestParam("numberWriteTest") String numberWriteTest,
             Model model) {
 
         // Validate file types
-        if (!FileUtil.isImageValid(imageFile) || !FileUtil.isPdfValid(pdfFile)) {
+        if (!FileUtil.isImageValid(thumbnailFile) || !FileUtil.isPdfValid(pdfFile)) {
             model.addAttribute("error", "Invalid image or PDF file");
             return "add";
         }
 
         // Save the files and get their URLs
-        String imageUrl = FileUtil.saveFile(imageFile);
+        String imageUrl = FileUtil.saveFile(thumbnailFile);
         String pdfUrl = FileUtil.saveFile(pdfFile);
 
         // Create and save the LessonDTO
-        LessonDTO lessonDTO = new LessonDTO();
-        lessonDTO.setLessonCode(lessonCode);
-        lessonDTO.setLessonName(lessonName);
-        lessonDTO.setDescription(description);
-        lessonDTO.setSlug(StringUtil.convertToSlug(lessonName)+"-"+ UUID.randomUUID().toString());
-        lessonDTO.setCollectionPrefix(collectionPrefix);
-        lessonDTO.setCollectionParentPrefix(collectionParentPrefix);
-        lessonDTO.setImageUrl(imageUrl);
-        lessonDTO.setPdfUrl(pdfUrl);
+        TestDTO testDTO = new TestDTO();
+        testDTO.setTestCode(testCode);
+        testDTO.setTestName(testName);
+        testDTO.setDescription(description);
+        testDTO.setSlug(StringUtil.convertToSlug(testName)+"-"+ UUID.randomUUID().toString());
+        testDTO.setCollectionPrefix(collectionPrefix);
+        testDTO.setCollectionParentPrefix(collectionParentPrefix);
+        testDTO.setThumbnailFile(imageUrl);
+        testDTO.setPdfFile(pdfUrl);
+        testDTO.setAuthor("");
+        testDTO.setNumberChooseTest(Integer.valueOf(numberChooseTest));
+        testDTO.setNumberWriteTest(Integer.valueOf(numberWriteTest));
 
-        lessonService.save(lessonDTO);
+        TestDTO result = testService.save(testDTO);
         // Here you would save lessonDTO to your database
         model.addAttribute("message", "Lesson saved successfully");
 
-        return "redirect:/lesson/lesson/add";
+        return "redirect:/test/create/info/ "+result.getSlug();
     }
 }

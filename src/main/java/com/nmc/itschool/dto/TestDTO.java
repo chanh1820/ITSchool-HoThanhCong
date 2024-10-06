@@ -10,25 +10,33 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-public class LessonDTO {
+public class TestDTO {
 
     private Long id;
 
-    private String lessonCode;
+    private String testCode;
 
-    private String lessonName;
+    private String testName;
 
     private String description;
 
     private String slug;
 
-    private String imageUrl;
+    private String thumbnailFile;
 
-    private String pdfUrl;
+    private String pdfFile;
 
     private String collectionPrefix;
 
     private String collectionParentPrefix;
+
+    private Integer numberChooseTest;
+
+    private Integer numberWriteTest;
+
+    private Boolean publicFlag;
+
+    private String author;
 
     private LocalDateTime createdDate;
 
@@ -36,3 +44,4 @@ public class LessonDTO {
 
     private Boolean deleteFlag;
 }
+

@@ -17,7 +17,7 @@ public class ScheduleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "schedule_id", nullable = false)
-    private Integer id;
+    private Long id;
 
     @Column(name = "start_date")
     private Date startDate;

@@ -15,7 +15,7 @@ import java.util.List;
 @ToString
 public class ScheduleDTO {
 
-    private Integer id;
+    private Long id;
 
     private Date startDate;
 

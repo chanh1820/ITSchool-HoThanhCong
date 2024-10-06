@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Tạo bài kiểm tra</title>
+    <link rel="icon" type="image/x-icon" th:href="@{/images/ic_logo_app.png}">
+</head>
+<body>
+    <!--    <form action="#" th:action="@{/upload}" th:method="post" enctype="multipart/form-data">-->
+    <!--        <input type="file" name="imageFile" />-->
+    <!--        <button type="submit">Upload</button>-->
+    <!--    </form>-->
+    <!--    <div>-->
+    <!--        <p th:text="${message}"></p>-->
+    <!--        <img th:src="@{'/uploads/' + ${fileName}}" alt="Uploaded Image" />-->
+    <!--    </div>-->
+    <h1>Khởi tạo bài kiểm tra</h1>
+
+    <form action="#" th:action="@{/test/api/save}" th:method="post" enctype="multipart/form-data">
+        <div>
+            <label for="testCode">Mã bài kiểm tra:</label>
+            <input type="text" id="testCode" name="testCode" required>
+        </div>
+        <div>
+            <label for="testName">Tên bài kiểm tra:</label>
+            <input type="text" id="testName" name="testName" required>
+        </div>
+        <div>
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" required></textarea>
+        </div>
+        <div>
+            <label for="collectionParentPrefix">Danh mục cha:</label>
+    <!--        <textarea id="collectionParentPrefix" name="collectionParentPrefix" required></textarea>-->
+            <select id="collectionParentPrefix" name="collectionParentPrefix" required>
+                <option value="">-- Chọn nhóm --</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="collectionPrefix">Danh mục con:</label>
+            <!-- <textarea id="collectionPrefix" name="collectionPrefix" required></textarea> -->
+            <select id="collectionPrefix" name="collectionPrefix" required>
+                <option value="">-- Chọn môn học --</option>
+                <!-- Child options will be dynamically populated -->
+            </select>
+        </div>
+        <div>
+            <label for="thumbnailFile">Ảnh bìa (PNG/JPG):</label>
+            <input type="file" id="thumbnailFile" name="thumbnailFile" accept="image/png, image/jpeg" required>
+        </div>
+        <div>
+            <label for="pdfFile">Nội dung bài PDF:</label>
+            <input type="file" id="pdfFile" name="pdfFile" accept="application/pdf" required>
+        </div>
+        <div>
+            <label for="numberChooseTest">Số câu hỏi trắc nghiệm:</label>
+            <input type="number" id="numberChooseTest" name="numberChooseTest" min="1" max="100">
+        </div>
+        <div>
+            <label for="numberWriteTest">Số câu hỏi điền đáp án:</label>
+            <input type="number" id="numberWriteTest" name="numberWriteTest" min="1" max="100">
+        </div>
+        <button type="submit">Tiếp tục tạo đáp án ></button>
+    </form>
+
+</body>
+    <script>
+      var subjectParentList = [];
+      var subjectParentItemPicked = [];
+      function loadLessons() {
+          fetch('/api/subject/get-all')
+              .then(response => response.json())
+              .then(data => {
+                  subjectParentList = data;
+                  var parentSelect = document.getElementById("collectionParentPrefix");
+                  data.forEach(function(subject) {
+                      var option = document.createElement("option");
+                      option.value = subject.prefix; // Using lessonCode as the value
+                      option.text = subject.subjectCollectionParentName; // Display lessonName
+                      parentSelect.appendChild(option);
+                  });
+              })
+              .catch(error => console.error('Error loading lessons:', error));
+      }
+
+      // Event listener to update the child combo box when a lesson is selected
+      document.getElementById("collectionParentPrefix").addEventListener("change", function () {
+            var prefix = this.value;
+            subjectParentItemPicked = subjectParentList.find(item => item.prefix === prefix)
+            var childSelect = document.getElementById("collectionPrefix");
+
+            childSelect.innerHTML = '<option value="">-- Chọn môn học --</option>';
+
+            subjectParentItemPicked.subjectCollectionEntities.forEach(function(subject) {
+                var option = document.createElement("option");
+                option.value = subject.prefix; // Using subjectCollectionCode as the value
+                option.text = subject.subjectCollectionName; // Display subjectCollectionName
+                childSelect.appendChild(option);
+            });
+      });
+
+      // Load the lessons when the page is ready
+      document.addEventListener("DOMContentLoaded", loadLessons);
+    </script>
+</html>

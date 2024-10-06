@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 @Repository
-public interface LessonRepository extends JpaRepository<LessonEntity, Integer>{
+public interface LessonRepository extends JpaRepository<LessonEntity, Long>{
     @Query(value = "SELECT * FROM lesson_tbl WHERE delete_flag = false" , nativeQuery = true)
     Optional<List<LessonEntity>> getAll();
 

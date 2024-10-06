@@ -36,7 +36,7 @@ public class HomeController {
         // add data
         log.info("data: {}", ObjectMapperUtil.writeValueAsString(subjectCollectionParentDTOS));
         log.info("lessonDTOS: {}", ObjectMapperUtil.writeValueAsString(lessonDTOS));
-        model.addAttribute("pathFile", FileUtil.getPathUploadFile());
+        model.addAttribute("pathFile", FileUtil.getPathResourceFile());
         model.addAttribute("subjectCollectionParentDTOS", subjectCollectionParentDTOS);
         model.addAttribute("lessonDTOS", lessonDTOS);
 

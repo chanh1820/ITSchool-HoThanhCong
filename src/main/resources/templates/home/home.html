@@ -39,10 +39,10 @@
         <div id="navigation-container">
             <nav>
                 <ul class="parent-menu">
-                    <li th:each="lesson : ${subjectCollectionParentDTOS}" class="parent-item">
-                        <a th:href="@{${lesson.prefix}}">[[${lesson.lessonName}]]</a>
+                    <li th:each="subject : ${subjectCollectionParentDTOS}" class="parent-item">
+                        <a th:href="@{${subject.prefix}}">[[${subject.subjectCollectionParentCode}]]</a>
                         <ul class="child-menu">
-                            <li th:each="child : ${lesson.subjectCollectionEntities}" class="child-item">
+                            <li th:each="child : ${subject.subjectCollectionEntities}" class="child-item">
                                 <a th:href="@{${child.prefix}}">[[${child.SubjectCollectionName}]]</a>
                             </li>
                         </ul>

@@ -1,7 +1,7 @@
 package com.nmc.itschool.dto;
 
 public class MedicineDTO {
-    private Integer id;
+    private Long id;
     private String medicineName;
     private String medicineCode;
     private String description;
@@ -22,11 +22,11 @@ public class MedicineDTO {
         this.medicineName = medicineName;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

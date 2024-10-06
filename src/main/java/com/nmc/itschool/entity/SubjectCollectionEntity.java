@@ -18,7 +18,7 @@ public class SubjectCollectionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "subject_collection_id", nullable = false)
-    private Integer id;
+    private Long id;
 
     @Column(name = "subject_collection_code")
     private String subjectCollectionCode;

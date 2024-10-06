@@ -18,13 +18,13 @@ public class SubjectCollectionParentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "subject_collection_parent_id", nullable = false)
-    private Integer id;
+    private Long id;
 
     @Column(name = "subject_collection_parent_code")
-    private String lessonCode;
+    private String subjectCollectionParentCode;
 
     @Column(name = "subject_collection_parent_name")
-    private String lessonName;
+    private String subjectCollectionParentName;
 
     @Column(name = "prefix")
     private String prefix;

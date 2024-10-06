@@ -15,11 +15,11 @@ import java.util.List;
 @ToString
 public class SubjectCollectionParentDTO {
 
-    private Integer id;
+    private Long id;
 
-    private String lessonCode;
+    private String subjectCollectionParentCode;
 
-    private String lessonName;
+    private String subjectCollectionParentName;
 
     private String prefix;
 

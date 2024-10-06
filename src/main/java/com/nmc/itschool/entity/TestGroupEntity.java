@@ -17,7 +17,7 @@
 //    @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
 //    @Column(name = "test_id", nullable = false)
-//    private Integer id;
+//    private Long id;
 //
 //    @Column(name = "test_code")
 //    private String testCode;

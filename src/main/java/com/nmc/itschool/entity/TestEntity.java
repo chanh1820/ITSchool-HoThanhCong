@@ -17,7 +17,7 @@ public class TestEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "test_id", nullable = false)
-    private Integer id;
+    private Long id;
 
     @Column(name = "test_code")
     private String testCode;
@@ -42,6 +42,12 @@ public class TestEntity {
 
     @Column(name = "collection_parent_prefix")
     private String collectionParentPrefix;
+
+    @Column(name = "number_choose_test")
+    private Integer numberChooseTest;
+
+    @Column(name = "number_write_test")
+    private Integer numberWriteTest;
 
     @Column(name = "public_flag")
     private Boolean publicFlag;

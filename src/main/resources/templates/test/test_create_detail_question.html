@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Lưu câu trắc nghiệm</title>
+    <link rel="stylesheet" th:href="@{/css/test_create_detail_question.css}">
+    <link rel="icon" type="image/x-icon" th:href="@{/images/ic_logo_app.png}">
+</head>
+<body>
+    <div class="test-create-detail-question-container">
+        <div class="top-container">
+            <h1 th:text="${testDTO.testName}"></h1>                
+            <div id="btn-submit">
+                <button class="button-submit" role="button">Lưu</button>
+            </div>
+        </div>
+        <div class="bottom-container">
+            <div class="pdf-container">
+                <div class="pdf-content">
+                    <iframe th:src="@{${pathFile} + ${testDTO.pdfFile}}" width="90%" height="80%">
+                    </iframe>
+                </div>
+            </div>
+            <div class="choose-question-container">
+                <h2>Cài đặt kết quả</h2>
+                <div class="choose-question-list">
+                    <div class="choose-question-item" th:each="index : ${#numbers.sequence(0, testDTO.numberChooseTest - 1)}">
+                        <h2 class="item-index">[[${index} + 1]]</h2>
+                        <div>
+                            <label>
+                                <input type="radio" id="optionA" th:attr="name='selectedOption-'+${index}" value="A" th:onclick="'onRadioButtonClick(' + ${index} + ', \'A\')'">
+                                <span>A</span>
+                            </label>
+                        </div>
+                        <div>
+                            <label>
+                                <input type="radio" id="optionB" th:attr="name='selectedOption-'+${index}" value="B" th:onclick="'onRadioButtonClick(' + ${index} + ', \'B\')'">
+                                <span>B</span>
+                            </label>
+                        </div>
+                        <div>
+                            <label>
+                                <input type="radio" id="optionC" th:attr="name='selectedOption-'+${index}" value="C" th:onclick="'onRadioButtonClick(' + ${index} + ', \'C\')'">
+                                <span>C</span>
+                            </label>
+                        </div>
+                        <div>
+                            <label>
+                                <input type="radio" id="optionD" th:attr="name='selectedOption-'+${index}" value="D" th:onclick="'onRadioButtonClick(' + ${index} + ', \'D\')'">
+                                <span>D</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+<script>
+    listAnswerChecked = [100];
+    function onRadioButtonClick(index, value){
+        console.log(index, value);
+        listAnswerChecked[Number.parseInt(index)] = value
+        console.log(JSON.stringify(listAnswerChecked));
+    }
+</script>
+</html>

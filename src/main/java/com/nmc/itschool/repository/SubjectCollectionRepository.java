@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface SubjectCollectionRepository extends JpaRepository<SubjectCollectionEntity, Integer>{
+public interface SubjectCollectionRepository extends JpaRepository<SubjectCollectionEntity, Long>{
 
     @Query(value = "SELECT * FROM subject_collection_tbl WHERE delete_flag = false" , nativeQuery = true)
     Optional<List<SubjectCollectionEntity>> getAll();

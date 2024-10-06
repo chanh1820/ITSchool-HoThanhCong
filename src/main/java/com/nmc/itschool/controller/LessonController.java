@@ -41,7 +41,7 @@ public class LessonController {
 
         List<SubjectCollectionParentDTO> subjectCollectionParentDTOS = subjectCollectionParentService.getAll();
         log.info("data: {}", ObjectMapperUtil.writeValueAsString(subjectCollectionParentDTOS));
-        model.addAttribute("pathFile", FileUtil.getPathUploadFile());
+        model.addAttribute("pathFile", FileUtil.getPathResourceFile());
         model.addAttribute("subjectCollectionParentDTOS", subjectCollectionParentDTOS);
 
         log.info("end saveLessonPage");
@@ -56,7 +56,7 @@ public class LessonController {
 
         LessonDTO lessonDTO = lessonService.findBySlug(slug);
         if(lessonDTO != null){
-            model.addAttribute("pathFile", FileUtil.getPathUploadFile());
+            model.addAttribute("pathFile", FileUtil.getPathResourceFile());
             model.addAttribute("lessonDTO", lessonDTO);
         }else {
             throw new AppException(MessageEnum.ERR_LESSON_NOT_FOUND);
