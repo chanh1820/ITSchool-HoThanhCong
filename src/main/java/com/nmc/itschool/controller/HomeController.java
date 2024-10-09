@@ -2,8 +2,10 @@ package com.nmc.itschool.controller;
 
 import com.nmc.itschool.dto.SubjectCollectionParentDTO;
 import com.nmc.itschool.dto.LessonDTO;
+import com.nmc.itschool.dto.TestDTO;
 import com.nmc.itschool.service.SubjectCollectionParentService;
 import com.nmc.itschool.service.LessonService;
+import com.nmc.itschool.service.TestService;
 import com.nmc.itschool.util.FileUtil;
 import com.nmc.itschool.util.ObjectMapperUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -24,14 +26,16 @@ public class HomeController {
 
     @Autowired
     LessonService lessonService;
-
+    @Autowired
+    TestService testService;
     @GetMapping("/index")
     public String homePage(Model model) {
         log.info("start homePage");
 
         // get Data
         List<SubjectCollectionParentDTO> subjectCollectionParentDTOS = subjectCollectionParentService.getAll();
-        List<LessonDTO> lessonDTOS = lessonService.getAll();
+        List<LessonDTO> lessonDTOS = lessonService.getAll(15);
+        List<TestDTO> testDTOS = testService.getAll(15);
 
         // add data
         log.info("data: {}", ObjectMapperUtil.writeValueAsString(subjectCollectionParentDTOS));
@@ -39,6 +43,7 @@ public class HomeController {
         model.addAttribute("pathFile", FileUtil.getPathResourceFile());
         model.addAttribute("subjectCollectionParentDTOS", subjectCollectionParentDTOS);
         model.addAttribute("lessonDTOS", lessonDTOS);
+        model.addAttribute("testDTOS", testDTOS);
 
         log.info("end homePage");
 

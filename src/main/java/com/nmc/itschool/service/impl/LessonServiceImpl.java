@@ -53,8 +53,8 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public List<LessonDTO> getAll() {
-        Optional<List<LessonEntity>> otp = lessonRepository.getAll();
+    public List<LessonDTO> getAll(int limit) {
+        Optional<List<LessonEntity>> otp = lessonRepository.getAll(limit);
         if (otp.isPresent()){
             return lessonMapper.toDTOs(otp.get());
         }

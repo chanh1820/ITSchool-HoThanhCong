@@ -2,6 +2,7 @@ package com.nmc.itschool.service.impl;
 
 import com.nmc.itschool.constant.MessageEnum;
 import com.nmc.itschool.dto.LessonDTO;
+import com.nmc.itschool.dto.QuestionItemDTO;
 import com.nmc.itschool.dto.TestDTO;
 import com.nmc.itschool.entity.LessonEntity;
 import com.nmc.itschool.entity.SubjectCollectionEntity;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -52,6 +54,14 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
+    public TestDTO saveItem(TestDTO testDTO) {
+        log.info(ObjectMapperUtil.writeValueAsString(testDTO));
+        log.info(ObjectMapperUtil.writeValueAsString(testMapper.toEntity(testDTO)));
+        TestEntity result = testRepository.save(testMapper.toEntity(testDTO));
+        return testMapper.toDTO(result);
+    }
+
+    @Override
     public TestDTO findBySlug(String slug) {
         Optional<List<TestEntity>> otp = testRepository.findBySlug(slug);
         if (otp.isPresent()){
@@ -62,8 +72,8 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public List<TestDTO> getAll() {
-        Optional<List<TestEntity>> otp = testRepository.getAll();
+    public List<TestDTO> getAll(int limit) {
+        Optional<List<TestEntity>> otp = testRepository.getAll(limit);
         if (otp.isPresent()){
             return testMapper.toDTOs(otp.get());
         }

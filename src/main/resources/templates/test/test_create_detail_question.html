@@ -11,7 +11,7 @@
         <div class="top-container">
             <h1 th:text="${testDTO.testName}"></h1>                
             <div id="btn-submit">
-                <button class="button-submit" role="button">Lưu</button>
+                <button class="button-submit" th:onclick="'submitQuestionItem('+ ${testDTO.numberChooseTest} +' ,'+ ${testDTO.id} +')'" role="button">Lưu</button>
             </div>
         </div>
         <div class="bottom-container">
@@ -65,5 +65,59 @@
         listAnswerChecked[Number.parseInt(index)] = value
         console.log(JSON.stringify(listAnswerChecked));
     }
+    function submitQuestionItem(totalItem, testId){
+        // validate
+        console.log(listAnswerChecked);
+        var isAllChecked = true;
+        var listNotChecked = [];
+        for(var i = 0; i < totalItem; i++){
+            if(!listAnswerChecked[i]){
+                isAllChecked = false
+                listNotChecked.push(i + 1)
+            }
+        }
+
+        if(!isAllChecked){
+            var listStr = "";
+            listNotChecked.map(item=>{
+                listStr += item
+                listStr += ","
+            })
+            listStr = listStr.substring(0, listStr.length - 1)
+            alert("Bạn chưa nhập đủ đáp án, các câu chưa nhập là: " + listStr)
+        }
+
+        saveQuestionItemLessons(listAnswerChecked, testId);
+    }
+
+    function saveQuestionItemLessons(questionItems, testId) {
+        fetch("/api/test/save-item", {
+        method: "POST",
+        body: JSON.stringify({
+                id :testId,
+                jsonListItemQuestion : JSON.stringify(arrayToMap(questionItems))
+            }),
+        headers: {
+            "Content-type": "application/json; charset=UTF-8"
+        }
+        })
+        .then((response) => response.json())
+        .then(json => {
+            var responseData = JSON.parse(json)
+            console.log(responseData);
+            console.log(response);
+        });
+      }
+
+    function arrayToMap(arr) {
+    let result = {};
+    arr.forEach((value, index) => {
+        result[index + 1] = {
+            "type": "1", // Assuming "type" is always 1 based on the provided structure
+            "value": value
+        };
+    });
+    return result;
+}
 </script>
 </html>

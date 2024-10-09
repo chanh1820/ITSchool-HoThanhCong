@@ -37,6 +37,15 @@ public class TestEntity {
     @Column(name = "pdf_file")
     private String pdfFile;
 
+    @Column(name = "json_list_item_question")
+    private String jsonListItemQuestion;
+
+    @Column(name = "max_point")
+    private Integer maxPoint;
+
+    @Column(name = "minute_time")
+    private Integer minuteTime;
+
     @Column(name = "collection_prefix")
     private String collectionPrefix;
 

@@ -126,6 +126,9 @@ public class TestController {
         // Here you would save lessonDTO to your database
         model.addAttribute("message", "Lesson saved successfully");
 
-        return "redirect:/test/create/info/ "+result.getSlug();
+        return "redirect:/test/create/info/"+result.getSlug();
     }
+
+
+
 }

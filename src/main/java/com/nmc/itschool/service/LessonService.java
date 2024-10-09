@@ -9,6 +9,6 @@ public interface LessonService {
 
     public LessonDTO save(LessonDTO lessonDTO);
     public LessonDTO findBySlug(String slug);
-    public List<LessonDTO> getAll();
+    public List<LessonDTO> getAll(int limit);
 
 }

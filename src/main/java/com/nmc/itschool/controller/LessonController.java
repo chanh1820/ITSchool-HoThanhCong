@@ -46,7 +46,7 @@ public class LessonController {
 
         log.info("end saveLessonPage");
 
-        return "lesson_save";  // Trả về tệp home.html trong thư mục templates
+        return "lesson/lesson_save";  // Trả về tệp home.html trong thư mục templates
     }
 
     @GetMapping("/detail/{slug}")

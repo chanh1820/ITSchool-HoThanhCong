@@ -3,14 +3,17 @@ package com.nmc.itschool.dto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class TestDTO {
+@ToString
+public class TestDTO implements Serializable {
 
     private Long id;
 
@@ -25,6 +28,12 @@ public class TestDTO {
     private String thumbnailFile;
 
     private String pdfFile;
+
+    private String jsonListItemQuestion;
+
+    private Integer maxPoint;
+
+    private Integer minuteTime;
 
     private String collectionPrefix;
 
