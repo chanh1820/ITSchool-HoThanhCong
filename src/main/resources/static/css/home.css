@@ -40,6 +40,25 @@ body {
     background-color: rgba(0, 0, 0, .05);
 }
 
+.user-info .user-content{
+    display: flex;
+    align-items: center;
+}
+.user-content .full-name span:nth-child(1){
+    font-weight: 600;
+    color: black;
+    font-family: cursive;
+}
+
+.user-content .full-name span:nth-child(2){
+    font-weight: 600;
+    color: blueviolet;
+    font-family: cursive;
+}
+.user-content .avatar img{
+    width:50px;
+    height:50px;
+}
 #banner-container .banner-item img{
     padding-top: 120px;
     width: 100%;

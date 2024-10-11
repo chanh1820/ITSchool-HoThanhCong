@@ -52,5 +52,8 @@ public class CustomUserDetails implements UserDetails {
     public String getFullName() {
         return userEntity.getFullName();
     }
+    public UserEntity getEntity() {
+        return userEntity;
+    }
 
 }

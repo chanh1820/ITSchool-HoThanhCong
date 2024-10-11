@@ -22,13 +22,29 @@
                     <a>Trắc nghiệm</a>
                 </div>
             </div>
-            <div class="account" >
-                <button class="login">
-                    <span>Đăng nhập</span>
+
+            <div th:if="${userInfo == 'null'}" class="account" >
+                <button class="login" href="/user/login/" >
+                    <a href="/user/login/">
+                        <span>Đăng nhập</span>
+                    </a>
                  </button>
                 <button class="registry">
-                    <span>Đăng ký</span>
+                    <a  href="/user/register/">
+                        <span>Đăng ký</span>
+                    </a>
                 </button>
+            </div>
+            <div th:if="${userInfo != 'null'}" class="user-info" >
+                <div class="user-content">
+                    <div class="full-name">
+                        <span th:text="${'Xin chào '}"></span>
+                        <span th:text="${userInfo}"></span>
+                    </div>
+                    <a class="avatar">
+                        <img th:src="@{/images/ic_default_avatar.png}" alt="default logo user">
+                    </a>
+                </div>
             </div>
         </div>
         <div id="banner-container">
