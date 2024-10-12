@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div class="choose-question-container">
-                <h2>Cài đặt kết quả</h2>
+                <h2>Chọn kết quả</h2>
                 <div class="choose-question-list">
                     <div class="choose-question-item" th:each="index : ${#numbers.sequence(0, testDTO.numberChooseTest - 1)}">
                         <h2 class="item-index">[[${index} + 1]]</h2>
@@ -54,7 +54,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 
 </body>

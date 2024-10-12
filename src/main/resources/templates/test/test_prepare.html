@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Chuẩn bị</title>
+    <link rel="icon" type="image/x-icon" th:href="@{/images/ic_logo_app.png}">
+    <link rel="stylesheet" th:href="@{/css/test_prepare.css}">
+</head>
+<body>
+    <div class="test-prepare-container">
+        <div class="test-content-container">
+            <div class="left-container">
+                <div class="name">
+                    <span th:text="${'Kiểm tra: ' + testDTO.testName}"></span>
+                </div>
+                <div class="description">
+                    <span th:text="${'Mô tả: ' + testDTO.description}"></span>
+                </div>
+                <div class="time">
+                    <span th:text="${'Thời gian: ' + testDTO.minuteTime +' phút'}"></span>
+                </div>
+                <div class="num-of-test">
+                    <span th:text="${'Số câu hỏi: ' + (testDTO.numberChooseTest + testDTO.numberWriteTest)}"></span>
+                </div>
+            </div>
+            <div class="right-container">
+                <div class="thumbnail">
+                    <img th:src="@{${pathFile} + ${testDTO.thumbnailFile}}" alt="Lesson Image" >
+                </div>
+            </div>
+        </div>
+        <div class="button-start">
+            <button th:inline="javascript" th:onclick="saveUserDoTest([[${testDTO.slug}]])">
+                <a>Bắt đầu</a>
+            </button>
+        </div>
+    </div>
+
+
+</body>
+    <script>
+    function saveUserDoTest(slugValue) {
+      fetch("/api/test/save-user-do-test", {
+      method: "POST",
+      body: JSON.stringify({
+        slug : slugValue
+      }),
+      headers: {
+          "Content-type": "application/json; charset=UTF-8"
+      }
+      })
+      .then(res => res.json())
+      .then(res => {
+        console.log(res);
+          var data = res.data
+          if(res.status == '200'){
+            window.location = "/test/do/" + data.slug;
+          } else {
+            alert(data.message)
+          }
+      });
+    }
+    </script>
+</html>

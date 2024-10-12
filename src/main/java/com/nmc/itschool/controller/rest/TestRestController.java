@@ -3,13 +3,20 @@ package com.nmc.itschool.controller.rest;
 import com.nmc.itschool.dto.QuestionItemDTO;
 import com.nmc.itschool.dto.SubjectCollectionParentDTO;
 import com.nmc.itschool.dto.TestDTO;
+import com.nmc.itschool.dto.UserDoTestDTO;
 import com.nmc.itschool.dto.base.BaseResponse;
+import com.nmc.itschool.security.CustomUserDetails;
 import com.nmc.itschool.service.SubjectCollectionParentService;
 import com.nmc.itschool.service.TestService;
+import com.nmc.itschool.service.UserDoTestService;
 import com.nmc.itschool.util.ObjectMapperUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,12 +24,15 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/test")
+@Slf4j
 public class TestRestController {
     private Logger logger = LoggerFactory.getLogger(TestRestController.class);
 
     @Autowired
     private TestService testService;
 
+    @Autowired
+    private UserDoTestService userDoTestService;
     @PostMapping("/save-item")
     public BaseResponse saveTestItem(@RequestBody TestDTO testDTO) {
         logger.info("Start saveTestItem {}", testDTO);
@@ -32,5 +42,29 @@ public class TestRestController {
         return BaseResponse.success(result);
     }
 
+    @PostMapping("/save-user-do-test")
+    public BaseResponse saveUserDoTest(@RequestBody UserDoTestDTO userDoTestDTO) {
+        logger.info("Start saveUserDoTest {}", userDoTestDTO);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+            log.info("userDetails.getUsername() {}", userDetails.getUsername());
+            userDoTestDTO.setUserName(userDetails.getUsername());
+        }
 
+        UserDoTestDTO result = userDoTestService.save(userDoTestDTO);
+
+        logger.info("End saveUserDoTest with data {}", ObjectMapperUtil.writeValueAsString(result));
+        return BaseResponse.success(result);
+    }
+
+    @PostMapping("/update-realtime-user-do-test")
+    public BaseResponse updateRealTimeUserDoTest(@RequestBody UserDoTestDTO userDoTestDTO) {
+        logger.info("Start updateRealTimeUserDoTest {}", userDoTestDTO);
+
+        UserDoTestDTO result = userDoTestService.updateReadTime(userDoTestDTO);
+
+        logger.info("End updateRealTimeUserDoTest with data {}", ObjectMapperUtil.writeValueAsString(result));
+        return BaseResponse.success(result);
+    }
 }

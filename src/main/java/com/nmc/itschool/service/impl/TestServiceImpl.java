@@ -56,16 +56,25 @@ public class TestServiceImpl implements TestService {
     @Override
     public TestDTO saveItem(TestDTO testDTO) {
         log.info(ObjectMapperUtil.writeValueAsString(testDTO));
-        log.info(ObjectMapperUtil.writeValueAsString(testMapper.toEntity(testDTO)));
-        TestEntity result = testRepository.save(testMapper.toEntity(testDTO));
+        TestEntity testEntity = null;
+        TestEntity result;
+        Optional<TestEntity> otp = testRepository.findById(testDTO.getId());
+        if (otp.isPresent()){
+            testEntity = otp.get();
+            testEntity.setJsonListItemQuestion(testDTO.getJsonListItemQuestion());
+            result = testRepository.save(testEntity);
+        }else {
+            throw new AppException(MessageEnum.ERR_TEST_NOT_FOUND);
+        }
+
         return testMapper.toDTO(result);
     }
 
     @Override
     public TestDTO findBySlug(String slug) {
-        Optional<List<TestEntity>> otp = testRepository.findBySlug(slug);
+        Optional<TestEntity> otp = testRepository.findBySlug(slug);
         if (otp.isPresent()){
-            return testMapper.toDTO(otp.get().get(0));
+            return testMapper.toDTO(otp.get());
         }else {
             return null;
         }

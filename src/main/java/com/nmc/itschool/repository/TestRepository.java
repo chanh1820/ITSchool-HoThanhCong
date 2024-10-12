@@ -15,6 +15,6 @@ public interface TestRepository extends JpaRepository<TestEntity, Long>{
     Optional<List<TestEntity>> getAll(int limit);
 
     @Query(value = "SELECT * FROM test_tbl WHERE slug=:slug AND delete_flag = false" , nativeQuery = true)
-    Optional<List<TestEntity>> findBySlug(String slug);
+    Optional<TestEntity> findBySlug(String slug);
 
 }

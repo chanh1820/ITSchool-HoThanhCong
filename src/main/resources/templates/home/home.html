@@ -88,7 +88,7 @@
                 <h2>Trắc nghiệm</h2>
                 <div class="lessons-grid">
                     <div class="lesson-item" th:each="test : ${testDTOS}">
-                        <a th:href="@{'/test/detail/'+${test.slug}}">
+                        <a th:href="@{'/test/prepare/'+${test.slug}}">
                             <div class="image-lesson">
                                 <img th:src="@{${pathFile} + ${test.thumbnailFile}}" alt="Lesson Image" class="lesson-image">
                             </div>

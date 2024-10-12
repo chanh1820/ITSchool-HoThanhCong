@@ -60,12 +60,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .and()
 //                .logout().logoutSuccessUrl("/").permitAll();
         http
+                .csrf().disable()
+                .headers()
+                .frameOptions().sameOrigin()
+                .and()
+
                 .authorizeRequests()
+                .antMatchers("/api/**").authenticated()
                 .antMatchers(
                         "/user/login",
                         "/user/register",
                         "/css/*",
                         "/images/*",
+                        "/uploads/*",
                         "/home/*",
                         "/lesson/*"
                 )
