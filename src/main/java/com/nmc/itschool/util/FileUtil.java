@@ -2,6 +2,7 @@ package com.nmc.itschool.util;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,11 +11,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Slf4j
+@Component
 public class FileUtil {
 //    @Value("${myinfo.client-name}")
 //    private static String clientName;
-    @Value("${app.image.upload-dir}")
-    private String uploadDir;
+
+    private String uploadDir = "/usr/local/app/it-school-hothanhcong-images/";
 
     public static boolean isImageValid(MultipartFile imageFile) {
         String contentType = imageFile.getContentType();
@@ -29,7 +31,7 @@ public class FileUtil {
     public  String saveFile(MultipartFile file) {
 
 
-
+        log.info("getPathUploadFile() {}",getPathUploadFile());
         String fileName = "";
         try {
             // Get the original filename
@@ -53,6 +55,7 @@ public class FileUtil {
         if (osName.contains("win")) {
 //            log.info("System OS is {}, FILE_PATH is {}", osName, "/uploads/");
             return System.getProperty("user.dir").replace("\\", "/") + "/uploads";
+
 //            return "/uploads/";
         } else if (osName.contains("nix") || osName.contains("nux") || osName.contains("mac")) {
 //            log.info("System OS is {}, FILE_PATH is {}", osName, ("/home/web/" + clientName));

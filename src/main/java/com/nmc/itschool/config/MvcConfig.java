@@ -25,6 +25,7 @@ public class MvcConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         String osName = System.getProperty("os.name").toLowerCase();
         log.info("osName operating system: {}", osName);
+        log.info("uploadDir: {}", uploadDir);
         if (osName.contains("win")) {
             registry.addResourceHandler("/resource/**")
                     .addResourceLocations("file:" + System.getProperty("user.dir") + "/uploads/");
