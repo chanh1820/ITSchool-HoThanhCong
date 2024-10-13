@@ -148,10 +148,10 @@ public class TestController {
             model.addAttribute("error", "Invalid image or PDF file");
             return "add";
         }
-
+        FileUtil fileUtil = new FileUtil();
         // Save the files and get their URLs
-        String imageUrl = FileUtil.saveFile(thumbnailFile);
-        String pdfUrl = FileUtil.saveFile(pdfFile);
+        String imageUrl = fileUtil.saveFile(thumbnailFile);
+        String pdfUrl = fileUtil.saveFile(pdfFile);
 
         // Create and save the LessonDTO
         TestDTO testDTO = new TestDTO();

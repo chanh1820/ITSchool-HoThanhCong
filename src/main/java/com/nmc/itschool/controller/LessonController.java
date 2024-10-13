@@ -83,10 +83,10 @@ public class LessonController {
 //            model.addAttribute("error", "Invalid image or PDF file");
 //            return "add";
 //        }
-
+        FileUtil fileUtil = new FileUtil();
         // Save the files and get their URLs
-        String imageUrl = FileUtil.saveFile(imageFile);
-        String pdfUrl = FileUtil.saveFile(pdfFile);
+        String imageUrl = fileUtil.saveFile(imageFile);
+        String pdfUrl = fileUtil.saveFile(pdfFile);
 
         // Create and save the LessonDTO
         LessonDTO lessonDTO = new LessonDTO();

@@ -14,7 +14,8 @@ public class FileUtil {
 //    @Value("${myinfo.client-name}")
 //    private static String clientName;
     @Value("${app.image.upload-dir}")
-    private static String uploadDir;
+    private String uploadDir;
+
     public static boolean isImageValid(MultipartFile imageFile) {
         String contentType = imageFile.getContentType();
         return contentType != null && (contentType.equals("image/png") || contentType.equals("image/jpeg"));
@@ -25,7 +26,7 @@ public class FileUtil {
         return contentType != null && contentType.equals("application/pdf");
     }
 
-    public static String saveFile(MultipartFile file) {
+    public  String saveFile(MultipartFile file) {
 
 
 
@@ -45,7 +46,7 @@ public class FileUtil {
         return fileName;
     }
 
-    public static String getPathUploadFile(){
+    public String getPathUploadFile(){
         String osName = System.getProperty("os.name").toLowerCase();
 
         // Check if the OS is Windows or Linux/Unix
@@ -62,7 +63,7 @@ public class FileUtil {
         }
     }
 
-    public static String getPathResourceFile(){
+    public String getPathResourceFile(){
         String osName = System.getProperty("os.name").toLowerCase();
         if (osName.contains("win")) {
             return "/uploads/";
