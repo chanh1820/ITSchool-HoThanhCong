@@ -30,7 +30,7 @@ public class MvcConfig implements WebMvcConfigurer {
                     .addResourceLocations("file:" + System.getProperty("user.dir") + "/uploads/");
         } else if (osName.contains("nix") || osName.contains("nux") || osName.contains("mac")) {
             registry.addResourceHandler("/resource/**")
-                    .addResourceLocations("file:" + uploadDir + "/");
+                    .addResourceLocations("file:" + uploadDir);
         } else {
             log.info("Unknown operating system: {}", osName);
         }
