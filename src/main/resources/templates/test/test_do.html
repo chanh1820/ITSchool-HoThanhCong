@@ -2,22 +2,26 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Lưu câu trắc nghiệm</title>
-    <link rel="stylesheet" th:href="@{/css/test_create_detail_question.css}">
+    <title th:text="${testDTO.testName}"></title>
+    <link rel="stylesheet" th:href="@{/css/test_do.css}">
     <link rel="icon" type="image/x-icon" th:href="@{/images/ic_logo_app.png}">
 </head>
 <body>
     <div class="test-create-detail-question-container">
         <div class="top-container">
-            <h1 th:text="${testDTO.testName}"></h1>                
+            <div class="timer-container">
+                <img th:src="@{/images/ic_clock.png}" alt="clock">
+                <span id="counter-timer" th:data="${testDTO.minuteTime}" th:text="${testDTO.minuteTime + ':00'}" class="counter-timer"></span>
+            </div>
             <div id="btn-submit">
-                <button class="button-submit" th:onclick="'submitQuestionItem('+ ${testDTO.numberChooseTest} +' ,'+ ${testDTO.id} +')'" role="button">Lưu</button>
+                <button class="button-submit" th:onclick="'submitQuestionItem('+ ${testDTO.numberChooseTest} +' ,'+ ${userDoTestDTO.id} +')'" role="button">Nộp bài</button>
             </div>
         </div>
         <div class="bottom-container">
             <div class="pdf-container">
+                <h1 th:text="${testDTO.testName}"></h1>
                 <div class="pdf-content">
-                    <iframe th:src="@{${pathFile} + ${testDTO.pdfFile}}" width="90%" height="80%">
+                    <iframe th:src="@{'/resource/' + ${testDTO.pdfFile}}" width="90%" height="100%">
                     </iframe>
                 </div>
             </div>
@@ -58,13 +62,39 @@
 
 </body>
 <script>
+    let display = document.getElementById('counter-timer');
+    const time = display.getAttribute('data') * 60
+    let timeRemain = time;
+    function startTimer(duration, display) {
+        let timer = duration, minutes, seconds;
+        setInterval(function () {
+            minutes = parseInt(timer / 60, 10);
+            seconds = parseInt(timer % 60, 10);
+
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+            timeRemain = minutes;
+            display.textContent = minutes + ":" + seconds;
+
+            if (--timer < 0) {
+                timer = 0;
+                // Optionally, you can trigger an event here when the timer ends
+            }
+        }, 1000);
+    }
+
+    // Start the timer when the page loads
+    window.onload = function () {
+        startTimer(time, display);
+    };
+
     listAnswerChecked = [100];
     function onRadioButtonClick(index, value){
         console.log(index, value);
         listAnswerChecked[Number.parseInt(index)] = value
         console.log(JSON.stringify(listAnswerChecked));
     }
-    function submitQuestionItem(totalItem, testId){
+    function submitQuestionItem(totalItem, userDoTestId){
         // validate
         console.log(listAnswerChecked);
         var isAllChecked = true;
@@ -83,18 +113,19 @@
                 listStr += ","
             })
             listStr = listStr.substring(0, listStr.length - 1)
-            alert("Bạn chưa nhập đủ đáp án, các câu chưa nhập là: " + listStr)
+            alert("Bạn chưa trả lời đủ đáp án, các câu chưa trả lời là: " + listStr)
         }
 
-        saveQuestionItemLessons(listAnswerChecked, testId);
+        updateRealtimeAnswer(listAnswerChecked, userDoTestId);
     }
 
-    function saveQuestionItemLessons(questionItems, testId) {
-        fetch("/api/test/save-item", {
+    function updateRealtimeAnswer(questionItems, userDoTestId) {
+        fetch("/api/test/update-realtime-user-do-test", {
         method: "POST",
         body: JSON.stringify({
-                id :testId,
-                jsonListItemQuestion : JSON.stringify(arrayToMap(questionItems))
+                id :userDoTestId,
+                jsonListItemQuestion : JSON.stringify(arrayToMap(questionItems)),
+                minuteTime : timeRemain
             }),
         headers: {
             "Content-type": "application/json; charset=UTF-8"
@@ -102,10 +133,36 @@
         })
         .then(res => res.json())
         .then(res => {
-            console.log(res.data)
+            console.log(res);
+            var data = res.data
+            if(res.status == '200'){
+                pushAnswerTest(data.id)
+            } else {
+                alert(data.message)
+            }
         });
       }
-
+      function pushAnswerTest(userDoTestId) {
+        fetch("/api/test/push-answer-test", {
+        method: "POST",
+        body: JSON.stringify({
+                id :userDoTestId,
+            }),
+        headers: {
+            "Content-type": "application/json; charset=UTF-8"
+        }
+        })
+        .then(res => res.json())
+        .then(res => {
+            console.log(res);
+            var data = res.data
+            if(res.status == '200'){
+                window.location = "/test/score/" + data.randomId;
+            } else {
+                alert(data.message)
+            }
+        });
+      }
     function arrayToMap(arr) {
     let result = {};
     arr.forEach((value, index) => {

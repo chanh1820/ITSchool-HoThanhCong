@@ -36,6 +36,17 @@
                 </button>
             </div>
             <div th:if="${userInfo != 'null'}" class="user-info" >
+                <div class="dropdown">
+                    <button class="dropbtn">Chức năng
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-content">
+                        <div class="header">
+                            <h2><a href="/lesson/create">Tạo bài học</a></h2>
+                            <h2><a href="/test/create/info">Tạo bài kiểm tra</a></h2>
+                        </div>
+                    </div>
+                </div>
                 <div class="user-content">
                     <div class="full-name">
                         <span th:text="${'Xin chào '}"></span>
@@ -45,6 +56,7 @@
                         <img th:src="@{/images/ic_default_avatar.png}" alt="default logo user">
                     </a>
                 </div>
+        
             </div>
         </div>
         <div id="banner-container">
@@ -56,7 +68,7 @@
             <nav>
                 <ul class="parent-menu">
                     <li th:each="subject : ${subjectCollectionParentDTOS}" class="parent-item">
-                        <a th:href="@{${subject.prefix}}">[[${subject.subjectCollectionParentCode}]]</a>
+                        <a th:href="@{${subject.prefix}}">[[${subject.subjectCollectionParentName}]]</a>
                         <ul class="child-menu">
                             <li th:each="child : ${subject.subjectCollectionEntities}" class="child-item">
                                 <a th:href="@{${child.prefix}}">[[${child.SubjectCollectionName}]]</a>
@@ -73,7 +85,7 @@
                     <div class="lesson-item" th:each="lesson : ${lessonDTOS}">
                         <a th:href="@{'/lesson/detail/'+${lesson.slug}}">
                             <div class="image-lesson">
-                                <img th:src="@{${pathFile} + ${lesson.imageUrl}}" alt="Lesson Image" class="lesson-image">
+                                <img th:src="@{'/resource/' + ${lesson.imageUrl}}" alt="Lesson Image" class="lesson-image">
                             </div>
                             <h3 th:text="${lesson.lessonName}">Lesson Name</h3>
                             <p th:text="${lesson.description}">Description</p>
@@ -90,7 +102,7 @@
                     <div class="lesson-item" th:each="test : ${testDTOS}">
                         <a th:href="@{'/test/prepare/'+${test.slug}}">
                             <div class="image-lesson">
-                                <img th:src="@{${pathFile} + ${test.thumbnailFile}}" alt="Lesson Image" class="lesson-image">
+                                <img th:src="@{'/resource/' + ${test.thumbnailFile}}" alt="Lesson Image" class="lesson-image">
                             </div>
                             <h3 th:text="${test.testName}">Lesson Name</h3>
                             <p th:text="${test.description}">Description</p>

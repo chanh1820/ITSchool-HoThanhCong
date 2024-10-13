@@ -17,7 +17,7 @@
         <div class="bottom-container">
             <div class="pdf-container">
                 <div class="pdf-content">
-                    <iframe th:src="@{${pathFile} + ${testDTO.pdfFile}}" width="90%" height="80%">
+                    <iframe th:src="@{'/resource/' + ${testDTO.pdfFile}}" width="90%" height="80%">
                     </iframe>
                 </div>
             </div>

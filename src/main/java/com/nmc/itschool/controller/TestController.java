@@ -1,10 +1,7 @@
 package com.nmc.itschool.controller;
 
 import com.nmc.itschool.constant.MessageEnum;
-import com.nmc.itschool.dto.SubjectCollectionParentDTO;
-import com.nmc.itschool.dto.LessonDTO;
-import com.nmc.itschool.dto.TestDTO;
-import com.nmc.itschool.dto.UserDoTestDTO;
+import com.nmc.itschool.dto.*;
 import com.nmc.itschool.exceptions.AppException;
 import com.nmc.itschool.security.CustomUserDetails;
 import com.nmc.itschool.service.*;
@@ -39,7 +36,8 @@ public class TestController {
     TestService testService;
     @Autowired
     UserDoTestService userDoTestService;
-
+    @Autowired
+    ScoreService scoreService;
     @GetMapping("/create/info")
     public String addTestInfo(Model model) {
         log.info("start addTestInfo");
@@ -61,7 +59,7 @@ public class TestController {
 
         TestDTO testDTO = testService.findBySlug(slug);
         if(testDTO != null){
-            model.addAttribute("pathFile", FileUtil.getPathResourceFile());
+//            model.addAttribute("pathFile", FileUtil.getPathResourceFile());
             model.addAttribute("testDTO", testDTO);
         }else {
             throw new AppException(MessageEnum.ERR_LESSON_NOT_FOUND);
@@ -78,7 +76,7 @@ public class TestController {
 
         TestDTO testDTO = testService.findBySlug(slug);
         if(testDTO != null){
-            model.addAttribute("pathFile", FileUtil.getPathResourceFile());
+//            model.addAttribute("pathFile", FileUtil.getPathResourceFile());
             model.addAttribute("testDTO", testDTO);
         }else {
             throw new AppException(MessageEnum.ERR_LESSON_NOT_FOUND);
@@ -96,8 +94,8 @@ public class TestController {
         String userName = "";
         if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-            log.info("userInfo {}", userDetails.getFullName());
-            userName = userDetails.getFullName();
+            log.info("userInfo {}", userDetails.getUsername());
+            userName = userDetails.getUsername();
         }else {
             model.addAttribute("userInfo", "null");
         }
@@ -105,18 +103,33 @@ public class TestController {
         TestDTO testDTO = testService.findBySlug(slug);
         UserDoTestDTO userDoTestDTO = userDoTestService.findByUserNameAndSlug(userName, slug);
         if(testDTO != null){
-            model.addAttribute("pathFile", FileUtil.getPathResourceFile());
+//            model.addAttribute("pathFile", FileUtil.getPathResourceFile());
             model.addAttribute("testDTO", testDTO);
             model.addAttribute("userDoTestDTO", userDoTestDTO);
         }else {
             throw new AppException(MessageEnum.ERR_LESSON_NOT_FOUND);
         }
-        log.info("data: {}", ObjectMapperUtil.writeValueAsString(testDTO));
+        log.info("data: {}", ObjectMapperUtil.writeValueAsString(userDoTestDTO));
         log.info("end doTest");
 
         return "test/test_do";
     }
+    @GetMapping("/score/{randomId}")
+    public String resultScore(Model model, @PathVariable String randomId) throws UnsupportedEncodingException {
+        log.info("start resultScore");
 
+        ScoreDTO scoreDTO = scoreService.findByRandomId(randomId);
+        if(scoreDTO != null){
+//            model.addAttribute("pathFile", FileUtil.getPathResourceFile());
+            model.addAttribute("scoreDTO", scoreDTO);
+        }else {
+            throw new AppException(MessageEnum.ERR_SCORE_NOT_FOUND);
+        }
+        log.info("data: {}", ObjectMapperUtil.writeValueAsString(scoreDTO));
+        log.info("end resultScore");
+
+        return "test/score_result";
+    }
     @PostMapping("/api/save")
     public String saveLesson(
             @RequestParam("testCode") String testCode,

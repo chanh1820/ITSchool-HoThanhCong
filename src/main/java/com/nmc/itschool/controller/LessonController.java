@@ -35,18 +35,18 @@ public class LessonController {
     SubjectCollectionParentService subjectCollectionParentService;
     @Autowired
     LessonService lessonService;
-    @GetMapping("/add")
+    @GetMapping("/create")
     public String saveLessonPage(Model model) {
         log.info("start saveLessonPage");
 
         List<SubjectCollectionParentDTO> subjectCollectionParentDTOS = subjectCollectionParentService.getAll();
         log.info("data: {}", ObjectMapperUtil.writeValueAsString(subjectCollectionParentDTOS));
-        model.addAttribute("pathFile", FileUtil.getPathResourceFile());
+//        model.addAttribute("pathFile", FileUtil.getPathResourceFile());
         model.addAttribute("subjectCollectionParentDTOS", subjectCollectionParentDTOS);
 
         log.info("end saveLessonPage");
 
-        return "lesson/lesson_save";  // Trả về tệp home.html trong thư mục templates
+        return "lesson/lesson_save";
     }
 
     @GetMapping("/detail/{slug}")
@@ -56,7 +56,7 @@ public class LessonController {
 
         LessonDTO lessonDTO = lessonService.findBySlug(slug);
         if(lessonDTO != null){
-            model.addAttribute("pathFile", FileUtil.getPathResourceFile());
+//            model.addAttribute("pathFile", FileUtil.getPathResourceFile());
             model.addAttribute("lessonDTO", lessonDTO);
         }else {
             throw new AppException(MessageEnum.ERR_LESSON_NOT_FOUND);
@@ -67,22 +67,22 @@ public class LessonController {
         return "lesson/lesson_detail";  // Trả về tệp home.html trong thư mục templates
     }
 
-    @PostMapping("/api/save")
+    @PostMapping("/api/create")
     public String saveLesson(
-            @RequestParam("lessonCode") String lessonCode,
             @RequestParam("lessonName") String lessonName,
             @RequestParam("description") String description,
             @RequestParam("collectionPrefix") String collectionPrefix,
             @RequestParam("collectionParentPrefix") String collectionParentPrefix,
             @RequestParam("imageFile") MultipartFile imageFile,
             @RequestParam("pdfFile") MultipartFile pdfFile,
+            @RequestParam("videoId") String videoId,
             Model model) {
 
-        // Validate file types
-        if (!FileUtil.isImageValid(imageFile) || !FileUtil.isPdfValid(pdfFile)) {
-            model.addAttribute("error", "Invalid image or PDF file");
-            return "add";
-        }
+//        // Validate file types
+//        if (!FileUtil.isImageValid(imageFile) || !FileUtil.isPdfValid(pdfFile)) {
+//            model.addAttribute("error", "Invalid image or PDF file");
+//            return "add";
+//        }
 
         // Save the files and get their URLs
         String imageUrl = FileUtil.saveFile(imageFile);
@@ -90,19 +90,24 @@ public class LessonController {
 
         // Create and save the LessonDTO
         LessonDTO lessonDTO = new LessonDTO();
-        lessonDTO.setLessonCode(lessonCode);
+        lessonDTO.setLessonCode(null);
         lessonDTO.setLessonName(lessonName);
         lessonDTO.setDescription(description);
         lessonDTO.setSlug(StringUtil.convertToSlug(lessonName)+"-"+ UUID.randomUUID().toString());
         lessonDTO.setCollectionPrefix(collectionPrefix);
         lessonDTO.setCollectionParentPrefix(collectionParentPrefix);
         lessonDTO.setImageUrl(imageUrl);
-        lessonDTO.setPdfUrl(pdfUrl);
+        if (!pdfUrl.isBlank()){
+            lessonDTO.setPdfUrl(pdfUrl);
+        }
+        if (!videoId.isBlank()) {
+            lessonDTO.setVideoId(videoId);
+        }
 
         lessonService.save(lessonDTO);
         // Here you would save lessonDTO to your database
         model.addAttribute("message", "Lesson saved successfully");
 
-        return "redirect:/lesson/lesson/add";
+        return "redirect:/home/index";
     }
 }

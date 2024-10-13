@@ -38,6 +38,9 @@ public class LessonEntity {
     @Column(name = "pdf_url")
     private String pdfUrl;
 
+    @Column(name = "video_id")
+    private String videoId;
+
     @Column(name = "collection_prefix")
     private String collectionPrefix;
 

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Tạo bài kiểm tra</title>
+    <link rel="icon" type="image/x-icon" th:href="@{/images/ic_logo_app.png}">
+    <link rel="stylesheet" th:href="@{/css/score_result.css}">
+</head>
+<body>
+<div class="score-container">
+    <h2 class="score-title" th:text="${'Điểm số ' + scoreDTO.testName}"></h2>
+
+    <table class="score-table">
+<!--        <tr>-->
+<!--            <th>ID</th>-->
+<!--            <td th:text="${scoreDTO.id}">12345</td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--            <th>Random ID</th>-->
+<!--            <td th:text="${scoreDTO.randomId}">abc123</td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--            <th>User Name</th>-->
+<!--            <td th:text="${scoreDTO.userName}">johndoe</td>-->
+<!--        </tr>-->
+        <tr>
+            <th>Tên</th>
+            <td th:text="${scoreDTO.fullName}">John Doe</td>
+        </tr>
+<!--        <tr>-->
+<!--            <th>Class Room</th>-->
+<!--            <td th:text="${scoreDTO.classRoom}">10-B</td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--            <th>Test Code</th>-->
+<!--            <td th:text="${scoreDTO.testCode}">TST2024</td>-->
+<!--        </tr>-->
+        <tr>
+            <th>Kiểm tra</th>
+            <td th:text="${scoreDTO.testName}">Math Final</td>
+        </tr>
+<!--        <tr>-->
+<!--            <th>Slug</th>-->
+<!--            <td th:text="${scoreDTO.slug}">math-final</td>-->
+<!--        </tr>-->
+        <tr>
+            <th>Ngày tạo</th>
+            <td th:text="${scoreDTO.createdDate}">2024-10-13T09:00</td>
+        </tr>
+        <tr>
+            <th>Thời gian làm bài</th>
+            <td th:text="${scoreDTO.minuteTime}">45</td>
+        </tr>
+        <tr>
+            <th>Điểm</th>
+            <td th:text="${scoreDTO.point}">85.5</td>
+        </tr>
+    </table>
+</div>
+</body>
+
+</html>

@@ -26,6 +26,8 @@ public class LessonDTO {
 
     private String pdfUrl;
 
+    private String videoId;
+
     private String collectionPrefix;
 
     private String collectionParentPrefix;

@@ -1,11 +1,9 @@
 package com.nmc.itschool.controller.rest;
 
-import com.nmc.itschool.dto.QuestionItemDTO;
-import com.nmc.itschool.dto.SubjectCollectionParentDTO;
-import com.nmc.itschool.dto.TestDTO;
-import com.nmc.itschool.dto.UserDoTestDTO;
+import com.nmc.itschool.dto.*;
 import com.nmc.itschool.dto.base.BaseResponse;
 import com.nmc.itschool.security.CustomUserDetails;
+import com.nmc.itschool.service.ScoreService;
 import com.nmc.itschool.service.SubjectCollectionParentService;
 import com.nmc.itschool.service.TestService;
 import com.nmc.itschool.service.UserDoTestService;
@@ -31,6 +29,8 @@ public class TestRestController {
     @Autowired
     private TestService testService;
 
+    @Autowired
+    private ScoreService scoreService;
     @Autowired
     private UserDoTestService userDoTestService;
     @PostMapping("/save-item")
@@ -67,4 +67,16 @@ public class TestRestController {
         logger.info("End updateRealTimeUserDoTest with data {}", ObjectMapperUtil.writeValueAsString(result));
         return BaseResponse.success(result);
     }
+
+    @PostMapping("/push-answer-test")
+    public BaseResponse pushAnswerTest(@RequestBody UserDoTestDTO userDoTestDTO) {
+        logger.info("Start pushAnswerTest {}", userDoTestDTO);
+
+        ScoreDTO result = scoreService.pushAnswerTest(userDoTestDTO);
+
+        logger.info("End pushAnswerTest with data {}", ObjectMapperUtil.writeValueAsString(result));
+        return BaseResponse.success(result);
+    }
+
+
 }

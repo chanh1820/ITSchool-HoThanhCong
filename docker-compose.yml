@@ -1,0 +1,9 @@
+version: '3'
+services:
+  app:
+    image: itschool-0.0.1
+    container_name: spring-app
+    volumes:
+      - ./images:/usr/local/app/images
+    ports:
+      - "8201:8201"

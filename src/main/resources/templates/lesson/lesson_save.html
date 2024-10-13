@@ -4,48 +4,139 @@
     <meta charset="UTF-8">
     <title>Lưu bài học</title>
     <link rel="icon" type="image/x-icon" th:href="@{/images/ic_logo_app.png}">
+    <link rel="stylesheet" th:href="@{/css/lesson_save.css}">
 </head>
 <body>
-<!--    <form action="#" th:action="@{/upload}" th:method="post" enctype="multipart/form-data">-->
-<!--        <input type="file" name="imageFile" />-->
-<!--        <button type="submit">Upload</button>-->
-<!--    </form>-->
-<!--    <div>-->
-<!--        <p th:text="${message}"></p>-->
-<!--        <img th:src="@{'/uploads/' + ${fileName}}" alt="Uploaded Image" />-->
-<!--    </div>-->
 <h1>Upload New Lesson</h1>
 
-<form action="#" th:action="@{/lesson/api/save}" th:method="post" enctype="multipart/form-data">
+<form action="#" th:action="@{/lesson/api/create}" th:method="post" enctype="multipart/form-data">
     <div>
-        <label for="lessonCode">Lesson Code:</label>
-        <input type="text" id="lessonCode" name="lessonCode" required>
-    </div>
-    <div>
-        <label for="lessonName">Lesson Name:</label>
+        <label for="lessonName">Tiêu đề:</label>
         <input type="text" id="lessonName" name="lessonName" required>
     </div>
     <div>
-        <label for="description">Description:</label>
+        <label for="description">Mô tả:</label>
         <textarea id="description" name="description" required></textarea>
     </div>
     <div>
-        <label for="collectionPrefix">Collection Prefix:</label>
-        <textarea id="collectionPrefix" name="collectionPrefix" required></textarea>
+        <label for="collectionParentPrefix">Danh mục cha:</label>
+        <select id="collectionParentPrefix" name="collectionParentPrefix" required>
+            <option value="">-- Chọn nhóm --</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="collectionPrefix">Danh mục con:</label>
+        <select id="collectionPrefix" name="collectionPrefix" required>
+            <option value="">-- Chọn môn học --</option>
+        </select>
     </div>
     <div>
-        <label for="collectionParentPrefix">Collection Parent Prefix:</label>
-        <textarea id="collectionParentPrefix" name="collectionParentPrefix" required></textarea>
-    </div>
-    <div>
-        <label for="imageFile">Upload Image (PNG/JPG):</label>
+        <label for="imageFile">Ảnh bìa (PNG/JPG):</label>
         <input type="file" id="imageFile" name="imageFile" accept="image/png, image/jpeg" required>
     </div>
     <div>
-        <label for="pdfFile">Upload PDF:</label>
-        <input type="file" id="pdfFile" name="pdfFile" accept="application/pdf" required>
+        <label>Loại tài liệu:</label>
+        <div class="choose-type-document">
+            <input type="radio" id="pdfUpload" name="uploadType" value="pdf" required>
+            <label for="pdfUpload">PDF</label>
+        </div>
+        <div class="choose-type-document">
+            <input type="radio" id="videoUpload" name="uploadType" value="video" required>
+            <label for="videoUpload">Video Youtube</label>
+        </div>
+    </div>
+    <div id="fileUploadContainer">
+        <!-- PDF Upload Section -->
+        <div id="pdfUploadSection" style="display: none;">
+            <label for="pdfFile">Tải file PDF:</label>
+            <input type="file" id="pdfFile" name="pdfFile" accept="application/pdf">
+        </div>
+
+        <!-- Video ID Section -->
+        <div id="videoUploadSection" style="display: none;">
+            <label for="videoId">ID Video:</label>
+            <input type="text" id="videoId" name="videoId">
+        </div>
     </div>
     <button type="submit">Save Lesson</button>
 </form>
 </body>
+<script>
+    var subjectParentList = [];
+      var subjectParentItemPicked = [];
+      function loadLessons() {
+          fetch('/api/subject/get-all')
+              .then(response => response.json())
+              .then(data => {
+                  subjectParentList = data;
+                  var parentSelect = document.getElementById("collectionParentPrefix");
+                  data.forEach(function(subject) {
+                      var option = document.createElement("option");
+                      option.value = subject.prefix; // Using lessonCode as the value
+                      option.text = subject.subjectCollectionParentName; // Display lessonName
+                      parentSelect.appendChild(option);
+                  });
+              })
+              .catch(error => console.error('Error loading lessons:', error));
+      }
+
+      // Event listener to update the child combo box when a lesson is selected
+      document.getElementById("collectionParentPrefix").addEventListener("change", function () {
+            var prefix = this.value;
+            subjectParentItemPicked = subjectParentList.find(item => item.prefix === prefix)
+            var childSelect = document.getElementById("collectionPrefix");
+
+            childSelect.innerHTML = '<option value="">-- Chọn môn học --</option>';
+
+            subjectParentItemPicked.subjectCollectionEntities.forEach(function(subject) {
+                var option = document.createElement("option");
+                option.value = subject.prefix; // Using subjectCollectionCode as the value
+                option.text = subject.subjectCollectionName; // Display subjectCollectionName
+                childSelect.appendChild(option);
+            });
+      });
+
+      // Load the lessons when the page is ready
+    document.addEventListener("DOMContentLoaded", loadLessons);
+
+    const pdfUpload = document.getElementById('pdfUpload');
+    const videoUpload = document.getElementById('videoUpload');
+    const pdfUploadSection = document.getElementById('pdfUploadSection');
+    const videoUploadSection = document.getElementById('videoUploadSection');
+    const pdfFileInput = document.getElementById('pdfFile');
+    const videoIdInput = document.getElementById('videoId');
+
+    // Reset fields and required attributes initially
+    function resetUploadFields() {
+        pdfFileInput.required = false;
+        videoIdInput.required = false;
+        pdfFileInput.value = '';
+        videoIdInput.value = '';
+    }
+
+    pdfUpload.addEventListener('change', function() {
+        if (this.checked) {
+            pdfUploadSection.style.display = 'block';
+            videoUploadSection.style.display = 'none';
+            pdfFileInput.required = true;
+            videoIdInput.required = false; // Ensure video field is not required
+            videoIdInput.value = ''; // Clear the video input
+        }
+    });
+
+    videoUpload.addEventListener('change', function() {
+        if (this.checked) {
+            videoUploadSection.style.display = 'block';
+            pdfUploadSection.style.display = 'none';
+            videoIdInput.required = true;
+            pdfFileInput.required = false; // Ensure PDF field is not required
+            pdfFileInput.value = ''; // Clear the PDF input
+        }
+    });
+
+    // Ensure fields reset on form load
+    window.onload = resetUploadFields;
+
+</script>
 </html>

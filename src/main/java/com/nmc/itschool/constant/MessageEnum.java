@@ -8,7 +8,8 @@ public enum MessageEnum {
     ERR_PREFIX_CHILD_NOT_MATCH("ERR1001", "Prefix child not match"),
     ERR_LESSON_NOT_FOUND("ERR1002", "Lesson not found"),
     ERR_USER_NAME_EXISTING("ERR1003", "Username existing"),
-    ERR_TEST_NOT_FOUND("ERR1004", "Test not found");
+    ERR_TEST_NOT_FOUND("ERR1004", "Test not found"),
+    ERR_SCORE_NOT_FOUND("ERR1002", "Score not found");
 
 
     private String messageCode;
