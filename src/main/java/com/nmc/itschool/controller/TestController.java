@@ -51,7 +51,24 @@ public class TestController {
 
         return "test/test_create_info";  // Trả về tệp home.html trong thư mục templates
     }
+    @GetMapping("/trac-nghiem")
+    public String testPage(Model model) {
+        log.info("start testPage");
 
+        // get Data
+        List<SubjectCollectionParentDTO> subjectCollectionParentDTOS = subjectCollectionParentService.getAll();
+        List<TestDTO> testDTOS = testService.getAll(999);
+
+        // add data
+        log.info("data: {}", ObjectMapperUtil.writeValueAsString(testDTOS));
+//        model.addAttribute("pathFile", FileUtil.getPathResourceFile());
+        model.addAttribute("subjectCollectionParentDTOS", subjectCollectionParentDTOS);
+        model.addAttribute("testDTOS", testDTOS);
+
+        log.info("end testPage");
+
+        return "test/test_page";  // Trả về tệp home.html trong thư mục templates
+    }
     @GetMapping("/create/info/{slug}")
 //    @RequestMapping(value = "/detail/{slug}", method = RequestMethod.GET)
     public String createDetailQuestion(Model model, @PathVariable String slug) throws UnsupportedEncodingException {

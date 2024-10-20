@@ -1,5 +1,7 @@
 package com.nmc.itschool.security;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +14,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+
+import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
@@ -46,8 +51,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        SavedRequestAwareAuthenticationSuccessHandler successHandler = new SavedRequestAwareAuthenticationSuccessHandler();
-        successHandler.setDefaultTargetUrl("/home/index");
+//        SavedRequestAwareAuthenticationSuccessHandler successHandler = new SavedRequestAwareAuthenticationSuccessHandler();
+//        successHandler.setDefaultTargetUrl("/home/index");
 //        http.authorizeRequests()
 //                .antMatchers("/home/index").authenticated()
 //                .anyRequest().permitAll()
@@ -66,13 +71,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
 
                 .authorizeRequests()
-                .antMatchers("/api/**","/api/subjec").authenticated()
+                .antMatchers("/api/**","/api/subject").authenticated()
                 .antMatchers(
                         "/user/login",
                         "/user/register",
+                        "/user/process_register",
                         "/css/*",
                         "/images/*",
-                        "/uploads/*",
+                        "/resource/*",
                         "/home/*",
                         "/lesson/*"
                 )
@@ -81,7 +87,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                     .loginPage("/user/login")
-                    .successHandler(successHandler) // Custom success handler with fallback URL
+                    .defaultSuccessUrl("/home/index")
+//                    .successHandler(successHandler) // Custom success handler with fallback URL
                     .permitAll()
                 .and()
                 .logout()

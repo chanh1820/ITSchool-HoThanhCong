@@ -3,7 +3,9 @@ package com.nmc.itschool.controller;
 import com.nmc.itschool.constant.MessageEnum;
 import com.nmc.itschool.dto.SubjectCollectionParentDTO;
 import com.nmc.itschool.dto.LessonDTO;
+import com.nmc.itschool.dto.TestDTO;
 import com.nmc.itschool.exceptions.AppException;
+import com.nmc.itschool.security.CustomUserDetails;
 import com.nmc.itschool.service.SubjectCollectionParentService;
 import com.nmc.itschool.service.LessonService;
 import com.nmc.itschool.util.FileUtil;
@@ -11,6 +13,9 @@ import com.nmc.itschool.util.ObjectMapperUtil;
 import com.nmc.itschool.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +40,26 @@ public class LessonController {
     SubjectCollectionParentService subjectCollectionParentService;
     @Autowired
     LessonService lessonService;
+
+    @GetMapping("/bai-hoc")
+    public String lessonPage(Model model) {
+        log.info("start lessonPage");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        // get Data
+        List<SubjectCollectionParentDTO> subjectCollectionParentDTOS = subjectCollectionParentService.getAll();
+        List<LessonDTO> lessonDTOS = lessonService.getAll(99999);
+
+        // add data
+        log.info("data: {}", ObjectMapperUtil.writeValueAsString(subjectCollectionParentDTOS));
+        log.info("lessonDTOS: {}", ObjectMapperUtil.writeValueAsString(lessonDTOS));
+//        model.addAttribute("pathFile", FileUtil.getPathResourceFile());
+        model.addAttribute("subjectCollectionParentDTOS", subjectCollectionParentDTOS);
+        model.addAttribute("lessonDTOS", lessonDTOS);
+
+        log.info("end lessonPage");
+
+        return "lesson/lesson_page";  // Trả về tệp home.html trong thư mục templates
+    }
     @GetMapping("/create")
     public String saveLessonPage(Model model) {
         log.info("start saveLessonPage");

@@ -13,24 +13,27 @@
             </div>
             <div class="navigation" >
                 <div class="item">
-                    <a>Trang chủ</a>
+                    <a >Trang chủ</a>
                 </div>
                 <div class="item">
-                    <a>Bài học</a>
+                    <a href="/lesson/bai-hoc">Bài học</a>
                 </div>
                 <div class="item">
-                    <a>Trắc nghiệm</a>
+                    <a  href="/test/trac-nghiem">Trắc nghiệm</a>
+                </div>
+                <div class="item">
+                    <a  href="/note/my-note">Ghi chú</a>
                 </div>
             </div>
 
             <div th:if="${userInfo == 'null'}" class="account" >
                 <button class="login" href="/user/login/" >
-                    <a href="/user/login/">
+                    <a href="/user/login">
                         <span>Đăng nhập</span>
                     </a>
                  </button>
                 <button class="registry">
-                    <a  href="/user/register/">
+                    <a  href="/user/register">
                         <span>Đăng ký</span>
                     </a>
                 </button>
