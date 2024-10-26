@@ -252,7 +252,7 @@ nav {
 }
 
 .lesson-item {
-    background: linear-gradient(to right, #B2FEFA, #0ED2F7);
+    background: url('/images/bg_random_word.png');
     text-align: center;
     border: 1px solid #ddd;
     border-radius: 10px;
@@ -270,7 +270,7 @@ nav {
 .lesson-item img {
     max-width: 100%;
     height: auto;
-    border-radius: 8px;
+    border-radius: 8px 8px 0px 0px;
 }
 .lesson-item>a {
     text-decoration: none;

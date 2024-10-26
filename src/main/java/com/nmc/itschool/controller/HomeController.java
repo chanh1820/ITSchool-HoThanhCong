@@ -1,5 +1,7 @@
 package com.nmc.itschool.controller;
 
+import com.nmc.itschool.constant.DBConstant;
+import com.nmc.itschool.dto.ContentDTO;
 import com.nmc.itschool.dto.SubjectCollectionParentDTO;
 import com.nmc.itschool.dto.LessonDTO;
 import com.nmc.itschool.dto.TestDTO;
@@ -48,6 +50,7 @@ public class HomeController {
         List<SubjectCollectionParentDTO> subjectCollectionParentDTOS = subjectCollectionParentService.getAll();
         List<LessonDTO> lessonDTOS = lessonService.getAll(15);
         List<TestDTO> testDTOS = testService.getAll(15);
+        List<ContentDTO> contentDTOS = DBConstant.CONTENT_DTOS;
 
         // add data
         log.info("data: {}", ObjectMapperUtil.writeValueAsString(subjectCollectionParentDTOS));
@@ -56,6 +59,7 @@ public class HomeController {
         model.addAttribute("subjectCollectionParentDTOS", subjectCollectionParentDTOS);
         model.addAttribute("lessonDTOS", lessonDTOS);
         model.addAttribute("testDTOS", testDTOS);
+        model.addAttribute("contentDTOS", contentDTOS);
 
         log.info("end homePage");
 

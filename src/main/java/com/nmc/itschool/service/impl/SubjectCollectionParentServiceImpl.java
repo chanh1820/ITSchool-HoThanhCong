@@ -1,16 +1,19 @@
 package com.nmc.itschool.service.impl;
 
 
+import com.nmc.itschool.constant.DBConstant;
 import com.nmc.itschool.dto.SubjectCollectionParentDTO;
 import com.nmc.itschool.entity.SubjectCollectionParentEntity;
 import com.nmc.itschool.mapper.SubjectCollectionParentMapper;
 import com.nmc.itschool.repository.SubjectCollectionParentRepository;
 import com.nmc.itschool.service.SubjectCollectionParentService;
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,8 +32,16 @@ public class SubjectCollectionParentServiceImpl implements SubjectCollectionPare
 
     @Override
     public List<SubjectCollectionParentDTO> getAll() {
+        List<SubjectCollectionParentEntity> result = new ArrayList<>();
         Optional<List<SubjectCollectionParentEntity>> optional = subjectCollectionParentRepository.getAll();
-        return optional.map(subjectCollectionParentEntities -> subjectCollectionParentMapper.toDTOs(subjectCollectionParentEntities)).orElse(null);
+        if (optional.isPresent() && CollectionUtils.isNotEmpty(optional.get())){
+            result = optional.get();
+            result.removeIf(
+                    entity -> (entity.getSubjectCollectionParentCode().equals(DBConstant.SUBJECT_COLLECTION_PARENT_CODE_KHAC))
+            );
+        }
+
+        return subjectCollectionParentMapper.toDTOs(result);
     }
 
 }

@@ -47,6 +47,7 @@
                         <div class="header">
                             <h2><a href="/lesson/create">Tạo bài học</a></h2>
                             <h2><a href="/test/create/info">Tạo bài kiểm tra</a></h2>
+                            <h2><a href="/lesson/create">Tạo bài học</a></h2>
                         </div>
                     </div>
                 </div>
@@ -109,6 +110,23 @@
                             </div>
                             <h3 th:text="${test.testName}">Lesson Name</h3>
                             <p th:text="${test.description}">Description</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="content-container">
+            <div class="lesson-container">
+                <h2>Khác</h2>
+                <div class="lessons-grid">
+                    <div class="lesson-item" th:each="content : ${contentDTOS}">
+                        <a th:href="@{${content.slug}}">
+                            <div class="image-lesson">
+                                <img th:src="@{'/images' + ${content.imageUrl}}" alt="Lesson Image" class="lesson-image">
+                            </div>
+                            <h3 th:text="${content.contentName}">Lesson Name</h3>
+                            <p th:text="${content.description}">Description</p>
                         </a>
                     </div>
                 </div>

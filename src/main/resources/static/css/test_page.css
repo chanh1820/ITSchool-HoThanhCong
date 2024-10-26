@@ -270,7 +270,7 @@ nav {
 .lesson-item img {
     max-width: 100%;
     height: auto;
-    border-radius: 8px;
+    border-radius: 8px 8px 0px 0px;
 }
 .lesson-item>a {
     text-decoration: none;
