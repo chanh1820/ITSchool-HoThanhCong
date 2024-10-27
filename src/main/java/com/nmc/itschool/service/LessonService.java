@@ -11,4 +11,5 @@ public interface LessonService {
     public LessonDTO findBySlug(String slug);
     public List<LessonDTO> getAll(int limit);
 
+    List<LessonDTO> findByPrefix(String prefix);
 }

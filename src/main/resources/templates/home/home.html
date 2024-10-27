@@ -68,23 +68,24 @@
                 <img th:src="@{/images/banner_app.png}" alt="banner app">
             </div>
         </div>
-        <div id="navigation-container">
-            <nav>
-                <ul class="parent-menu">
-                    <li th:each="subject : ${subjectCollectionParentDTOS}" class="parent-item">
-                        <a th:href="@{${subject.prefix}}">[[${subject.subjectCollectionParentName}]]</a>
-                        <ul class="child-menu">
-                            <li th:each="child : ${subject.subjectCollectionEntities}" class="child-item">
-                                <a th:href="@{${child.prefix}}">[[${child.SubjectCollectionName}]]</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+
         <div id="content-container">
             <div class="lesson-container">
                 <h2>Các bài học mới</h2>
+                <div id="navigation-container">
+                    <nav>
+                        <ul class="parent-menu">
+                            <li th:each="subject : ${subjectCollectionParentDTOS}" class="parent-item">
+                                <a th:href="@{${'/lesson' + subject.prefix}}">[[${subject.subjectCollectionParentName}]]</a>
+                                <ul class="child-menu">
+                                    <li th:each="child : ${subject.subjectCollectionEntities}" class="child-item">
+                                        <a th:href="@{${'/lesson' + child.prefix}}">[[${child.SubjectCollectionName}]]</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
                 <div class="lessons-grid">
                     <div class="lesson-item" th:each="lesson : ${lessonDTOS}">
                         <a th:href="@{'/lesson/detail/'+${lesson.slug}}">
@@ -102,6 +103,20 @@
         <div id="content-container">
             <div class="lesson-container">
                 <h2>Trắc nghiệm</h2>
+                <div id="navigation-container">
+                    <nav>
+                        <ul class="parent-menu">
+                            <li th:each="subject : ${subjectCollectionParentDTOS}" class="parent-item">
+                                <a th:href="@{${'/test' + subject.prefix}}">[[${subject.subjectCollectionParentName}]]</a>
+                                <ul class="child-menu">
+                                    <li th:each="child : ${subject.subjectCollectionEntities}" class="child-item">
+                                        <a th:href="@{${'/test' + child.prefix}}">[[${child.SubjectCollectionName}]]</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
                 <div class="lessons-grid">
                     <div class="lesson-item" th:each="test : ${testDTOS}">
                         <a th:href="@{'/test/prepare/'+${test.slug}}">

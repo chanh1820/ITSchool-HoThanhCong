@@ -17,4 +17,7 @@ public interface LessonRepository extends JpaRepository<LessonEntity, Long>{
     @Query(value = "SELECT * FROM lesson_tbl WHERE slug=:slug AND delete_flag = false" , nativeQuery = true)
     Optional<List<LessonEntity>> findBySlug(String slug);
 
+    @Query(value = "SELECT * FROM lesson_tbl WHERE collection_parent_prefix=:prefix " +
+            "OR collection_prefix=:prefix AND delete_flag = false" , nativeQuery = true)
+    Optional<List<LessonEntity>> findByPrefix(String prefix);
 }

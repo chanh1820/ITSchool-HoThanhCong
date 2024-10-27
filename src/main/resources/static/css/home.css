@@ -218,11 +218,12 @@ button a:hover {
 #navigation-container{
     width: 100%;
     display: flex;
-    justify-content: center
+    justify-content: left;
+    margin: 0px 0px 20px 100px;
 }
 nav {
     width: fix-content;
-    background-color: #FFDC7F;
+    /* background-color: #FFDC7F; */
     display: flex;
     border-radius: 4px;
 }
@@ -238,9 +239,11 @@ nav {
 
 .parent-menu .parent-item {
     position: relative;
-    margin-left: 20px;
+    /* margin-left: 20px; */
     margin-right: 20px;
-    min-width: 10%;;
+    min-width: 10%;
+    border: 2px solid #FFDC7F;
+    border-radius: 8px;
 }
 
 .parent-menu .parent-item a {
@@ -255,6 +258,12 @@ nav {
 .parent-menu .parent-item:hover .child-menu {
     display: block;
 }
+.parent-menu .parent-item:hover .child-menu li {
+    border: 2px, solid #FFDC7F;
+    border-radius: 4px;
+    margin-top: 10px;
+    background: snow;
+}
 
 .child-menu {
     list-style-type: none;
@@ -262,7 +271,7 @@ nav {
     display: none;
     top: 100%;
     left: 0;
-    background-color: #FFDC7F;
+    /* background-color: #FFDC7F; */
     padding: 0;
     margin: 0;
     border-radius: 4px;
@@ -278,7 +287,7 @@ nav {
 }
 
 .child-menu .child-item a:hover {
-    background-color: #eeba2d;
+    background-color: #eeba2d78;
     border-radius: 4px;
 }
 
@@ -290,7 +299,7 @@ nav {
     margin: 20px;
 }
 .lesson-container>h2{
-    margin: 110px 110px 20px 110px;
+    margin: 110px 110px 0px 110px;
 }
 .lessons-grid {
     display: grid;

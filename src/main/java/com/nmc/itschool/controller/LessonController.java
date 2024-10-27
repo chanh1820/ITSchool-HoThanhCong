@@ -1,6 +1,7 @@
 package com.nmc.itschool.controller;
 
 import com.nmc.itschool.constant.MessageEnum;
+import com.nmc.itschool.dto.SubjectCollectionDTO;
 import com.nmc.itschool.dto.SubjectCollectionParentDTO;
 import com.nmc.itschool.dto.LessonDTO;
 import com.nmc.itschool.dto.TestDTO;
@@ -51,6 +52,27 @@ public class LessonController {
 
         // add data
         log.info("data: {}", ObjectMapperUtil.writeValueAsString(subjectCollectionParentDTOS));
+        log.info("lessonDTOS: {}", ObjectMapperUtil.writeValueAsString(lessonDTOS));
+//        model.addAttribute("pathFile", FileUtil.getPathResourceFile());
+        model.addAttribute("subjectCollectionParentDTOS", subjectCollectionParentDTOS);
+        model.addAttribute("lessonDTOS", lessonDTOS);
+
+        log.info("end lessonPage");
+
+        return "lesson/lesson_page";  // Trả về tệp home.html trong thư mục templates
+    }
+
+    @GetMapping("/{prefix}")
+    public String lessonPageByPrefix(Model model, @PathVariable String prefix) {
+        log.info("start lessonPage");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        SubjectCollectionParentDTO subjectCollectionParentDTO = new SubjectCollectionParentDTO();
+        SubjectCollectionDTO subjectCollectionDTO = new SubjectCollectionDTO();
+        // get Data
+        List<LessonDTO> lessonDTOS = lessonService.findByPrefix(prefix);
+        List subjectCollectionParentService.getAll();
+
+        // add data
         log.info("lessonDTOS: {}", ObjectMapperUtil.writeValueAsString(lessonDTOS));
 //        model.addAttribute("pathFile", FileUtil.getPathResourceFile());
         model.addAttribute("subjectCollectionParentDTOS", subjectCollectionParentDTOS);

@@ -61,6 +61,15 @@ public class LessonServiceImpl implements LessonService {
         return null;
     }
 
+    @Override
+    public List<LessonDTO> findByPrefix(String prefix) {
+        Optional<List<LessonEntity>> otp = lessonRepository.findByPrefix(prefix);
+        if (otp.isPresent() && otp.get().size() != 0){
+            return lessonMapper.toDTOs(otp.get());
+        }
+        return null;
+    }
+
     private void validateSaveLesson(LessonDTO lessonDTO) {
         Optional<SubjectCollectionParentEntity> optParentCollection = subjectCollectionParentRepository.getByPrefix(lessonDTO.getCollectionParentPrefix());
         if (!optParentCollection.isPresent()){

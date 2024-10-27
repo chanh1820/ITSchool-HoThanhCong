@@ -191,7 +191,9 @@ nav {
     position: relative;
     margin-left: 20px;
     margin-right: 20px;
-    min-width: 10%;;
+    min-width: 10%;
+    border: 2px solid red;
+    border-radius: 8px;
 }
 
 .parent-menu .parent-item a {
