@@ -77,6 +77,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/user/register",
                         "/user/process_register",
                         "/css/*",
+                        "/css/lib/*",
+                        "/js/*",
                         "/images/*",
                         "/resource/*",
                         "/home/*",

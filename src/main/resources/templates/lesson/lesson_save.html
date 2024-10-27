@@ -7,7 +7,7 @@
     <link rel="stylesheet" th:href="@{/css/lesson_save.css}">
 </head>
 <body>
-<h1>Upload New Lesson</h1>
+<h1>Tạo bài học</h1>
 
 <form action="#" th:action="@{/lesson/api/create}" th:method="post" enctype="multipart/form-data">
     <div>
@@ -19,16 +19,16 @@
         <textarea id="description" name="description" required></textarea>
     </div>
     <div>
-        <label for="collectionParentPrefix">Danh mục cha:</label>
+        <label for="collectionParentPrefix">Nhóm:</label>
         <select id="collectionParentPrefix" name="collectionParentPrefix" required>
             <option value="">-- Chọn nhóm --</option>
         </select>
     </div>
 
     <div>
-        <label for="collectionPrefix">Danh mục con:</label>
+        <label for="collectionPrefix">Danh mục:</label>
         <select id="collectionPrefix" name="collectionPrefix" required>
-            <option value="">-- Chọn môn học --</option>
+            <option value="">-- Chọn danh mục --</option>
         </select>
     </div>
     <div>
@@ -55,7 +55,8 @@
 
         <!-- Video ID Section -->
         <div id="videoUploadSection" style="display: none;">
-            <label for="videoId">ID Video:</label>
+            <label for="videoId">ID Video: </label>
+            <div>Copy link video Youtube và đi đến trang <a href="https://commentpicker.com/youtube-video-id.php" target="_blank">commentpicker.com</a> để lấy ID Video</div>
             <input type="text" id="videoId" name="videoId">
         </div>
     </div>

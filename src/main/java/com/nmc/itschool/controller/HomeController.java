@@ -47,7 +47,7 @@ public class HomeController {
             model.addAttribute("userInfo", "null");
         }
         // get Data
-        List<SubjectCollectionParentDTO> subjectCollectionParentDTOS = subjectCollectionParentService.getAll();
+        List<SubjectCollectionParentDTO> subjectCollectionParentDTOS = subjectCollectionParentService.getAllInHome();
         List<LessonDTO> lessonDTOS = lessonService.getAll(15);
         List<TestDTO> testDTOS = testService.getAll(15);
         List<ContentDTO> contentDTOS = DBConstant.CONTENT_DTOS;

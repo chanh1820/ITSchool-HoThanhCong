@@ -7,5 +7,6 @@ import java.util.List;
 public interface SubjectCollectionParentService {
 
     public List<SubjectCollectionParentDTO> getAll();
+    public List<SubjectCollectionParentDTO> getAllInHome();
 
 }

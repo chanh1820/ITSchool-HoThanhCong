@@ -31,7 +31,7 @@ public class SubjectCollectionParentServiceImpl implements SubjectCollectionPare
 
 
     @Override
-    public List<SubjectCollectionParentDTO> getAll() {
+    public List<SubjectCollectionParentDTO> getAllInHome() {
         List<SubjectCollectionParentEntity> result = new ArrayList<>();
         Optional<List<SubjectCollectionParentEntity>> optional = subjectCollectionParentRepository.getAll();
         if (optional.isPresent() && CollectionUtils.isNotEmpty(optional.get())){
@@ -42,6 +42,18 @@ public class SubjectCollectionParentServiceImpl implements SubjectCollectionPare
         }
 
         return subjectCollectionParentMapper.toDTOs(result);
+    }
+
+    @Override
+    public List<SubjectCollectionParentDTO> getAll() {
+        List<SubjectCollectionParentEntity> result = new ArrayList<>();
+        Optional<List<SubjectCollectionParentEntity>> optional = subjectCollectionParentRepository.getAll();
+        if (optional.isPresent() && CollectionUtils.isNotEmpty(optional.get())){
+            result = optional.get();
+            return subjectCollectionParentMapper.toDTOs(result);
+
+        }
+        return null;
     }
 
 }

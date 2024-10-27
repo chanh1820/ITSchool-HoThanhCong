@@ -5,7 +5,9 @@ import com.nmc.itschool.dto.SubjectCollectionDTO;
 import com.nmc.itschool.dto.SubjectCollectionParentDTO;
 import com.nmc.itschool.dto.LessonDTO;
 import com.nmc.itschool.dto.TestDTO;
+import com.nmc.itschool.entity.SubjectCollectionEntity;
 import com.nmc.itschool.exceptions.AppException;
+import com.nmc.itschool.mapper.SubjectCollectionMapper;
 import com.nmc.itschool.security.CustomUserDetails;
 import com.nmc.itschool.service.SubjectCollectionParentService;
 import com.nmc.itschool.service.LessonService;
@@ -28,6 +30,7 @@ import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,7 +44,8 @@ public class LessonController {
     SubjectCollectionParentService subjectCollectionParentService;
     @Autowired
     LessonService lessonService;
-
+    @Autowired
+    SubjectCollectionMapper subjectCollectionMapper;
     @GetMapping("/bai-hoc")
     public String lessonPage(Model model) {
         log.info("start lessonPage");
@@ -59,28 +63,56 @@ public class LessonController {
 
         log.info("end lessonPage");
 
-        return "lesson/lesson_page";  // Trả về tệp home.html trong thư mục templates
+        return "lesson/lesson_page";
     }
 
     @GetMapping("/{prefix}")
     public String lessonPageByPrefix(Model model, @PathVariable String prefix) {
-        log.info("start lessonPage");
+        prefix = "/" + prefix;
+        log.info("start lessonPageByPrefix with prefix {}", prefix);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        SubjectCollectionParentDTO subjectCollectionParentDTO = new SubjectCollectionParentDTO();
-        SubjectCollectionDTO subjectCollectionDTO = new SubjectCollectionDTO();
+        SubjectCollectionParentDTO subjectCollectionParentDTO = null;
+        SubjectCollectionDTO subjectCollectionDTO = null;
+        List<LessonDTO> lessonDTOS = new ArrayList<>();
         // get Data
-        List<LessonDTO> lessonDTOS = lessonService.findByPrefix(prefix);
-        List subjectCollectionParentService.getAll();
+        List<SubjectCollectionParentDTO> subjectCollectionParentDTOS
+                = subjectCollectionParentService.getAll();
+
+        for (SubjectCollectionParentDTO itemParent : subjectCollectionParentDTOS){
+            if(itemParent.getPrefix().equals(prefix)){
+                subjectCollectionParentDTO = itemParent;
+                break;
+            }
+            for(SubjectCollectionEntity childItem: itemParent.getSubjectCollectionEntities()){
+                if(childItem.getPrefix().equals(prefix)){
+                    subjectCollectionDTO = subjectCollectionMapper.toDTO(childItem);
+                    break;
+                }
+            }
+
+        }
 
         // add data
-        log.info("lessonDTOS: {}", ObjectMapperUtil.writeValueAsString(lessonDTOS));
-//        model.addAttribute("pathFile", FileUtil.getPathResourceFile());
-        model.addAttribute("subjectCollectionParentDTOS", subjectCollectionParentDTOS);
+//        model.addAttribute("subjectCollectionParentDTOS", subjectCollectionParentDTOS);
+        if(subjectCollectionParentDTO != null){
+            log.info("1");
+            model.addAttribute("subjectCollectionParentDTO", subjectCollectionParentDTO);
+        }else if(subjectCollectionDTO != null){
+            log.info("2");
+            model.addAttribute("subjectCollectionDTO", subjectCollectionDTO);
+        }else {
+            log.info("3");
+            return null;
+        }
+        log.info("prefix: {}", prefix);
+
+        lessonDTOS = lessonService.findByPrefix(prefix);
         model.addAttribute("lessonDTOS", lessonDTOS);
+        log.info("lessonDTOS: {}", ObjectMapperUtil.writeValueAsString(lessonDTOS));
 
-        log.info("end lessonPage");
+        log.info("end lessonPageByPrefix");
 
-        return "lesson/lesson_page";  // Trả về tệp home.html trong thư mục templates
+        return "lesson/lesson_of_subject_page";
     }
     @GetMapping("/create")
     public String saveLessonPage(Model model) {
