@@ -7,7 +7,7 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity()
-@Table(name = "note_tbl")
+@Table(name = "quick_quiz_tbl")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,6 +16,12 @@ public class QuickQuizEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "user_name")
+    private String userName;
+
+    @Column(name = "random_id")
+    private String randomId;
 
     @Column(name = "title")
     private String title;

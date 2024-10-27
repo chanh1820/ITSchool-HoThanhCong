@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ghi chú</title>
+    <script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
+
+    <link rel="stylesheet" th:href="@{/css/note_list.css}">
+
+</head>
+<body>
+<h1>Danh sách câu đố</h1>
+<div>
+    <button th:onclick="handleInitQuickQuiz()">Tạo câu đố</button>
+</div>
+<table>
+    <thead>
+    <tr>
+        <th>Tiêu đề</th>
+        <th>Câu hỏi</th>
+        <th>Hành động</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="quickQuiz : ${quickQuizDTOS}">
+        <td>
+            <a th:href="@{/quick-quiz/{randomId}(randomId=${quickQuiz.randomId})}" th:text="${quickQuiz.title}" class="note-title">Sample Title</a>
+        </td>
+        <td>
+            <a th:href="@{/quick-quiz/{randomId}(randomId=${quickQuiz.randomId})}" th:text="${quickQuiz.question}" class="note-title">Sample Title</a>
+        </td>
+        <td class="actions">
+            <!-- Edit button -->
+            <a th:href="@{/quick-quiz/{randomId}(randomId=${quickQuiz.randomId})}" class="edit">
+                <button class="icon-button">
+                    &#9998; <!-- Pencil icon for edit -->
+                </button>
+            </a>
+            <!-- Delete button -->
+            <a th:href="@{/quick-quiz/delete/{id}(id=${note.id})}" class="delete">
+                <button class="icon-button">
+                    &#10060; <!-- Cross icon for delete -->
+                </button>
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+
+<script>
+
+    function handleInitQuickQuiz() {
+          fetch("/api/note/init", {
+          method: "GET",
+          headers: {
+              "Content-type": "application/json; charset=UTF-8"
+          }
+          })
+          .then(res => res.json())
+          .then(res => {
+              console.log(res);
+              var data = res.data
+              if(res.status == '200'){
+                  window.location = "/note/" + data;
+              } else {
+                  alert(data.message)
+              }
+          });
+     }
+</script>
+</body>
+</html>
