@@ -299,6 +299,11 @@ nav {
 .image-lesson img {
     width: 100%;
     height: 100%;
+    transition: transform .4s ease;
     object-fit: cover; /* This will maintain the aspect ratio while filling the container */
     object-position: center; /* This centers the image within the container */
+}
+
+.image-lesson img:hover{
+    transform: scale(1.04) !important
 }

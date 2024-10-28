@@ -165,10 +165,10 @@
             </div>
         </div>
     </div>
-    <div id="popupOverlay" class="popup-overlay">
+    <div th:if="${userInfo != 'null'}" id="popupOverlay" class="popup-overlay">
         <div class="popup-box">
-            <img src="@{/images/popup_cau_do_1.jpg}">
-            <button onclick="closePopup()">Close</button>
+            <img th:src="@{/images/popup_cau_do_1.png}" style="width: 100%;">
+            <button onclick="closePopup()">Đóng</button>
         </div>
     </div>
     <script th:src="@{/js/swiper-bundle.min.js}"></script>
@@ -191,10 +191,13 @@
 
       var minusMinuteTime = (currentTime - popupReplayTime)/ (1000) /60
       if(minusMinuteTime >= TIME_SPACE){
+        var popupOverlay = document.getElementById('popupOverlay')
+        if(popupOverlay){
+            popupOverlay.style.display = 'flex';
             localStorage.setItem('popup-replay-time', currentTime);
-            document.getElementById('popupOverlay').style.display = 'flex';
-          }
         }
+      }
+    }
 
     // Function to close popup
     function closePopup() {
