@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ghi chú</title>
+
+    <link rel="stylesheet" th:href="@{/css/quick_quiz_save.css}">
+
+</head>
+<body>
+<div class="container">
+    <h1>Tạo câu hỏi</h1>
+    <form action="#" th:action="@{ '/quick-quiz/api/create/' + ${quickQuizDTO.randomId}}" th:method="post" enctype="multipart/form-data">
+        <div>
+            <label for="title">Tiêu đề:</label>
+            <input type="text" id="title" name="title" required>
+        </div>
+        <div>
+            <label for="question">Câu hỏi:</label>
+            <textarea id="question" name="question" required></textarea>
+        </div>
+        <div>
+            <label for="imageContentFile">Ảnh minh họa (nếu có):</label>
+            <input type="file" id="imageContentFile" name="imageContentFile" accept="image/png, image/jpeg">
+        </div>
+        <div>
+            <label for="answerA">Câu A:</label>
+            <textarea id="answerA" name="answerA" required></textarea>
+        </div>
+        <div>
+            <label for="answerB">Câu B:</label>
+            <textarea id="answerB" name="answerB" required></textarea>
+        </div>
+        <div>
+            <label for="answerC">Câu C:</label>
+            <textarea id="answerC" name="answerC" required></textarea>
+        </div>
+        <div>
+            <label for="answerD">Câu D:</label>
+            <textarea id="answerD" name="answerD" required></textarea>
+        </div>
+        <div>
+            <label for="result">Đáp án đúng:</label>
+            <select id="result" name="result" required>
+                <option value="">-- Chọn đáp án --</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+            </select>
+        </div>
+        <button type="submit">Lưu câu đố</button>
+    </form>
+    
+</div>
+
+
+<script>
+
+</script>
+</body>
+</html>

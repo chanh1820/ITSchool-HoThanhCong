@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface QuickQuizRepository extends JpaRepository<QuickQuizEntity, Long> {
-    @Query(value ="SELECT * FROM quick_view_tbl WHERE user_name=:userName AND title IS NOT NULL", nativeQuery = true)
+    @Query(value ="SELECT * FROM quick_quiz_tbl WHERE user_name=:userName AND title IS NOT NULL", nativeQuery = true)
     Optional<List<QuickQuizEntity>> findByUserName(String userName);
 
-    @Query(value ="SELECT * FROM quick_view_tbl WHERE random_id=:randomId", nativeQuery = true)
+    @Query(value ="SELECT * FROM quick_quiz_tbl WHERE random_id=:randomId", nativeQuery = true)
     Optional<QuickQuizEntity> findByRandomId(String randomId);
 }

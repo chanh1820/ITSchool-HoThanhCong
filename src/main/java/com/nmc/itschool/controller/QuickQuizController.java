@@ -8,6 +8,7 @@ import com.nmc.itschool.service.QuickQuizService;
 import com.nmc.itschool.util.FileUtil;
 import com.nmc.itschool.util.ObjectMapperUtil;
 import com.nmc.itschool.util.StringUtil;
+import com.sun.xml.bind.v2.model.annotation.Quick;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -23,7 +24,7 @@ import java.util.UUID;
 
 @Controller
 @Slf4j
-@RequestMapping("/quick-view")
+@RequestMapping("/quick-quiz")
 public class QuickQuizController {
 //    private static String UPLOAD_DIR = System.getProperty("user.dir") + "/uploads";
 
@@ -40,7 +41,7 @@ public class QuickQuizController {
             log.info(userDetails.getUsername());
             log.info(ObjectMapperUtil.writeValueAsString(quickQuizDTO));
             model.addAttribute("quickQuizDTO", quickQuizDTO);
-            return "note/quick_quiz_save";
+            return "quick_quiz/quick_quiz_save";
         }else {
             return "user/user_login";
         }
@@ -57,50 +58,44 @@ public class QuickQuizController {
 
         log.info("end myQuickQuiz");
 
-        return "note/quick_quiz_list";
+        return "quick_quiz/quick_quiz_list";
     }
-
-    @PostMapping("/api/save")
-    public String saveLesson(
+    @PostMapping("/api/create/{randomId}")
+    public String saveQuickQuiz(
             @RequestParam("title") String title,
             @RequestParam("question") String question,
-            @RequestParam("description") String description,
-            @RequestParam("collectionParentPrefix") String collectionParentPrefix,
-            @RequestParam("collectionPrefix") String collectionPrefix,
-            @RequestParam("thumbnailFile") MultipartFile thumbnailFile,
-            @RequestParam("pdfFile") MultipartFile pdfFile,
-            @RequestParam("numberChooseTest") String numberChooseTest,
-            @RequestParam("numberWriteTest") String numberWriteTest,
+            @RequestParam("imageContentFile") MultipartFile imageContentFile,
+            @RequestParam("answerA") String answerA,
+            @RequestParam("answerB") String answerB,
+            @RequestParam("answerC") String answerC,
+            @RequestParam("answerD") String answerD,
+            @RequestParam("result") String result,
+            @PathVariable String randomId,
             Model model) {
 
         // Validate file types
-        if (!FileUtil.isImageValid(thumbnailFile) || !FileUtil.isPdfValid(pdfFile)) {
+        if (!FileUtil.isImageValid(imageContentFile)) {
             model.addAttribute("error", "Invalid image or PDF file");
             return "add";
         }
         FileUtil fileUtil = new FileUtil();
         // Save the files and get their URLs
-        String imageUrl = fileUtil.saveFile(thumbnailFile);
-        String pdfUrl = fileUtil.saveFile(pdfFile);
+        String imageUrl = fileUtil.saveFile(imageContentFile);
 
-        // Create and save the LessonDTO
-        TestDTO testDTO = new TestDTO();
-        testDTO.setTestCode(testCode);
-        testDTO.setTestName(testName);
-        testDTO.setDescription(description);
-        testDTO.setSlug(StringUtil.convertToSlug(testName)+"-"+ UUID.randomUUID().toString());
-        testDTO.setCollectionPrefix(collectionPrefix);
-        testDTO.setCollectionParentPrefix(collectionParentPrefix);
-        testDTO.setThumbnailFile(imageUrl);
-        testDTO.setPdfFile(pdfUrl);
-        testDTO.setAuthor("");
-        testDTO.setNumberChooseTest(Integer.valueOf(numberChooseTest));
-        testDTO.setNumberWriteTest(Integer.valueOf(numberWriteTest));
+        QuickQuizDTO quickQuizDTO = quickQuizService.findByRandomId(randomId);
+        quickQuizDTO.setTitle(title);
+        quickQuizDTO.setQuestion(question);
+        quickQuizDTO.setImageContentFile(imageUrl);
+        quickQuizDTO.setAnswerA(answerA);
+        quickQuizDTO.setAnswerB(answerB);
+        quickQuizDTO.setAnswerC(answerC);
+        quickQuizDTO.setAnswerD(answerD);
+        quickQuizDTO.setResult(result);
 
-        TestDTO result = testService.save(testDTO);
+        QuickQuizDTO resultDTO = quickQuizService.save(quickQuizDTO);
         // Here you would save lessonDTO to your database
-        model.addAttribute("message", "Lesson saved successfully");
+        model.addAttribute("message", "Quick quiz saved successfully");
 
-        return "redirect:/test/create/info/"+result.getSlug();
+        return "redirect:/quick-quiz/my-quick-quiz";
     }
 }

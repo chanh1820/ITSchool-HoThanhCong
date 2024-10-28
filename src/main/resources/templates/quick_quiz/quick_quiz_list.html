@@ -38,7 +38,7 @@
                 </button>
             </a>
             <!-- Delete button -->
-            <a th:href="@{/quick-quiz/delete/{id}(id=${note.id})}" class="delete">
+            <a th:href="@{/quick-quiz/delete/{id}(id=${quickQuiz.id})}" class="delete">
                 <button class="icon-button">
                     &#10060; <!-- Cross icon for delete -->
                 </button>
@@ -52,7 +52,7 @@
 <script>
 
     function handleInitQuickQuiz() {
-          fetch("/api/note/init", {
+          fetch("/api/quick-quiz/init", {
           method: "GET",
           headers: {
               "Content-type": "application/json; charset=UTF-8"
@@ -63,7 +63,7 @@
               console.log(res);
               var data = res.data
               if(res.status == '200'){
-                  window.location = "/note/" + data;
+                  window.location = "/quick-quiz/" + data;
               } else {
                   alert(data.message)
               }
