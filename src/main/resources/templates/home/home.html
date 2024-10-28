@@ -4,6 +4,7 @@
     <title>Trang Chủ</title>
     <link rel="stylesheet" th:href="@{/css/home.css}">
     <link rel="stylesheet" th:href="@{/css/lib/swiper-bundle.min.css}">
+    <link rel="stylesheet" th:href="@{/css/lib/my-popup.css}">
     <link rel="icon" type="image/x-icon" th:href="@{/images/ic_logo_app.png}">
 </head>
 <body>
@@ -164,6 +165,12 @@
             </div>
         </div>
     </div>
+    <div id="popupOverlay" class="popup-overlay">
+        <div class="popup-box">
+            <img src="@{/images/popup_cau_do_1.jpg}">
+            <button onclick="closePopup()">Close</button>
+        </div>
+    </div>
     <script th:src="@{/js/swiper-bundle.min.js}"></script>
 <!--    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>-->
 
@@ -176,6 +183,26 @@
             delay: 5000,
           },
         });
+            // Function to open popup
+    function openPopup() {
+      var TIME_SPACE = 1;
+      var currentTime = Date.now();
+      var popupReplayTime = localStorage.getItem('popup-replay-time');
+
+      var minusMinuteTime = (currentTime - popupReplayTime)/ (1000) /60
+      if(minusMinuteTime >= TIME_SPACE){
+            localStorage.setItem('popup-replay-time', currentTime);
+            document.getElementById('popupOverlay').style.display = 'flex';
+          }
+        }
+
+    // Function to close popup
+    function closePopup() {
+      document.getElementById('popupOverlay').style.display = 'none';
+    }
+
+    // Show popup on page load
+    window.onload = openPopup;
     </script>
 </body>
 
