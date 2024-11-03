@@ -1,12 +1,19 @@
 package com.nmc.itschool.service.impl;
 
+import com.nmc.itschool.constant.MessageEnum;
 import com.nmc.itschool.dto.NoteDTO;
+import com.nmc.itschool.dto.QuickQuizAnswerDTO;
 import com.nmc.itschool.dto.QuickQuizDTO;
+import com.nmc.itschool.dto.QuickQuizLogDTO;
 import com.nmc.itschool.entity.NoteEntity;
 import com.nmc.itschool.entity.QuickQuizEntity;
+import com.nmc.itschool.entity.QuickQuizLogEntity;
+import com.nmc.itschool.exceptions.AppException;
 import com.nmc.itschool.mapper.NoteMapper;
+import com.nmc.itschool.mapper.QuickQuizLogMapper;
 import com.nmc.itschool.mapper.QuickQuizMapper;
 import com.nmc.itschool.repository.NoteRepository;
+import com.nmc.itschool.repository.QuickQuizLogRepository;
 import com.nmc.itschool.repository.QuickQuizRepository;
 import com.nmc.itschool.repository.UserRepository;
 import com.nmc.itschool.service.QuickQuizService;
@@ -14,11 +21,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -26,11 +32,18 @@ public class QuickQuizServiceImpl implements QuickQuizService {
 
     @Autowired
     UserRepository userRepository;
+
     @Autowired
     QuickQuizRepository quickQuizRepository;
+
+    @Autowired
+    QuickQuizLogRepository quickQuizLogRepository;
+
     @Autowired
     QuickQuizMapper quickQuizMapper;
 
+    @Autowired
+    QuickQuizLogMapper quickQuizLogMapper;
     @Override
     public List<QuickQuizDTO> getByUserName(String userName) {
         List<QuickQuizDTO> quickQuizDTOS = new ArrayList<>();
@@ -41,6 +54,16 @@ public class QuickQuizServiceImpl implements QuickQuizService {
             log.info("getByUserName list empty");
         }
         return quickQuizDTOS;
+    }
+
+    @Override
+    public QuickQuizDTO getPicked() {
+        Optional<QuickQuizEntity> otp = quickQuizRepository.getPicked();
+        if(otp.isPresent()){
+            QuickQuizDTO quickQuizDTO = quickQuizMapper.toDTO(otp.get());
+            return quickQuizDTO;
+        }
+        return null;
     }
 
     @Override
@@ -65,5 +88,52 @@ public class QuickQuizServiceImpl implements QuickQuizService {
         quickQuizEntity.setUserName(userName);
         QuickQuizEntity result = quickQuizRepository.save(quickQuizEntity);
         return result.getRandomId();
+    }
+
+    @Override
+    @Transactional
+    public QuickQuizDTO enable(String randomId) {
+        quickQuizRepository.disablePickedAll();
+        QuickQuizDTO quickQuizDTO = new QuickQuizDTO();
+        Optional<QuickQuizEntity> otp = quickQuizRepository.findByRandomId(randomId);
+        if(otp.isPresent()){
+            QuickQuizEntity quickQuizEntity = otp.get();
+            quickQuizEntity.setPicked(true);
+            quickQuizDTO = quickQuizMapper.toDTO(quickQuizRepository.save(quickQuizEntity));
+        }
+        return quickQuizDTO;
+    }
+
+    @Override
+    public boolean submitAnswer(QuickQuizAnswerDTO quickQuizAnswerDTO) {
+        Optional<QuickQuizEntity> otpQuickQuiz = quickQuizRepository.findByRandomId(quickQuizAnswerDTO.getRandomId());
+        QuickQuizLogEntity quickQuizLogEntity = new QuickQuizLogEntity();
+        quickQuizLogEntity.setCreateDate(LocalDateTime.now());
+        quickQuizLogEntity.setAnswer(quickQuizAnswerDTO.getAnswer());
+        quickQuizLogEntity.setFullName(quickQuizAnswerDTO.getFullName());
+        quickQuizLogEntity.setUserName(quickQuizAnswerDTO.getUserName());
+        quickQuizLogEntity.setRandomId(quickQuizAnswerDTO.getRandomId());
+
+        if(otpQuickQuiz.isPresent()){
+            QuickQuizEntity quickQuizEntity = otpQuickQuiz.get();
+            quickQuizLogEntity.setQuestion(quickQuizEntity.getQuestion());
+            quickQuizLogEntity.setTitle(quickQuizEntity.getTitle());
+            quickQuizLogEntity.setCorrect(quickQuizAnswerDTO.getAnswer().equalsIgnoreCase(quickQuizEntity.getResult()));
+            quickQuizLogRepository.save(quickQuizLogEntity);
+            return quickQuizAnswerDTO.getAnswer().equalsIgnoreCase(quickQuizEntity.getResult());
+        }else {
+            throw new AppException(MessageEnum.ERR_QUICK_QUIZ_NOT_FOUND);
+        }
+    }
+
+    @Override
+    public List<QuickQuizLogDTO> findQuickQuizLogs(String randomId) {
+        List<QuickQuizLogDTO> quickQuizLogDTOS = new ArrayList<>();
+        Optional<List<QuickQuizLogEntity>> otpQuickQuizLogs = quickQuizLogRepository.findQuickQuizLogs(randomId);
+        if(otpQuickQuizLogs.isPresent() && CollectionUtils.isNotEmpty(otpQuickQuizLogs.get())){
+            List<QuickQuizLogEntity> quickQuizLogEntities = otpQuickQuizLogs.get();
+            quickQuizLogDTOS = quickQuizLogMapper.toDTOs(quickQuizLogEntities);
+        }
+        return quickQuizLogDTOS;
     }
 }

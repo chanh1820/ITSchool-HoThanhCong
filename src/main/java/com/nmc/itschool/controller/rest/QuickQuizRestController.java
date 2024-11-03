@@ -1,7 +1,9 @@
 package com.nmc.itschool.controller.rest;
 
+import com.nmc.itschool.dto.QuickQuizAnswerDTO;
 import com.nmc.itschool.dto.QuickQuizDTO;
 import com.nmc.itschool.dto.base.BaseResponse;
+import com.nmc.itschool.security.CustomUserDetails;
 import com.nmc.itschool.service.NoteService;
 import com.nmc.itschool.service.QuickQuizService;
 import org.slf4j.Logger;
@@ -46,6 +48,36 @@ public class QuickQuizRestController {
         baseResponse.setData(quickQuizService.init(userName));
 
         logger.info("End initQuickQuiz");
+        return baseResponse;
+    }
+
+    @PostMapping("/enable-item")
+    public BaseResponse<String> enableQuickQuiz(@RequestBody QuickQuizDTO quickQuizDTO) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        String userName = userDetails.getUsername();
+
+        logger.info("Start enableQuickQuiz with {}", userName);
+
+        BaseResponse baseResponse = new BaseResponse();
+        baseResponse.setStatus(200);
+        baseResponse.setData(quickQuizService.enable(quickQuizDTO.getRandomId()));
+
+        logger.info("End enableQuickQuiz");
+        return baseResponse;
+    }
+
+    @PostMapping("/submit-answer")
+    public BaseResponse<Boolean> submitAnswer(@RequestBody QuickQuizAnswerDTO quickQuizAnswerDTO) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+        logger.info("Start submitAnswer with {}", customUserDetails);
+        quickQuizAnswerDTO.setFullName(customUserDetails.getFullName());
+        BaseResponse baseResponse = new BaseResponse();
+        baseResponse.setStatus(200);
+        baseResponse.setData(quickQuizService.submitAnswer(quickQuizAnswerDTO));
+
+        logger.info("End submitAnswer");
         return baseResponse;
     }
 }

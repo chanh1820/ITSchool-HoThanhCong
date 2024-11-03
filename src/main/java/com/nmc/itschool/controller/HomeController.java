@@ -1,11 +1,9 @@
 package com.nmc.itschool.controller;
 
 import com.nmc.itschool.constant.DBConstant;
-import com.nmc.itschool.dto.ContentDTO;
-import com.nmc.itschool.dto.SubjectCollectionParentDTO;
-import com.nmc.itschool.dto.LessonDTO;
-import com.nmc.itschool.dto.TestDTO;
+import com.nmc.itschool.dto.*;
 import com.nmc.itschool.security.CustomUserDetails;
+import com.nmc.itschool.service.QuickQuizService;
 import com.nmc.itschool.service.SubjectCollectionParentService;
 import com.nmc.itschool.service.LessonService;
 import com.nmc.itschool.service.TestService;
@@ -29,11 +27,12 @@ import java.util.List;
 public class HomeController {
     @Autowired
     SubjectCollectionParentService subjectCollectionParentService;
-
     @Autowired
     LessonService lessonService;
     @Autowired
     TestService testService;
+    @Autowired
+    QuickQuizService quickQuizService;
     @GetMapping("/index")
     public String homePage(Model model) {
         log.info("start homePage");
@@ -50,6 +49,7 @@ public class HomeController {
         List<SubjectCollectionParentDTO> subjectCollectionParentDTOS = subjectCollectionParentService.getAllInHome();
         List<LessonDTO> lessonDTOS = lessonService.getAll(15);
         List<TestDTO> testDTOS = testService.getAll(15);
+        QuickQuizDTO quickQuizDTO = quickQuizService.getPicked();
         List<ContentDTO> contentDTOS = DBConstant.CONTENT_DTOS;
 
         // add data
@@ -60,6 +60,7 @@ public class HomeController {
         model.addAttribute("lessonDTOS", lessonDTOS);
         model.addAttribute("testDTOS", testDTOS);
         model.addAttribute("contentDTOS", contentDTOS);
+        model.addAttribute("quickQuizDTO", quickQuizDTO);
 
         log.info("end homePage");
 

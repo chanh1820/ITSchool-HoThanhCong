@@ -29,6 +29,9 @@ public class SubjectCollectionParentEntity {
     @Column(name = "prefix")
     private String prefix;
 
+    @Column(name = "sort_order")
+    private Integer sortOrder;
+
     @Column(name = "created_date")
     private LocalDateTime createdDate;
 

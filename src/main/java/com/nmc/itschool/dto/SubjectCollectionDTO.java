@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import java.time.LocalDateTime;
 
 @Getter
@@ -19,6 +20,8 @@ public class SubjectCollectionDTO {
     private String subjectCollectionName;
 
     private String prefix;
+
+    private Integer sortOrder;
 
     private LocalDateTime createdDate;
 

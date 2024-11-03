@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Câu đố - Ngôi nhà toán học</title>
+    <link rel="stylesheet" th:href="@{/css/quick_quiz_do.css}">
+    <link rel="icon" type="image/x-icon" th:href="@{/images/ic_logo_app.png}">
+</head>
+<body>
+<div class="quiz-container">
+    <div class="quiz-image">
+        <img th:src="@{'/resource/' + ${quickQuizDTO.imageContentFile}}" alt="Quiz Image">
+    </div>
+    <div class="quiz-content">
+        <h2 class="quiz-question" th:text="${quickQuizDTO.question}">What is the capital of France?</h2>
+        <form id="quizForm">
+            <div class="quiz-option">
+                <input type="radio" name="answer" id="optionA" value="A" required>
+                <label for="optionA">[[${quickQuizDTO.answerA}]]</label>
+            </div>
+            <div class="quiz-option">
+                <input type="radio" name="answer" id="optionB" value="B">
+                <label for="optionB">[[${quickQuizDTO.answerB}]]</label>
+            </div>
+            <div class="quiz-option">
+                <input type="radio" name="answer" id="optionC" value="C">
+                <label for="optionC">[[${quickQuizDTO.answerC}]]</label>
+            </div>
+            <div class="quiz-option">
+                <input type="radio" name="answer" id="optionD" value="D">
+                <label for="optionD">[[${quickQuizDTO.answerD}]]</label>
+            </div>
+            <button type="button" th:onclick="handleSubmitAnswer([[${quickQuizDTO.randomId}]])" class="submit-btn">Gửi</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function handleSubmitAnswer(randomId){
+        const selectedAnswer = document.querySelector('input[name="answer"]:checked').value;
+        console.log(selectedAnswer);
+          fetch("/api/quick-quiz/submit-answer", {
+            method: "POST",
+            body: JSON.stringify({
+                answer: selectedAnswer,
+                randomId: randomId
+            }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+            })
+            .then(res => res.json())
+            .then(res => {
+                console.log(res);
+                var data = res.data
+                if(res.status == '200'){
+                    window.location = "/quick-quiz/thanks-you";
+                } else {
+                    alert(data.message)
+                }
+            });
+    }
+</script>
+</body>
+</html>

@@ -32,4 +32,6 @@ public class QuickQuizDTO {
     private String answerD;
 
     private String result;
+
+    private boolean isPicked;
 }

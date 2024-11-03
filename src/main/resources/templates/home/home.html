@@ -173,7 +173,7 @@
 
     <div th:if="${userInfo != 'null'}" id="popupOverlay" class="popup-overlay">
         <div class="popup-box">
-            <img th:src="@{/images/popup_cau_do_1.png}" style="width: 100%;">
+            <img th:onclick="redirectQuickQuiz([[${quickQuizDTO.randomId}]])" th:src="@{/images/popup_cau_do_1.png}" style="width: 100%;">
             <button onclick="closePopup()">Đóng</button>
         </div>
     </div>
@@ -182,7 +182,7 @@
 
     <script>
         var swiper = new Swiper(".mySwiper", {
-       pagination: {
+        pagination: {
          el: ".swiper-pagination",
            },
          autoplay: {
@@ -190,28 +190,29 @@
           },
         });
             // Function to open popup
-    function openPopup() {
-      var TIME_SPACE = 1;
-      var currentTime = Date.now();
-      var popupReplayTime = localStorage.getItem('popup-replay-time');
+        function openPopup() {
+        var TIME_SPACE = 1;
+        var currentTime = Date.now();
+        var popupReplayTime = localStorage.getItem('popup-replay-time');
 
-      var minusMinuteTime = (currentTime - popupReplayTime)/ (1000) /60
-      if(minusMinuteTime >= TIME_SPACE){
-        var popupOverlay = document.getElementById('popupOverlay')
-        if(popupOverlay){
-            popupOverlay.style.display = 'flex';
-            localStorage.setItem('popup-replay-time', currentTime);
+        var minusMinuteTime = (currentTime - popupReplayTime)/ (1000) /60
+        if(minusMinuteTime >= TIME_SPACE){
+            var popupOverlay = document.getElementById('popupOverlay')
+            if(popupOverlay){
+                popupOverlay.style.display = 'flex';
+                localStorage.setItem('popup-replay-time', currentTime);
+            }
         }
-      }
-    }
-
-    // Function to close popup
-    function closePopup() {
-      document.getElementById('popupOverlay').style.display = 'none';
-    }
-
-    // Show popup on page load
-    window.onload = openPopup;
+        }
+        // Function to close popup
+        function closePopup() {
+        document.getElementById('popupOverlay').style.display = 'none';
+        }
+        function redirectQuickQuiz(randomId){
+            window.location = "/quick-quiz/" + randomId;
+        }
+        // Show popup on page load
+        window.onload = openPopup;
     </script>
 </body>
 

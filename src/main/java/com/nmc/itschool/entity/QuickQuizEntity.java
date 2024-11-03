@@ -46,4 +46,7 @@ public class QuickQuizEntity {
 
     @Column(name = "result")
     private String result;
+
+    @Column(name = "is_picked", nullable = false)
+    private boolean isPicked = false;
 }

@@ -4,9 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ghi chú</title>
-    <script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
 
-    <link rel="stylesheet" th:href="@{/css/note_list.css}">
+    <link rel="stylesheet" th:href="@{/css/quick_quiz_list.css}">
 
 </head>
 <body>
@@ -25,23 +24,26 @@
     <tbody>
     <tr th:each="quickQuiz : ${quickQuizDTOS}">
         <td>
-            <a th:href="@{/quick-quiz/{randomId}(randomId=${quickQuiz.randomId})}" th:text="${quickQuiz.title}" class="note-title">Sample Title</a>
+            <a th:href="@{/quick-quiz/edit/{randomId}(randomId=${quickQuiz.randomId})}" th:text="${quickQuiz.title}" class="note-title none-style-tag-a">Sample Title</a>
         </td>
         <td>
-            <a th:href="@{/quick-quiz/{randomId}(randomId=${quickQuiz.randomId})}" th:text="${quickQuiz.question}" class="note-title">Sample Title</a>
+            <a th:href="@{/quick-quiz/edit/{randomId}(randomId=${quickQuiz.randomId})}" th:text="${quickQuiz.question}" class="note-title none-style-tag-a">Sample Title</a>
         </td>
         <td class="actions">
             <!-- Edit button -->
-            <a th:href="@{/quick-quiz/{randomId}(randomId=${quickQuiz.randomId})}" class="edit">
-                <button class="icon-button">
-                    &#9998; <!-- Pencil icon for edit -->
-                </button>
+            <a th:href="@{/quick-quiz/edit/{randomId}(randomId=${quickQuiz.randomId})}" class="edit" title="Chỉnh sửa">
+                <img class="icon-button" th:src="@{/images/ic_edit.png}" />
             </a>
             <!-- Delete button -->
-            <a th:href="@{/quick-quiz/delete/{id}(id=${quickQuiz.id})}" class="delete">
-                <button class="icon-button">
-                    &#10060; <!-- Cross icon for delete -->
-                </button>
+            <a th:href="@{/quick-quiz/delete/{id}(id=${quickQuiz.id})}" class="delete" title="Xoá">
+                <img class="icon-button" th:src="@{/images/ic_delete.png}" />
+            </a>
+            <a th:href="@{/quick-quiz/log/{randomId}(randomId=${quickQuiz.randomId})}" class="edit" title="Nhật ký">
+                <img class="icon-button" th:src="@{/images/ic_quick_quiz_log_list.png}" />
+            </a>
+            <a th:switch="${quickQuiz.isPicked}" class="delete">
+                <img class="icon-button" th:case="true" th:src="@{/images/ic_show.png}" title="Tắt"/>
+                <img class="icon-button" th:case="false" th:src="@{/images/ic_hide.png}" title="Bật"th:onclick="handleEnableQuickQuiz([[${quickQuiz.randomId}]])"/>
             </a>
         </td>
     </tr>
@@ -65,7 +67,29 @@
               if(res.status == '200'){
                   window.location = "/quick-quiz/" + data;
               } else {
-                  alert(data.message)
+                  alert(res.message)
+              }
+          });
+     }
+
+        function handleEnableQuickQuiz(randomId) {
+          fetch("/api/quick-quiz/enable-item", {
+          method: "POST",
+          body: JSON.stringify({
+                randomId : randomId
+              }),
+          headers: {
+              "Content-type": "application/json; charset=UTF-8"
+          }
+          })
+          .then(res => res.json())
+          .then(res => {
+              console.log(res);
+              var data = res.data
+              if(res.status == '200'){
+                  location.reload();
+              } else {
+                  alert(res.message)
               }
           });
      }

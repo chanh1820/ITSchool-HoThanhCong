@@ -9,7 +9,8 @@ public enum MessageEnum {
     ERR_LESSON_NOT_FOUND("ERR1002", "Lesson not found"),
     ERR_USER_NAME_EXISTING("ERR1003", "Username existing"),
     ERR_TEST_NOT_FOUND("ERR1004", "Test not found"),
-    ERR_SCORE_NOT_FOUND("ERR1002", "Score not found");
+    ERR_SCORE_NOT_FOUND("ERR1002", "Score not found"),
+    ERR_QUICK_QUIZ_NOT_FOUND("ERR1002", "Quick Quiz not found");
 
 
     private String messageCode;

@@ -1,4 +1,5 @@
 package com.nmc.itschool.security;
+import java.io.Serializable;
 import java.util.Collection;
 
 import com.nmc.itschool.entity.UserEntity;

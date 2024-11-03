@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.persistence.Column;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,6 +23,8 @@ public class SubjectCollectionParentDTO {
     private String subjectCollectionParentName;
 
     private String prefix;
+
+    private Integer sortOrder;
 
     private LocalDateTime createdDate;
 

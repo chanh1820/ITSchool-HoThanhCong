@@ -2,6 +2,7 @@ package com.nmc.itschool.controller;
 
 import com.nmc.itschool.dto.NoteDTO;
 import com.nmc.itschool.dto.QuickQuizDTO;
+import com.nmc.itschool.dto.QuickQuizLogDTO;
 import com.nmc.itschool.dto.TestDTO;
 import com.nmc.itschool.service.NoteService;
 import com.nmc.itschool.service.QuickQuizService;
@@ -31,7 +32,7 @@ public class QuickQuizController {
     @Autowired
     QuickQuizService quickQuizService;
 
-    @GetMapping("/{randomId}")
+    @GetMapping("/edit/{randomId}")
     public String saveQuickView(Model model, @PathVariable String randomId) {
         log.info("start saveQuickView");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -42,6 +43,37 @@ public class QuickQuizController {
             log.info(ObjectMapperUtil.writeValueAsString(quickQuizDTO));
             model.addAttribute("quickQuizDTO", quickQuizDTO);
             return "quick_quiz/quick_quiz_save";
+        }else {
+            return "user/user_login";
+        }
+    }
+    @GetMapping("/{randomId}")
+    public String doQuickQuiz(Model model, @PathVariable String randomId) {
+        log.info("start doQuickQuiz");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        QuickQuizDTO quickQuizDTO = quickQuizService.findByRandomId(randomId);
+
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            log.info(userDetails.getUsername());
+            log.info(ObjectMapperUtil.writeValueAsString(quickQuizDTO));
+            model.addAttribute("quickQuizDTO", quickQuizDTO);
+            return "quick_quiz/quick_quiz_do";
+        }else {
+            return "user/user_login";
+        }
+    }
+    @GetMapping("/log/{randomId}")
+    public String logQuickView(Model model, @PathVariable String randomId) {
+        log.info("start saveQuickView");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        List<QuickQuizLogDTO> quickQuizLogDTOS = quickQuizService.findQuickQuizLogs(randomId);
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            log.info(userDetails.getUsername());
+            log.info(ObjectMapperUtil.writeValueAsString(quickQuizLogDTOS));
+            model.addAttribute("quickQuizLogDTOS", quickQuizLogDTOS);
+            return "quick_quiz/quick_quiz_log";
         }else {
             return "user/user_login";
         }
@@ -59,6 +91,12 @@ public class QuickQuizController {
         log.info("end myQuickQuiz");
 
         return "quick_quiz/quick_quiz_list";
+    }
+
+    @GetMapping("/thanks-you")
+    public String thanksYou(Model model) {
+        log.info("Go thanksYou");
+        return "quick_quiz/quick_quiz_thanks_you";
     }
     @PostMapping("/api/create/{randomId}")
     public String saveQuickQuiz(

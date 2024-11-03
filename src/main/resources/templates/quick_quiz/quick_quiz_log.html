@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ghi chú</title>
+    <link rel="stylesheet" th:href="@{/css/quick_quiz_log.css}">
+
+</head>
+<body>
+<div class="container">
+    <h1>Danh sách người dùng trả lời</h1>
+    <table class="dto-table">
+        <thead>
+        <tr>
+            <th>Tên</th>
+            <th>Tiêu đề</th>
+            <th>Câu hỏi</th>
+            <th>Câu trả lời</th>
+            <th>Kết Quả</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Sample Row -->
+        <tr>
+            <td>John Doe</td>
+            <td>Sample Title</td>
+            <td>What is the meaning of life?</td>
+            <td>42</td>
+            <td class="status correct">Yes</td>
+        </tr>
+        <tr>
+            <td>Jane Smith</td>
+            <td>Another Title</td>
+            <td>Is the Earth flat?</td>
+            <td>No</td>
+            <td class="status incorrect">No</td>
+        </tr>
+        <tr th:each="item : ${quickQuizLogDTOS}">
+            <td th:text="${item.fullName}">John Doe</td>
+            <td th:text="${item.title}">Sample Title</td>
+            <td th:text="${item.question}">What is the meaning of life?</td>
+            <td th:text="${item.answer}">42</td>
+            <td th:text="${item.isCorrect ? 'Đúng' : 'Sai'}"
+            th:classappend="${item.isCorrect} ? 'status correct' : 'status incorrect'">Đúng</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
