@@ -1,9 +1,6 @@
 package com.nmc.itschool.service;
 
-import com.nmc.itschool.dto.NoteDTO;
-import com.nmc.itschool.dto.QuickQuizAnswerDTO;
-import com.nmc.itschool.dto.QuickQuizDTO;
-import com.nmc.itschool.dto.QuickQuizLogDTO;
+import com.nmc.itschool.dto.*;
 
 import java.util.List;
 
@@ -24,4 +21,6 @@ public interface QuickQuizService {
     boolean submitAnswer(QuickQuizAnswerDTO quickQuizAnswerDTO);
 
     List<QuickQuizLogDTO> findQuickQuizLogs(String randomId);
+
+    QuickQuizRankDTO calculatorRank(List<QuickQuizLogDTO> quickQuizLogDTOS);
 }

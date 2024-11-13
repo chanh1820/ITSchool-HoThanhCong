@@ -1,10 +1,7 @@
 package com.nmc.itschool.service.impl;
 
 import com.nmc.itschool.constant.MessageEnum;
-import com.nmc.itschool.dto.NoteDTO;
-import com.nmc.itschool.dto.QuickQuizAnswerDTO;
-import com.nmc.itschool.dto.QuickQuizDTO;
-import com.nmc.itschool.dto.QuickQuizLogDTO;
+import com.nmc.itschool.dto.*;
 import com.nmc.itschool.entity.NoteEntity;
 import com.nmc.itschool.entity.QuickQuizEntity;
 import com.nmc.itschool.entity.QuickQuizLogEntity;
@@ -113,6 +110,7 @@ public class QuickQuizServiceImpl implements QuickQuizService {
         quickQuizLogEntity.setFullName(quickQuizAnswerDTO.getFullName());
         quickQuizLogEntity.setUserName(quickQuizAnswerDTO.getUserName());
         quickQuizLogEntity.setRandomId(quickQuizAnswerDTO.getRandomId());
+        quickQuizLogEntity.setAnswerNumberTrue(quickQuizAnswerDTO.getAnswerNumberTrue());
 
         if(otpQuickQuiz.isPresent()){
             QuickQuizEntity quickQuizEntity = otpQuickQuiz.get();
@@ -135,5 +133,41 @@ public class QuickQuizServiceImpl implements QuickQuizService {
             quickQuizLogDTOS = quickQuizLogMapper.toDTOs(quickQuizLogEntities);
         }
         return quickQuizLogDTOS;
+    }
+
+    @Override
+    public QuickQuizRankDTO calculatorRank(List<QuickQuizLogDTO> quickQuizLogDTOS) {
+        long numberTrue = quickQuizLogDTOS.stream()
+                .filter(QuickQuizLogDTO::isCorrect)  // Filters only items with isCorrect = true
+                .count();
+        String personTrueTemplate = "Bạn kfyenasd đã có đáp đúng nhất";
+        StringBuilder personTrue = new StringBuilder();
+        int deltaCurrent = 0;
+        int deltaMin = 0;
+        int onlyPerson = 1;
+        List<String> userNameTrued = new ArrayList<>();
+        for (QuickQuizLogDTO quickQuizLogDTO : quickQuizLogDTOS){
+            deltaCurrent =  quickQuizLogDTO.getAnswerNumberTrue() - (int) numberTrue;
+            if(deltaCurrent < deltaMin){
+                deltaMin = deltaCurrent;
+            }
+        }
+        for (QuickQuizLogDTO quickQuizLogDTO : quickQuizLogDTOS){
+            if(deltaCurrent == deltaMin && !CollectionUtils.containsAny(userNameTrued, quickQuizLogDTO.getUserName())){
+                personTrue.append(quickQuizLogDTO.getFullName());
+                userNameTrued.add(quickQuizLogDTO.getUserName());
+                if(onlyPerson != 1){
+                    personTrue.append(", ");
+                }
+                onlyPerson ++;
+
+            }
+        }
+        log.info("personTrue.toString() {} ", personTrue.toString());
+        personTrueTemplate = personTrueTemplate.replace("kfyenasd", personTrue);
+        QuickQuizRankDTO quickQuizRankDTO = new QuickQuizRankDTO();
+        quickQuizRankDTO.setPersonTrue(personTrueTemplate);
+        quickQuizRankDTO.setNumberPointTrue("Số người trả lời đúng: " + numberTrue);
+        return quickQuizRankDTO;
     }
 }

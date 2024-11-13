@@ -1,9 +1,6 @@
 package com.nmc.itschool.controller;
 
-import com.nmc.itschool.dto.NoteDTO;
-import com.nmc.itschool.dto.QuickQuizDTO;
-import com.nmc.itschool.dto.QuickQuizLogDTO;
-import com.nmc.itschool.dto.TestDTO;
+import com.nmc.itschool.dto.*;
 import com.nmc.itschool.service.NoteService;
 import com.nmc.itschool.service.QuickQuizService;
 import com.nmc.itschool.util.FileUtil;
@@ -65,14 +62,17 @@ public class QuickQuizController {
     }
     @GetMapping("/log/{randomId}")
     public String logQuickView(Model model, @PathVariable String randomId) {
-        log.info("start saveQuickView");
+        log.info("start logQuickView");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         List<QuickQuizLogDTO> quickQuizLogDTOS = quickQuizService.findQuickQuizLogs(randomId);
+        QuickQuizRankDTO quickQuizRankDTO = quickQuizService.calculatorRank(quickQuizLogDTOS);
         if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             log.info(userDetails.getUsername());
             log.info(ObjectMapperUtil.writeValueAsString(quickQuizLogDTOS));
+            log.info(ObjectMapperUtil.writeValueAsString(quickQuizRankDTO));
             model.addAttribute("quickQuizLogDTOS", quickQuizLogDTOS);
+            model.addAttribute("quickQuizRankDTO", quickQuizRankDTO);
             return "quick_quiz/quick_quiz_log";
         }else {
             return "user/user_login";

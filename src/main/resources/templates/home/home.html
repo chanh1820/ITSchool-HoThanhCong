@@ -41,7 +41,7 @@
                 </button>
             </div>
             <div th:if="${userInfo != 'null'}" class="user-info" >
-                <div class="dropdown">
+                <div th:if="${isAdmin != 'null'}"  class="dropdown">
                     <button class="dropbtn">Chức năng
                         <i class="fa fa-caret-down"></i>
                     </button>
@@ -153,7 +153,7 @@
                 <h2>Khác</h2>
                 <div class="lessons-grid">
                     <div class="lesson-item" th:each="content : ${contentDTOS}">
-                        <a th:href="@{${content.slug}}">
+                        <a th:href="@{'/lesson' + ${content.slug}}">
                             <div class="image-lesson">
                                 <img th:src="@{'/images' + ${content.imageUrl}}" alt="Lesson Image" class="lesson-image">
                             </div>

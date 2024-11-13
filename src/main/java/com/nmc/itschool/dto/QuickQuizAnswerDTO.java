@@ -16,4 +16,6 @@ public class QuickQuizAnswerDTO {
     private String randomId;
 
     private String answer;
+
+    private Integer answerNumberTrue;
 }

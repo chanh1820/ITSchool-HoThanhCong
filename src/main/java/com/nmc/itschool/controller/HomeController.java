@@ -23,7 +23,7 @@ import java.util.List;
 
 @Controller
 @Slf4j
-@RequestMapping("/home")
+@RequestMapping("")
 public class HomeController {
     @Autowired
     SubjectCollectionParentService subjectCollectionParentService;
@@ -33,7 +33,16 @@ public class HomeController {
     TestService testService;
     @Autowired
     QuickQuizService quickQuizService;
-    @GetMapping("/index")
+
+    @GetMapping("/home/index")
+    public String homePageIndex(Model model) {
+        return homePage(model);
+    }
+    @GetMapping("/")
+    public String homePageIndex2(Model model) {
+        return homePage(model);
+    }
+    @GetMapping("")
     public String homePage(Model model) {
         log.info("start homePage");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -42,6 +51,11 @@ public class HomeController {
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
             log.info("userInfo {}", userDetails.getFullName());
             model.addAttribute("userInfo", userDetails.getFullName());
+            if(userDetails.getUsername().equals("adminngoinhatoanhoc")){
+                model.addAttribute("isAdmin", "true");
+            }else {
+                model.addAttribute("isAdmin", "null");
+            }
         }else {
             model.addAttribute("userInfo", "null");
         }

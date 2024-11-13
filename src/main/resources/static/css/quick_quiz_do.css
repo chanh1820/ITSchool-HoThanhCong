@@ -27,7 +27,9 @@ body {
     border-radius: 10px;
     margin-bottom: 20px;
 }
-
+#quizForm .quiz-option label{
+    text-align: left;
+}
 .quiz-content {
     text-align: center;
 }
@@ -44,6 +46,7 @@ body {
 }
 
 .quiz-option input[type="radio"] {
+    align-self: flex-start;
     margin-right: 10px;
 }
 
@@ -60,4 +63,19 @@ body {
 
 .submit-btn:hover {
     background-color: #0056b3;
+}
+
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    outline: none;
+}
+
+input[type="number"]:focus {
+    border-color: #007bff;
+    box-shadow: 0px 0px 4px rgba(0, 123, 255, 0.2);
 }

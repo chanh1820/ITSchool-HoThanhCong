@@ -26,6 +26,8 @@ public class QuickQuizLogDTO {
 
     private String answer;
 
+    private Integer answerNumberTrue;
+
     private boolean isCorrect;
 
     private LocalDateTime createDate;

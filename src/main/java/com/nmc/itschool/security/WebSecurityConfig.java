@@ -82,6 +82,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/images/*",
                         "/resource/*",
                         "/home/*",
+                        "/*",
+                        "*",
                         "/lesson/*"
                 )
                 .permitAll() // Allow access to login, registration, and static resources

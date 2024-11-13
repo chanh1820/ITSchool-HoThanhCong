@@ -10,6 +10,14 @@
 <body>
 <div class="container">
     <h1>Danh sách người dùng trả lời</h1>
+    <div style="
+        text-align: left;
+    ">
+        <h1 style="color: red;" th:text="${quickQuizRankDTO.numberPointTrue}"></h1>
+        <h1 style="color: green;" th:text="${quickQuizRankDTO.personTrue}"></h1>
+    </div>
+
+    <h1>Danh sách người dùng trả lời</h1>
     <table class="dto-table">
         <thead>
         <tr>
@@ -18,24 +26,11 @@
             <th>Câu hỏi</th>
             <th>Câu trả lời</th>
             <th>Kết Quả</th>
+            <th>Dự đoán</th>
         </tr>
         </thead>
         <tbody>
         <!-- Sample Row -->
-        <tr>
-            <td>John Doe</td>
-            <td>Sample Title</td>
-            <td>What is the meaning of life?</td>
-            <td>42</td>
-            <td class="status correct">Yes</td>
-        </tr>
-        <tr>
-            <td>Jane Smith</td>
-            <td>Another Title</td>
-            <td>Is the Earth flat?</td>
-            <td>No</td>
-            <td class="status incorrect">No</td>
-        </tr>
         <tr th:each="item : ${quickQuizLogDTOS}">
             <td th:text="${item.fullName}">John Doe</td>
             <td th:text="${item.title}">Sample Title</td>
@@ -43,6 +38,7 @@
             <td th:text="${item.answer}">42</td>
             <td th:text="${item.isCorrect ? 'Đúng' : 'Sai'}"
             th:classappend="${item.isCorrect} ? 'status correct' : 'status incorrect'">Đúng</td>
+            <td th:text="${item.answerNumberTrue}"></td>
         </tr>
         </tbody>
     </table>

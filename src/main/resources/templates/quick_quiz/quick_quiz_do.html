@@ -30,6 +30,13 @@
                 <input type="radio" name="answer" id="optionD" value="D">
                 <label for="optionD">[[${quickQuizDTO.answerD}]]</label>
             </div>
+            <label for="numberInput" style="
+                float: left;
+                font-weight: 600;
+                font-size: large;
+                margin-top: 10px;
+            ">Bạn dự đoán còn bao có nhiêu người trả lời đúng:</label>
+            <input type="number" id="numberInput" name="numberInput" min="0" max="1000" step="1">
             <button type="button" th:onclick="handleSubmitAnswer([[${quickQuizDTO.randomId}]])" class="submit-btn">Gửi</button>
         </form>
     </div>
@@ -37,12 +44,29 @@
 
 <script>
     function handleSubmitAnswer(randomId){
-        const selectedAnswer = document.querySelector('input[name="answer"]:checked').value;
+    var selectedAnswer = "";
+    var numberTrue = 0;
+        try {
+            selectedAnswer = document.querySelector('input[name="answer"]:checked').value;
+            numberTrue = document.getElementById("numberInput").value;
+            console.error(selectedAnswer);
+            console.error(numberTrue);
+
+            if(!numberTrue || numberTrue === 0 ){
+                alert("Bạn chưa nhập đầy đủ đáp án");
+                return;
+            }
+        } catch (error) {
+            console.error(error);
+            alert("Bạn chưa nhập đầy đủ đáp án");
+            return;
+        }
         console.log(selectedAnswer);
           fetch("/api/quick-quiz/submit-answer", {
             method: "POST",
             body: JSON.stringify({
                 answer: selectedAnswer,
+                answerNumberTrue: numberTrue,
                 randomId: randomId
             }),
             headers: {

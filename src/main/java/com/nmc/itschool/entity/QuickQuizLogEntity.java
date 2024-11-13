@@ -36,6 +36,9 @@ public class QuickQuizLogEntity {
     @Column(name = "answer")
     private String answer;
 
+    @Column(name = "answer_number_true")
+    private Integer answerNumberTrue;
+
     @Column(name = "is_correct")
     private boolean isCorrect;
 
