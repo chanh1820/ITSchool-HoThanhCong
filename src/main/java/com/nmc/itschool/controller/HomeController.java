@@ -3,10 +3,7 @@ package com.nmc.itschool.controller;
 import com.nmc.itschool.constant.DBConstant;
 import com.nmc.itschool.dto.*;
 import com.nmc.itschool.security.CustomUserDetails;
-import com.nmc.itschool.service.QuickQuizService;
-import com.nmc.itschool.service.SubjectCollectionParentService;
-import com.nmc.itschool.service.LessonService;
-import com.nmc.itschool.service.TestService;
+import com.nmc.itschool.service.*;
 import com.nmc.itschool.util.FileUtil;
 import com.nmc.itschool.util.ObjectMapperUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +26,8 @@ public class HomeController {
     SubjectCollectionParentService subjectCollectionParentService;
     @Autowired
     LessonService lessonService;
+    @Autowired
+    LessonPDFService lessonPDFService;
     @Autowired
     TestService testService;
     @Autowired
@@ -62,6 +61,7 @@ public class HomeController {
         // get Data
         List<SubjectCollectionParentDTO> subjectCollectionParentDTOS = subjectCollectionParentService.getAllInHome();
         List<LessonDTO> lessonDTOS = lessonService.getAll(15);
+        List<LessonDTO> lessonPDFDTOS = lessonPDFService.getAll(15);
         List<TestDTO> testDTOS = testService.getAll(15);
         QuickQuizDTO quickQuizDTO = quickQuizService.getPicked();
         List<ContentDTO> contentDTOS = DBConstant.CONTENT_DTOS;
@@ -72,6 +72,7 @@ public class HomeController {
 //        model.addAttribute("pathFile", FileUtil.getPathResourceFile());
         model.addAttribute("subjectCollectionParentDTOS", subjectCollectionParentDTOS);
         model.addAttribute("lessonDTOS", lessonDTOS);
+        model.addAttribute("lessonPDFDTOS", lessonPDFDTOS);
         model.addAttribute("testDTOS", testDTOS);
         model.addAttribute("contentDTOS", contentDTOS);
         model.addAttribute("quickQuizDTO", quickQuizDTO);

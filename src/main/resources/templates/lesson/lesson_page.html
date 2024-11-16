@@ -23,7 +23,7 @@
         </div>
         <div id="content-container">
             <div class="lesson-container">
-                <h2>Các bài học mới</h2>
+                <h2>Bài học mới</h2>
                 <div class="lessons-grid">
                     <div class="lesson-item" th:each="lesson : ${lessonDTOS}">
                         <a th:href="@{'/lesson/detail/'+${lesson.slug}}">

@@ -12,6 +12,7 @@
 <h1>Danh sách câu đố</h1>
 <div>
     <button th:onclick="handleInitQuickQuiz()">Tạo câu đố</button>
+
 </div>
 <table>
     <thead>
@@ -24,16 +25,12 @@
     <tbody>
     <tr th:each="quickQuiz : ${quickQuizDTOS}">
         <td>
-            <a th:href="@{/quick-quiz/edit/{randomId}(randomId=${quickQuiz.randomId})}" th:text="${quickQuiz.title}" class="note-title none-style-tag-a">Sample Title</a>
+            <a th:text="${quickQuiz.title}" class="note-title none-style-tag-a">Sample Title</a>
         </td>
         <td>
-            <a th:href="@{/quick-quiz/edit/{randomId}(randomId=${quickQuiz.randomId})}" th:text="${quickQuiz.question}" class="note-title none-style-tag-a">Sample Title</a>
+            <a th:text="${quickQuiz.question}" class="note-title none-style-tag-a">Sample Title</a>
         </td>
         <td class="actions">
-            <!-- Edit button -->
-            <a th:href="@{/quick-quiz/edit/{randomId}(randomId=${quickQuiz.randomId})}" class="edit" title="Chỉnh sửa">
-                <img class="icon-button" th:src="@{/images/ic_edit.png}" />
-            </a>
             <!-- Delete button -->
             <a th:href="@{/quick-quiz/delete/{id}(id=${quickQuiz.id})}" class="delete" title="Xoá">
                 <img class="icon-button" th:src="@{/images/ic_delete.png}" />
@@ -65,7 +62,7 @@
               console.log(res);
               var data = res.data
               if(res.status == '200'){
-                  window.location = "/quick-quiz/" + data;
+                  window.location = "/quick-quiz/edit/" + data;
               } else {
                   alert(res.message)
               }

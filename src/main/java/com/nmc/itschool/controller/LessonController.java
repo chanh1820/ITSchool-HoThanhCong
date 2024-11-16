@@ -1,10 +1,7 @@
 package com.nmc.itschool.controller;
 
 import com.nmc.itschool.constant.MessageEnum;
-import com.nmc.itschool.dto.SubjectCollectionDTO;
-import com.nmc.itschool.dto.SubjectCollectionParentDTO;
-import com.nmc.itschool.dto.LessonDTO;
-import com.nmc.itschool.dto.TestDTO;
+import com.nmc.itschool.dto.*;
 import com.nmc.itschool.entity.SubjectCollectionEntity;
 import com.nmc.itschool.exceptions.AppException;
 import com.nmc.itschool.mapper.SubjectCollectionMapper;
@@ -65,7 +62,26 @@ public class LessonController {
 
         return "lesson/lesson_page";
     }
+    @GetMapping("/my-lesson")
+    public String myLesson(Model model) {
+        log.info("start myLesson");
+        List<LessonDTO> lessonDTOS = lessonService.getAll(99999);
+        log.info(ObjectMapperUtil.writeValueAsString(lessonDTOS));
+        model.addAttribute("lessonDTOS", lessonDTOS);
 
+        log.info("end myLesson");
+
+        return "lesson/lesson_list";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteLesson(Model model, @PathVariable Long id) {
+        log.info("start deleteLesson");
+        lessonService.deleteById(id);
+        log.info("end deleteLesson");
+
+        return "redirect:/lesson/my-lesson";
+    }
     @GetMapping("/{prefix}")
     public String lessonPageByPrefix(Model model, @PathVariable String prefix) {
         prefix = "/" + prefix;

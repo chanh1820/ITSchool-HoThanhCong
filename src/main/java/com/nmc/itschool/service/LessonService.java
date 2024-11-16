@@ -10,6 +10,6 @@ public interface LessonService {
     public LessonDTO save(LessonDTO lessonDTO);
     public LessonDTO findBySlug(String slug);
     public List<LessonDTO> getAll(int limit);
-
     List<LessonDTO> findByPrefix(String prefix);
+    public void deleteById(Long id);
 }

@@ -21,9 +21,11 @@ body {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
-
+.quiz-image{
+    text-align: center;
+}
 .quiz-image img {
-    width: 100%;
+    width: 400px;
     border-radius: 10px;
     margin-bottom: 20px;
 }

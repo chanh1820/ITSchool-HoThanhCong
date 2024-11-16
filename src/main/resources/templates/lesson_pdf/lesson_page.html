@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Bài học - Ngôi nhà toán học</title>
+    <link rel="stylesheet" th:href="@{/css/lesson_page.css}">
+    <link rel="icon" type="image/x-icon" th:href="@{/images/ic_logo_app.png}">
+</head>
+<body>
+    <div class="home-container">
+        <div id="navigation-container">
+            <nav>
+                <ul class="parent-menu">
+                    <li th:each="subject : ${subjectCollectionParentDTOS}" class="parent-item">
+                        <a th:href="@{${subject.prefix}}">[[${subject.subjectCollectionParentName}]]</a>
+                        <ul class="child-menu">
+                            <li th:each="child : ${subject.subjectCollectionEntities}" class="child-item">
+                                <a th:href="@{${child.prefix}}">[[${child.SubjectCollectionName}]]</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div id="content-container">
+            <div class="lesson-container">
+                <h2>Bài tập tự luyện mới</h2>
+                <div class="lessons-grid">
+                    <div class="lesson-item" th:each="lesson : ${lessonDTOS}">
+                        <a th:href="@{'/lesson-pdf/detail/'+${lesson.slug}}">
+                            <div class="image-lesson">
+                                <img th:src="@{'/resource/' + ${lesson.imageUrl}}" alt="Lesson Image" class="lesson-image">
+                            </div>
+                            <h3 th:text="${lesson.lessonName}">Lesson Name</h3>
+                            <p th:text="${lesson.description}">Description</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

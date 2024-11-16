@@ -2,7 +2,9 @@ package com.nmc.itschool.controller;
 
 import com.nmc.itschool.constant.MessageEnum;
 import com.nmc.itschool.dto.*;
+import com.nmc.itschool.entity.SubjectCollectionEntity;
 import com.nmc.itschool.exceptions.AppException;
+import com.nmc.itschool.mapper.SubjectCollectionMapper;
 import com.nmc.itschool.security.CustomUserDetails;
 import com.nmc.itschool.service.*;
 import com.nmc.itschool.util.FileUtil;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,6 +41,9 @@ public class TestController {
     UserDoTestService userDoTestService;
     @Autowired
     ScoreService scoreService;
+    @Autowired
+    SubjectCollectionMapper subjectCollectionMapper;
+
     @GetMapping("/create/info")
     public String addTestInfo(Model model) {
         log.info("start addTestInfo");
@@ -86,7 +92,25 @@ public class TestController {
 
         return "test/test_create_detail_question";  // Trả về tệp home.html trong thư mục templates
     }
+    @GetMapping("/my-test")
+    public String myTest(Model model) {
+        log.info("start myTest");
+        List<TestDTO> testDTOS = testService.getAll(99999);
+        log.info(ObjectMapperUtil.writeValueAsString(testDTOS));
+        model.addAttribute("testDTOS", testDTOS);
 
+        log.info("end myTest");
+
+        return "test/test_list";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteTest(Model model, @PathVariable Long id) {
+        log.info("start deleteTest");
+        testService.deleteById(id);
+        log.info("end deleteTest");
+        return "redirect:/test/my-test";
+    }
     @GetMapping("/prepare/{slug}")
     public String prepareTest(Model model, @PathVariable String slug) throws UnsupportedEncodingException {
         log.info("start prepareTest");
@@ -103,7 +127,53 @@ public class TestController {
 
         return "test/test_prepare";
     }
+    @GetMapping("/{prefix}")
+    public String testPageByPrefix(Model model, @PathVariable String prefix) {
+        prefix = "/" + prefix;
+        log.info("start testPageByPrefix with prefix {}", prefix);
+        SubjectCollectionParentDTO subjectCollectionParentDTO = null;
+        SubjectCollectionDTO subjectCollectionDTO = null;
+        List<TestDTO> testDTOS = new ArrayList<>();
+        // get Data
+        List<SubjectCollectionParentDTO> subjectCollectionParentDTOS
+                = subjectCollectionParentService.getAll();
 
+        for (SubjectCollectionParentDTO itemParent : subjectCollectionParentDTOS){
+            if(itemParent.getPrefix().equals(prefix)){
+                subjectCollectionParentDTO = itemParent;
+                break;
+            }
+            for(SubjectCollectionEntity childItem: itemParent.getSubjectCollectionEntities()){
+                if(childItem.getPrefix().equals(prefix)){
+                    subjectCollectionDTO = subjectCollectionMapper.toDTO(childItem);
+                    break;
+                }
+            }
+
+        }
+
+        // add data
+//        model.addAttribute("subjectCollectionParentDTOS", subjectCollectionParentDTOS);
+        if(subjectCollectionParentDTO != null){
+            log.info("1");
+            model.addAttribute("subjectCollectionParentDTO", subjectCollectionParentDTO);
+        }else if(subjectCollectionDTO != null){
+            log.info("2");
+            model.addAttribute("subjectCollectionDTO", subjectCollectionDTO);
+        }else {
+            log.info("3");
+            return null;
+        }
+        log.info("prefix: {}", prefix);
+
+        testDTOS = testService.findByPrefix(prefix);
+        model.addAttribute("testDTOS", testDTOS);
+        log.info("testDTOS: {}", ObjectMapperUtil.writeValueAsString(testDTOS));
+
+        log.info("end testPageByPrefix");
+
+        return "test/test_of_subject_page";
+    }
     @GetMapping("/do/{slug}")
     public String doTest(Model model, @PathVariable String slug) throws UnsupportedEncodingException {
         log.info("start doTest");

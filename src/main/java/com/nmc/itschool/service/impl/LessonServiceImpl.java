@@ -70,6 +70,11 @@ public class LessonServiceImpl implements LessonService {
         return null;
     }
 
+    @Override
+    public void deleteById(Long id) {
+        lessonRepository.deleteById(id);
+    }
+
     private void validateSaveLesson(LessonDTO lessonDTO) {
         Optional<SubjectCollectionParentEntity> optParentCollection = subjectCollectionParentRepository.getByPrefix(lessonDTO.getCollectionParentPrefix());
         if (!optParentCollection.isPresent()){

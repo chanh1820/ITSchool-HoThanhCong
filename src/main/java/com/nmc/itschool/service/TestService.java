@@ -13,5 +13,6 @@ public interface TestService {
     public TestDTO saveItem(TestDTO testDTO);
     public TestDTO findBySlug(String slug);
     public List<TestDTO> getAll(int limit);
-
+    void deleteById(Long id);
+    List<TestDTO> findByPrefix(String prefix);
 }

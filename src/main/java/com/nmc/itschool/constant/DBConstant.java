@@ -9,10 +9,10 @@ public class DBConstant {
     public static final String SUBJECT_COLLECTION_PARENT_CODE_KHAC = "A00";
 
     public static final List<ContentDTO> CONTENT_DTOS = new ArrayList<ContentDTO>(){{
-        add(new ContentDTO(1L, "", "Toán Và Nghệ Thuật", "Những nội dung bổ ích về Toán học", "/toan-va-nghe-thuat", "/toan_va_nghe_thuat.jpg"));
-        add(new ContentDTO(1L, "", "STEM Toán Học", "STEM với Toán", "/stem-toan-hoc", "/stem_toan_hoc.jpg"));
-        add(new ContentDTO(1L, "", "Lịch Sử Toán", "Tìm hiểu về lịch sử toán học", "/lich-su-toan", "/lich_su_toan.jpg"));
-        add(new ContentDTO(1L, "", "Video", "Những video bổ ích", "/video", "/video.jpg"));
-        add(new ContentDTO(1L, "", "Giải Toán Bằng Tiếng Anh", "Những video hướng dẫn giải toán bằng Tiếng Anh", "/giai-toan-bang-tieng-anh", "/giai_toan_bang_tieng_anh.jpg"));
+        add(new ContentDTO(1L, "", "Toán Và Nghệ Thuật", "Toán học và nghệ thuật có mối quan hệ đa chiều", "/toan-va-nghe-thuat", "/toan_va_nghe_thuat.jpg"));
+        add(new ContentDTO(1L, "", "STEM Toán Học", "STEM là phương pháp giáo dục tích hợp, liên môn hiệu quả", "/stem-toan-hoc", "/stem_toan_hoc.jpg"));
+        add(new ContentDTO(1L, "", "Lịch Sử Toán", "Lịch sử toán học đưa vào chương trình học tập, làm phong phú trải nghiệm học tập và môn toán trở nên sống động", "/lich-su-toan", "/lich_su_toan.jpg"));
+        add(new ContentDTO(1L, "", "Video", "Công nghệ số giúp học sinh hình dung và hiểu sâu về toán học thông qua việc sử dụng phần mềm và video", "/video", "/video.jpg"));
+        add(new ContentDTO(1L, "", "Giải Toán Bằng Tiếng Anh", "Học toán bằng tiếng Anh giúp nắm vững kiến thức cơ bản và nâng cao, phát triển kỹ năng giải quyết vấn đề logic", "/giai-toan-bang-tieng-anh", "/giai_toan_bang_tieng_anh.jpg"));
     }};
 }

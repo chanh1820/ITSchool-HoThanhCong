@@ -15,6 +15,11 @@
                 <div th:if="${subjectCollectionDTO != null}">
                     <h2 th:text="${subjectCollectionDTO.subjectCollectionName}"></h2>
                 </div>
+                <p class="no-lessons" style=" color: red;
+                    text-align: center;
+                    font-weight: bold;
+                    margin-top: 20px;"
+                   th:if="${#lists.isEmpty(lessonDTOS)}">Danh sách trống</p>
                 <div class="lessons-grid">
                     <div class="lesson-item" th:each="lesson : ${lessonDTOS}">
                         <a th:href="@{'/lesson/detail/'+${lesson.slug}}">

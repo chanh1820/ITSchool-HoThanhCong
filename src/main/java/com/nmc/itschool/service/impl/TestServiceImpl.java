@@ -89,6 +89,19 @@ public class TestServiceImpl implements TestService {
         return null;
     }
 
+    @Override
+    public void deleteById(Long id) {
+        testRepository.deleteById(id);
+    }
+
+    @Override
+    public List<TestDTO> findByPrefix(String prefix) {
+        Optional<List<TestEntity>> otp = testRepository.findByPrefix(prefix);
+        if (otp.isPresent() && otp.get().size() != 0){
+            return testMapper.toDTOs(otp.get());
+        }
+        return null;    }
+
     private void validateSaveLesson(TestDTO testDTO) {
         Optional<SubjectCollectionParentEntity> optParentCollection = subjectCollectionParentRepository.getByPrefix(testDTO.getCollectionParentPrefix());
         if (!optParentCollection.isPresent()){

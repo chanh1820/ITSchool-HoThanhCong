@@ -21,6 +21,9 @@
                     <a href="/lesson/bai-hoc">Bài học</a>
                 </div>
                 <div class="item">
+                    <a href="/lesson-pdf/bai-hoc">Bài tập tự luyện</a>
+                </div>
+                <div class="item">
                     <a  href="/test/trac-nghiem">Trắc nghiệm</a>
                 </div>
                 <div class="item">
@@ -47,10 +50,10 @@
                     </button>
                     <div class="dropdown-content">
                         <div class="header">
-                            <h2><a href="/lesson/create">Tạo bài học</a></h2>
-                            <h2><a href="/test/create/info">Tạo bài kiểm tra</a></h2>
-                            <h2><a href="/lesson/create">Tạo bài học</a></h2>
-                            <h2><a href="/quick-quiz/my-quick-quiz">Tạo câu đố</a></h2>
+                            <h2><a href="/lesson/my-lesson">Quản lý bài học</a></h2>
+                            <h2><a href="/lesson-pdf/my-lesson">Quản lý bài tập tự luyện</a></h2>
+                            <h2><a href="/test/my-test">Quản lý bài kiểm tra</a></h2>
+                            <h2><a href="/quick-quiz/my-quick-quiz">Quản lý câu đố</a></h2>
                         </div>
                     </div>
                 </div>
@@ -59,8 +62,8 @@
                         <span th:text="${'Xin chào '}"></span>
                         <span th:text="${userInfo}"></span>
                     </div>
-                    <a class="avatar">
-                        <img th:src="@{/images/ic_default_avatar.png}" alt="default logo user">
+                    <a class="avatar" href="/logout">
+                        <img th:src="@{/images/ic_logout.png}" alt="default logo user">
                     </a>
                 </div>
 
@@ -116,7 +119,36 @@
                 </div>
             </div>
         </div>
-
+        <div id="content-container">
+            <div class="lesson-container">
+                <h2>Bài tập tự luyện</h2>
+                <div id="navigation-container">
+                    <nav>
+                        <ul class="parent-menu">
+                            <li th:each="subject : ${subjectCollectionParentDTOS}" class="parent-item">
+                                <a th:href="@{${'/lesson-pdf' + subject.prefix}}">[[${subject.subjectCollectionParentName}]]</a>
+                                <ul class="child-menu">
+                                    <li th:each="child : ${subject.subjectCollectionEntities}" class="child-item">
+                                        <a th:href="@{${'/lesson-pdf' + child.prefix}}">[[${child.SubjectCollectionName}]]</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="lessons-grid">
+                    <div class="lesson-item" th:each="lesson : ${lessonPDFDTOS}">
+                        <a th:href="@{'/lesson/detail/'+${lesson.slug}}">
+                            <div class="image-lesson">
+                                <img th:src="@{'/resource/' + ${lesson.imageUrl}}" alt="Lesson Image" class="lesson-image">
+                            </div>
+                            <h3 th:text="${lesson.lessonName}">Lesson Name</h3>
+                            <p th:text="${lesson.description}">Description</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div id="content-container">
             <div class="lesson-container">
                 <h2>Trắc nghiệm</h2>

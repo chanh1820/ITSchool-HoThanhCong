@@ -174,7 +174,6 @@ button a:hover {
 nav {
     width: fix-content;
     background-color: #FFDC7F;
-    display: flex;
     border-radius: 4px;
 }
 
