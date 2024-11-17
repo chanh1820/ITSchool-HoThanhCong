@@ -138,7 +138,7 @@
                 </div>
                 <div class="lessons-grid">
                     <div class="lesson-item" th:each="lesson : ${lessonPDFDTOS}">
-                        <a th:href="@{'/lesson/detail/'+${lesson.slug}}">
+                        <a th:href="@{'/lesson-pdf/detail/'+${lesson.slug}}">
                             <div class="image-lesson">
                                 <img th:src="@{'/resource/' + ${lesson.imageUrl}}" alt="Lesson Image" class="lesson-image">
                             </div>
