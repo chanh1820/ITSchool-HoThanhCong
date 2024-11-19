@@ -23,4 +23,6 @@ public interface QuickQuizService {
     List<QuickQuizLogDTO> findQuickQuizLogs(String randomId);
 
     QuickQuizRankDTO calculatorRank(List<QuickQuizLogDTO> quickQuizLogDTOS);
+
+    void deleteById(Long id);
 }

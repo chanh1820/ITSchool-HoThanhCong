@@ -85,6 +85,7 @@
             })
             listStr = listStr.substring(0, listStr.length - 1)
             alert("Bạn chưa nhập đủ đáp án, các câu chưa nhập là: " + listStr)
+            return;
         }
 
         saveQuestionItemLessons(listAnswerChecked, testId);
@@ -103,7 +104,12 @@
         })
         .then(res => res.json())
         .then(res => {
-            console.log(res.data)
+            console.log(res)
+            if(res.status == '200'){
+                window.location.href = '/test/my-test'
+            }else{
+                alert(res.message)
+            }
         });
       }
 

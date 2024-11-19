@@ -170,4 +170,9 @@ public class QuickQuizServiceImpl implements QuickQuizService {
         quickQuizRankDTO.setNumberPointTrue("Số người trả lời đúng: " + numberTrue);
         return quickQuizRankDTO;
     }
+
+    @Override
+    public void deleteById(Long id) {
+        quickQuizRepository.deleteById(id);
+    }
 }

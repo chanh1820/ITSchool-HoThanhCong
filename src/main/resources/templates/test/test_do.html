@@ -14,7 +14,7 @@
                 <span id="counter-timer" th:data="${testDTO.minuteTime}" th:text="${testDTO.minuteTime + ':00'}" class="counter-timer"></span>
             </div>
             <div id="btn-submit">
-                <button class="button-submit" th:onclick="'submitQuestionItem('+ ${testDTO.numberChooseTest} +' ,'+ ${userDoTestDTO.id} +')'" role="button">Nộp bài</button>
+                <button class="button-submit"  th:onclick="'submitQuestionItem('+ ${testDTO.numberChooseTest} +' ,'+ ${userDoTestDTO.id} +')'" role="button">Nộp bài</button>
             </div>
         </div>
         <div class="bottom-container">
@@ -62,6 +62,8 @@
 
 </body>
 <script>
+    let listAnswerChecked = [100];
+    const userDoTestId = window.location.pathname.split('/').pop()
     let display = document.getElementById('counter-timer');
     const time = display.getAttribute('data') * 60
     let timeRemain = time;
@@ -78,7 +80,7 @@
 
             if (--timer < 0) {
                 timer = 0;
-                // Optionally, you can trigger an event here when the timer ends
+                updateRealtimeAnswer(listAnswerChecked, userDoTestId);
             }
         }, 1000);
     }
@@ -88,7 +90,6 @@
         startTimer(time, display);
     };
 
-    listAnswerChecked = [100];
     function onRadioButtonClick(index, value){
         console.log(index, value);
         listAnswerChecked[Number.parseInt(index)] = value
@@ -114,6 +115,7 @@
             })
             listStr = listStr.substring(0, listStr.length - 1)
             alert("Bạn chưa trả lời đủ đáp án, các câu chưa trả lời là: " + listStr)
+            return;
         }
 
         updateRealtimeAnswer(listAnswerChecked, userDoTestId);

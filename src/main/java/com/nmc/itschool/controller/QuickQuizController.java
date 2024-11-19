@@ -92,7 +92,14 @@ public class QuickQuizController {
 
         return "quick_quiz/quick_quiz_list";
     }
+    @GetMapping("/delete/{id}")
+    public String deleteQuickQuiz(Model model, @PathVariable Long id) {
+        log.info("start deleteQuickQuiz");
+        quickQuizService.deleteById(id);
+        log.info("end deleteQuickQuiz");
 
+        return "redirect:/quick-quiz/my-quick-quiz";
+    }
     @GetMapping("/thanks-you")
     public String thanksYou(Model model) {
         log.info("Go thanksYou");

@@ -228,6 +228,8 @@ public class TestController {
             @RequestParam("pdfFile") MultipartFile pdfFile,
             @RequestParam("numberChooseTest") String numberChooseTest,
             @RequestParam("numberWriteTest") String numberWriteTest,
+            @RequestParam("minuteTime") String minuteTime,
+            @RequestParam("maxPoint") String maxPoint,
             Model model) {
 
         // Validate file types
@@ -253,6 +255,8 @@ public class TestController {
         testDTO.setAuthor("");
         testDTO.setNumberChooseTest(Integer.valueOf(numberChooseTest));
         testDTO.setNumberWriteTest(Integer.valueOf(numberWriteTest));
+        testDTO.setMinuteTime(Integer.valueOf(minuteTime));
+        testDTO.setMaxPoint(Integer.valueOf(maxPoint));
 
         TestDTO result = testService.save(testDTO);
         // Here you would save lessonDTO to your database
