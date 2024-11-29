@@ -45,7 +45,7 @@ public class TestController {
     @Autowired
     SubjectCollectionMapper subjectCollectionMapper;
 
-    @GetMapping("/create-test-collection/info")
+    @GetMapping("/create/info")
     public String addTestInfo(Model model) {
         log.info("start addTestInfo");
 
@@ -58,6 +58,25 @@ public class TestController {
 
         return "test/test_create_info";  // Trả về tệp home.html trong thư mục templates
     }
+
+    @GetMapping("/create/info/{slug}")
+//    @RequestMapping(value = "/detail/{slug}", method = RequestMethod.GET)
+    public String createDetailQuestion(Model model, @PathVariable String slug) throws UnsupportedEncodingException {
+        log.info("start createDetailQuestion");
+
+        TestDTO testDTO = testService.findBySlug(slug);
+        if(testDTO != null){
+//            model.addAttribute("pathFile", FileUtil.getPathResourceFile());
+            model.addAttribute("testDTO", testDTO);
+        }else {
+            throw new AppException(MessageEnum.ERR_LESSON_NOT_FOUND);
+        }
+        log.info("data: {}", ObjectMapperUtil.writeValueAsString(testDTO));
+        log.info("end createDetailQuestion");
+
+        return "test/test_create_detail_question";  // Trả về tệp home.html trong thư mục templates
+    }
+
     @GetMapping("/trac-nghiem")
     public String testPage(Model model) {
         log.info("start testPage");
@@ -76,47 +95,11 @@ public class TestController {
 
         return "test/test_page";  // Trả về tệp home.html trong thư mục templates
     }
-    @GetMapping("/create/info/{slug}")
-//    @RequestMapping(value = "/detail/{slug}", method = RequestMethod.GET)
-    public String createDetailQuestion(Model model, @PathVariable String slug) throws UnsupportedEncodingException {
-        log.info("start createDetailQuestion");
 
-        TestDTO testDTO = testService.findBySlug(slug);
-        if(testDTO != null){
-//            model.addAttribute("pathFile", FileUtil.getPathResourceFile());
-            model.addAttribute("testDTO", testDTO);
-        }else {
-            throw new AppException(MessageEnum.ERR_LESSON_NOT_FOUND);
-        }
-        log.info("data: {}", ObjectMapperUtil.writeValueAsString(testDTO));
-        log.info("end createDetailQuestion");
-
-        return "test/test_create_detail_question";  // Trả về tệp home.html trong thư mục templates
-    }
     @GetMapping("/my-test")
     public String myTest(Model model) {
         log.info("start myTest");
         List<TestDTO> testDTOS = testService.getAll(99999);
-        log.info(ObjectMapperUtil.writeValueAsString(testDTOS));
-        model.addAttribute("testDTOS", testDTOS);
-
-        log.info("end myTest");
-
-        return "test/test_list";
-    }
-    @GetMapping("/my-test-collection")
-    public String myTestCollection(Model model) {
-        log.info("start myTest");
-        List<TestCollectionDTO> testCollectionDTOS = testService.getCollectionAll(99999);
-        log.info(ObjectMapperUtil.writeValueAsString(testCollectionDTOS));
-        model.addAttribute("testCollectionDTOS", testCollectionDTOS);
-        log.info("end myTest");
-        return "test/test_list";
-    }
-    @GetMapping("/test-list-by-collection/{uuid}")
-    public String testCollectionList(Model model, @PathVariable String uuid) {
-        log.info("start myTest");
-        List<TestDTO> testDTOS = testService.getTestByCollectionUUID(uuid);
         log.info(ObjectMapperUtil.writeValueAsString(testDTOS));
         model.addAttribute("testDTOS", testDTOS);
 
@@ -237,48 +220,7 @@ public class TestController {
 
         return "test/score_result";
     }
-    @PostMapping("/api/save-collection")
-    public String saveTestCollection(
-            @RequestParam("testCollectionName") String testCollectionName,
-            @RequestParam("description") String description,
-            @RequestParam("collectionParentPrefix") String collectionParentPrefix,
-            @RequestParam("collectionPrefix") String collectionPrefix,
-            @RequestParam("thumbnailFile") MultipartFile thumbnailFile,
-            @RequestParam("numberChooseTest") String numberChooseTest,
-            @RequestParam("numberWriteTest") String numberWriteTest,
-            @RequestParam("minuteTime") String minuteTime,
-            @RequestParam("maxPoint") String maxPoint,
-            Model model) {
 
-        // Validate file types
-        if (!FileUtil.isImageValid(thumbnailFile)) {
-            model.addAttribute("error", "Invalid image file");
-            return "add";
-        }
-        FileUtil fileUtil = new FileUtil();
-        // Save the files and get their URLs
-        String imageUrl = fileUtil.saveFile(thumbnailFile);
-
-        // Create and save the LessonDTO
-        TestCollectionDTO testCollectionDTO = new TestCollectionDTO();
-        testCollectionDTO.setTestCollectionUUID(UUID.randomUUID().toString());
-        testCollectionDTO.setTestCollectionName(testCollectionName);
-        testCollectionDTO.setDescription(description);
-        testCollectionDTO.setSlug(StringUtil.convertToSlug(testCollectionName)+"-"+ UUID.randomUUID().toString());
-        testCollectionDTO.setCollectionPrefix(collectionPrefix);
-        testCollectionDTO.setCollectionParentPrefix(collectionParentPrefix);
-        testCollectionDTO.setThumbnailFile(imageUrl);
-        testCollectionDTO.setNumberChooseTest(Integer.valueOf(numberChooseTest));
-        testCollectionDTO.setNumberWriteTest(Integer.valueOf(numberWriteTest));
-        testCollectionDTO.setMinuteTime(Integer.valueOf(minuteTime));
-        testCollectionDTO.setMaxPoint(Integer.valueOf(maxPoint));
-
-        TestCollectionDTO result = testService.saveCollection(testCollectionDTO);
-        // Here you would save lessonDTO to your database
-        model.addAttribute("message", "Lesson saved successfully");
-
-        return "redirect:/test/create/info/"+result.getSlug();
-    }
     @PostMapping("/api/save")
     public String saveLesson(
             @RequestParam("testCode") String testCode,
@@ -326,6 +268,84 @@ public class TestController {
 
         return "redirect:/test/create/info/"+result.getSlug();
     }
+    ///--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    ///--------------------------------------------TEST COLLECTION------------------------------------------------------------------------------------------------------------------------------------
+    ///--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+    @GetMapping("/create-test-collection/info")
+    public String addTestCollectionInfo(Model model) {
+        log.info("start addTestCollectionInfo");
 
+        List<SubjectCollectionParentDTO> subjectCollectionParentDTOS = subjectCollectionParentService.getAll();
+        log.info("data: {}", ObjectMapperUtil.writeValueAsString(subjectCollectionParentDTOS));
+//        model.addAttribute("pathFile", FileUtil.getPathResourceFile());
+        model.addAttribute("subjectCollectionParentDTOS", subjectCollectionParentDTOS);
+
+        log.info("end addTestCollectionInfo");
+
+        return "test/test_create_info";  // Trả về tệp home.html trong thư mục templates
+    }
+    @GetMapping("/my-test-collection")
+    public String myTestCollection(Model model) {
+        log.info("start myTestCollection");
+        List<TestCollectionDTO> testCollectionDTOS = testService.getCollectionAll(99999);
+        log.info(ObjectMapperUtil.writeValueAsString(testCollectionDTOS));
+        model.addAttribute("testCollectionDTOS", testCollectionDTOS);
+        log.info("end myTestCollection");
+        return "test/test_collection_list";
+    }
+    @GetMapping("/test-list-by-collection/{uuid}")
+    public String testCollectionList(Model model, @PathVariable String uuid) {
+        log.info("start myTest");
+        List<TestDTO> testDTOS = testService.getTestByCollectionUUID(uuid);
+        log.info(ObjectMapperUtil.writeValueAsString(testDTOS));
+        model.addAttribute("testDTOS", testDTOS);
+
+        log.info("end myTest");
+
+        return "test/test_list";
+    }
+
+    @PostMapping("/api/save-test-collection")
+    public String saveTestCollection(
+            @RequestParam("testCollectionName") String testCollectionName,
+            @RequestParam("description") String description,
+            @RequestParam("collectionParentPrefix") String collectionParentPrefix,
+            @RequestParam("collectionPrefix") String collectionPrefix,
+            @RequestParam("thumbnailFile") MultipartFile thumbnailFile,
+            @RequestParam("numberChooseTest") String numberChooseTest,
+            @RequestParam("numberWriteTest") String numberWriteTest,
+            @RequestParam("minuteTime") String minuteTime,
+            @RequestParam("maxPoint") String maxPoint,
+            Model model) {
+
+        // Validate file types
+        if (!FileUtil.isImageValid(thumbnailFile)) {
+            model.addAttribute("error", "Invalid image file");
+            return "add";
+        }
+        FileUtil fileUtil = new FileUtil();
+        // Save the files and get their URLs
+        String imageUrl = fileUtil.saveFile(thumbnailFile);
+
+        // Create and save the LessonDTO
+        TestCollectionDTO testCollectionDTO = new TestCollectionDTO();
+        testCollectionDTO.setTestCollectionUUID(UUID.randomUUID().toString());
+        testCollectionDTO.setTestCollectionName(testCollectionName);
+        testCollectionDTO.setDescription(description);
+        testCollectionDTO.setSlug(StringUtil.convertToSlug(testCollectionName)+"-"+ UUID.randomUUID().toString());
+        testCollectionDTO.setCollectionPrefix(collectionPrefix);
+        testCollectionDTO.setCollectionParentPrefix(collectionParentPrefix);
+        testCollectionDTO.setThumbnailFile(imageUrl);
+        testCollectionDTO.setNumberChooseTest(Integer.valueOf(numberChooseTest));
+        testCollectionDTO.setNumberWriteTest(Integer.valueOf(numberWriteTest));
+        testCollectionDTO.setMinuteTime(Integer.valueOf(minuteTime));
+        testCollectionDTO.setMaxPoint(Integer.valueOf(maxPoint));
+
+        TestCollectionDTO result = testService.saveCollection(testCollectionDTO);
+        // Here you would save lessonDTO to your database
+        model.addAttribute("message", "Lesson saved successfully");
+
+        return "redirect:/test/test-list-by-collection/"+result.getTestCollectionUUID();
+    }
 }
