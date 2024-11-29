@@ -3,6 +3,7 @@ package com.nmc.itschool.controller;
 import com.nmc.itschool.constant.MessageEnum;
 import com.nmc.itschool.dto.*;
 import com.nmc.itschool.entity.SubjectCollectionEntity;
+import com.nmc.itschool.entity.TestCollectionEntity;
 import com.nmc.itschool.exceptions.AppException;
 import com.nmc.itschool.mapper.SubjectCollectionMapper;
 import com.nmc.itschool.security.CustomUserDetails;
@@ -44,7 +45,7 @@ public class TestController {
     @Autowired
     SubjectCollectionMapper subjectCollectionMapper;
 
-    @GetMapping("/create/info")
+    @GetMapping("/create-test-collection/info")
     public String addTestInfo(Model model) {
         log.info("start addTestInfo");
 
@@ -103,7 +104,26 @@ public class TestController {
 
         return "test/test_list";
     }
+    @GetMapping("/my-test-collection")
+    public String myTestCollection(Model model) {
+        log.info("start myTest");
+        List<TestCollectionDTO> testCollectionDTOS = testService.getCollectionAll(99999);
+        log.info(ObjectMapperUtil.writeValueAsString(testCollectionDTOS));
+        model.addAttribute("testCollectionDTOS", testCollectionDTOS);
+        log.info("end myTest");
+        return "test/test_list";
+    }
+    @GetMapping("/test-list-by-collection/{uuid}")
+    public String testCollectionList(Model model, @PathVariable String uuid) {
+        log.info("start myTest");
+        List<TestDTO> testDTOS = testService.getTestByCollectionUUID(uuid);
+        log.info(ObjectMapperUtil.writeValueAsString(testDTOS));
+        model.addAttribute("testDTOS", testDTOS);
 
+        log.info("end myTest");
+
+        return "test/test_list";
+    }
     @GetMapping("/delete/{id}")
     public String deleteTest(Model model, @PathVariable Long id) {
         log.info("start deleteTest");
@@ -217,6 +237,48 @@ public class TestController {
 
         return "test/score_result";
     }
+    @PostMapping("/api/save-collection")
+    public String saveTestCollection(
+            @RequestParam("testCollectionName") String testCollectionName,
+            @RequestParam("description") String description,
+            @RequestParam("collectionParentPrefix") String collectionParentPrefix,
+            @RequestParam("collectionPrefix") String collectionPrefix,
+            @RequestParam("thumbnailFile") MultipartFile thumbnailFile,
+            @RequestParam("numberChooseTest") String numberChooseTest,
+            @RequestParam("numberWriteTest") String numberWriteTest,
+            @RequestParam("minuteTime") String minuteTime,
+            @RequestParam("maxPoint") String maxPoint,
+            Model model) {
+
+        // Validate file types
+        if (!FileUtil.isImageValid(thumbnailFile)) {
+            model.addAttribute("error", "Invalid image file");
+            return "add";
+        }
+        FileUtil fileUtil = new FileUtil();
+        // Save the files and get their URLs
+        String imageUrl = fileUtil.saveFile(thumbnailFile);
+
+        // Create and save the LessonDTO
+        TestCollectionDTO testCollectionDTO = new TestCollectionDTO();
+        testCollectionDTO.setTestCollectionUUID(UUID.randomUUID().toString());
+        testCollectionDTO.setTestCollectionName(testCollectionName);
+        testCollectionDTO.setDescription(description);
+        testCollectionDTO.setSlug(StringUtil.convertToSlug(testCollectionName)+"-"+ UUID.randomUUID().toString());
+        testCollectionDTO.setCollectionPrefix(collectionPrefix);
+        testCollectionDTO.setCollectionParentPrefix(collectionParentPrefix);
+        testCollectionDTO.setThumbnailFile(imageUrl);
+        testCollectionDTO.setNumberChooseTest(Integer.valueOf(numberChooseTest));
+        testCollectionDTO.setNumberWriteTest(Integer.valueOf(numberWriteTest));
+        testCollectionDTO.setMinuteTime(Integer.valueOf(minuteTime));
+        testCollectionDTO.setMaxPoint(Integer.valueOf(maxPoint));
+
+        TestCollectionDTO result = testService.saveCollection(testCollectionDTO);
+        // Here you would save lessonDTO to your database
+        model.addAttribute("message", "Lesson saved successfully");
+
+        return "redirect:/test/create/info/"+result.getSlug();
+    }
     @PostMapping("/api/save")
     public String saveLesson(
             @RequestParam("testCode") String testCode,
@@ -264,7 +326,6 @@ public class TestController {
 
         return "redirect:/test/create/info/"+result.getSlug();
     }
-
 
 
 }

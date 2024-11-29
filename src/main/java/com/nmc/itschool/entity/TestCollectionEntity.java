@@ -8,25 +8,23 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity()
-@Table(name = "test_tbl")
+@Table(name = "test_collection_tbl")
 @Getter
 @Setter
 @NoArgsConstructor
 @AttributeOverride(name = "id", column = @Column(name = "test_id"))
-public class TestEntity {
+public class TestCollectionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "test_id", nullable = false)
+    @Column(name = "test_collection_id", nullable = false)
     private Long id;
-
-    @Column(name = "test_code")
-    private String testCode;
 
     @Column(name = "test_collection_uuid")
     private String testCollectionUUID;
 
-    @Column(name = "test_name")
-    private String testName;
+
+    @Column(name = "test_collection_name")
+    private String testCollectionName;
 
     @Column(name = "description")
     private String description;
@@ -37,35 +35,14 @@ public class TestEntity {
     @Column(name = "thumbnail_file")
     private String thumbnailFile;
 
-    @Column(name = "pdf_file")
-    private String pdfFile;
-
-    @Column(name = "json_list_item_question")
-    private String jsonListItemQuestion;
-
-    @Column(name = "max_point")
-    private Integer maxPoint;
-
-    @Column(name = "minute_time")
-    private Integer minuteTime;
-
     @Column(name = "collection_prefix")
     private String collectionPrefix;
 
     @Column(name = "collection_parent_prefix")
     private String collectionParentPrefix;
 
-    @Column(name = "number_choose_test")
-    private Integer numberChooseTest;
-
-    @Column(name = "number_write_test")
-    private Integer numberWriteTest;
-
     @Column(name = "public_flag")
     private Boolean publicFlag;
-
-    @Column(name = "author")
-    private String author;
 
     @Column(name = "created_date")
     private LocalDateTime createdDate;
