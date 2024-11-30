@@ -75,5 +75,9 @@ public class TestEntity {
 
     @Column(name = "delete_flag")
     private Boolean deleteFlag;
+
+    @ManyToOne
+    @JoinColumn(name = "test_collection_id")
+    private TestCollectionEntity testCollection;
 }
 

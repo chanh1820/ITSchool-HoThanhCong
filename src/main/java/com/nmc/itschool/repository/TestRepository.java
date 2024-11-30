@@ -21,6 +21,6 @@ public interface TestRepository extends JpaRepository<TestEntity, Long>{
             "OR collection_prefix=:prefix AND delete_flag = false" , nativeQuery = true)
     Optional<List<TestEntity>> findByPrefix(String prefix);
 
-    @Query(value = "SELECT * FROM test_tbl WHERE delete_flag = false and test_collection_uuid =: UUID ORDER BY test_id DESC LIMIT 15" , nativeQuery = true)
+    @Query(value = "SELECT * FROM test_tbl WHERE delete_flag = false and test_collection_uuid =:UUID ORDER BY test_id DESC LIMIT 15" , nativeQuery = true)
     Optional<List<TestEntity>> findByCollectionUUID(String UUID);
 }

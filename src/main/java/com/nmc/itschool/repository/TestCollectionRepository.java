@@ -17,6 +17,9 @@ public interface TestCollectionRepository extends JpaRepository<TestCollectionEn
     @Query(value = "SELECT * FROM test_collection_tbl WHERE slug=:slug AND delete_flag = false" , nativeQuery = true)
     Optional<TestCollectionEntity> findBySlug(String slug);
 
+    @Query(value = "SELECT * FROM test_collection_tbl WHERE test_collection_uuid=:uuid AND delete_flag = false" , nativeQuery = true)
+    Optional<TestCollectionEntity> findByUUID(String uuid);
+
     @Query(value = "SELECT * FROM test_collection_tbl WHERE collection_parent_prefix=:prefix " +
             "OR collection_prefix=:prefix AND delete_flag = false" , nativeQuery = true)
     Optional<List<TestCollectionEntity>> findByPrefix(String prefix);

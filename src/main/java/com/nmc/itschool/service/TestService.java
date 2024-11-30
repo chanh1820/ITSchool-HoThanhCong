@@ -19,6 +19,6 @@ public interface TestService {
     List<TestDTO> findByPrefix(String prefix);
 
     public TestCollectionDTO saveCollection(TestCollectionDTO testCollectionDTO);
-
     public List<TestCollectionDTO> getCollectionAll(int limit);
+    public TestCollectionDTO getCollectionByUUID(String uuid);
 }

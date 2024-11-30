@@ -135,6 +135,17 @@ public class TestServiceImpl implements TestService {
         return result;
     }
 
+    @Override
+    public TestCollectionDTO getCollectionByUUID(String uuid) {
+        Optional<TestCollectionEntity> otp = testCollectionRepository.findByUUID(uuid);
+        if(otp.isPresent()){
+            TestCollectionEntity testCollectionEntity = otp.get();
+            testCollectionEntity.setTestEntityList(testCollectionEntity.getTestEntityList());
+            return testCollectionMapper.toDTO(testCollectionEntity);
+        }
+        return null;
+    }
+
     private void validateSaveLesson(String parentPrefix, String childPrefix) {
         Optional<SubjectCollectionParentEntity> optParentCollection = subjectCollectionParentRepository.getByPrefix(parentPrefix);
         if (!optParentCollection.isPresent()){

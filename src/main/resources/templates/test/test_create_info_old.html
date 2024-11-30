@@ -9,10 +9,10 @@
 <body>
     <h1>Khởi tạo bài kiểm tra</h1>
 
-    <form action="#" th:action="@{/test/api/save-test-collection}" th:method="post" enctype="multipart/form-data">
+    <form action="#" th:action="@{/test/api/save}" th:method="post" enctype="multipart/form-data">
         <div>
-            <label for="testCollectionName">Tên đề:</label>
-            <input type="text" id="testCollectionName" name="testCollectionName" required>
+            <label for="testName">Tên bài kiểm tra:</label>
+            <input type="text" id="testName" name="testName" required>
         </div>
         <div>
             <label for="description">Mô tả:</label>
@@ -39,6 +39,10 @@
             <input type="file" id="thumbnailFile" name="thumbnailFile" accept="image/png, image/jpeg" required>
         </div>
         <div>
+            <label for="pdfFile">Nội dung bài PDF:</label>
+            <input type="file" id="pdfFile" name="pdfFile" accept="application/pdf" required>
+        </div>
+        <div>
             <label for="numberChooseTest">Số câu hỏi trắc nghiệm:</label>
             <input type="number" id="numberChooseTest" name="numberChooseTest" min="1" max="100">
         </div>
@@ -54,7 +58,7 @@
             <label for="maxPoint">Điểm tối đa:</label>
             <input type="number" id="maxPoint" name="maxPoint" value ="10" min="1" max="100">
         </div>
-        <button type="submit">Tạo đề</button>
+        <button type="submit">Tiếp tục tạo đáp án ></button>
     </form>
 
 </body>

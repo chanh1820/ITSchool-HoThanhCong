@@ -1,11 +1,13 @@
 package com.nmc.itschool.dto;
 
+import com.nmc.itschool.entity.TestEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -45,5 +47,7 @@ public class TestCollectionDTO {
     private Integer maxPoint;
 
     private Integer minuteTime;
+
+    private List<TestEntity> testEntityList;
 }
 

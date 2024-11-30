@@ -45,7 +45,7 @@ public class TestController {
     @Autowired
     SubjectCollectionMapper subjectCollectionMapper;
 
-    @GetMapping("/create/info")
+    @GetMapping("/create/{uuid}")
     public String addTestInfo(Model model) {
         log.info("start addTestInfo");
 
@@ -221,31 +221,20 @@ public class TestController {
         return "test/score_result";
     }
 
-    @PostMapping("/api/save")
+    @PostMapping("/api/save/{}")
     public String saveLesson(
-            @RequestParam("testCode") String testCode,
-            @RequestParam("testName") String testName,
-            @RequestParam("description") String description,
-            @RequestParam("collectionParentPrefix") String collectionParentPrefix,
-            @RequestParam("collectionPrefix") String collectionPrefix,
-            @RequestParam("thumbnailFile") MultipartFile thumbnailFile,
             @RequestParam("pdfFile") MultipartFile pdfFile,
-            @RequestParam("numberChooseTest") String numberChooseTest,
-            @RequestParam("numberWriteTest") String numberWriteTest,
-            @RequestParam("minuteTime") String minuteTime,
-            @RequestParam("maxPoint") String maxPoint,
             Model model) {
 
         // Validate file types
-        if (!FileUtil.isImageValid(thumbnailFile) || !FileUtil.isPdfValid(pdfFile)) {
+        if (!FileUtil.isPdfValid(pdfFile)) {
             model.addAttribute("error", "Invalid image or PDF file");
             return "add";
         }
         FileUtil fileUtil = new FileUtil();
         // Save the files and get their URLs
-        String imageUrl = fileUtil.saveFile(thumbnailFile);
         String pdfUrl = fileUtil.saveFile(pdfFile);
-
+        TestCollectionDTO testCollectionDTO =
         // Create and save the LessonDTO
         TestDTO testDTO = new TestDTO();
         testDTO.setTestCode(testCode);
@@ -283,7 +272,7 @@ public class TestController {
 
         log.info("end addTestCollectionInfo");
 
-        return "test/test_create_info";  // Trả về tệp home.html trong thư mục templates
+        return "test/test_collection_create_info";  // Trả về tệp home.html trong thư mục templates
     }
     @GetMapping("/my-test-collection")
     public String myTestCollection(Model model) {
@@ -297,9 +286,10 @@ public class TestController {
     @GetMapping("/test-list-by-collection/{uuid}")
     public String testCollectionList(Model model, @PathVariable String uuid) {
         log.info("start myTest");
-        List<TestDTO> testDTOS = testService.getTestByCollectionUUID(uuid);
-        log.info(ObjectMapperUtil.writeValueAsString(testDTOS));
-        model.addAttribute("testDTOS", testDTOS);
+        TestCollectionDTO testCollectionDTO = testService.getCollectionByUUID(uuid);
+        log.info(ObjectMapperUtil.writeValueAsString(testCollectionDTO));
+        model.addAttribute("testCollectionDTO", testCollectionDTO);
+        model.addAttribute("testDTOS", testCollectionDTO.getTestEntityList());
 
         log.info("end myTest");
 

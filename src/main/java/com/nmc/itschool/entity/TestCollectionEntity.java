@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity()
 @Table(name = "test_collection_tbl")
@@ -52,5 +53,9 @@ public class TestCollectionEntity {
 
     @Column(name = "delete_flag")
     private Boolean deleteFlag;
+
+    @OneToMany(mappedBy = "testCollection", cascade = CascadeType.ALL)
+    private List<TestEntity> testEntityList;
+
 }
 
