@@ -6,7 +6,7 @@ import com.nmc.itschool.dto.UserDoTestDTO;
 import java.util.List;
 
 public interface UserDoTestService {
-    UserDoTestDTO findByUserNameAndSlug(String userName, String slug);
+    UserDoTestDTO getByTestSlugAndUserName(String slug, String userName);
 
     UserDoTestDTO save(UserDoTestDTO userDoTestDTO);
 

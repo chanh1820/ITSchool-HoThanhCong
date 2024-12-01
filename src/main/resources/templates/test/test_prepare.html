@@ -11,26 +11,26 @@
         <div class="test-content-container">
             <div class="left-container">
                 <div class="name">
-                    <span th:text="${'Kiểm tra: ' + testDTO.testName}"></span>
+                    <span th:text="${'Kiểm tra: ' + testCollectionDTO.testCollectionName}"></span>
                 </div>
                 <div class="description">
-                    <span th:text="${'Mô tả: ' + testDTO.description}"></span>
+                    <span th:text="${'Mô tả: ' + testCollectionDTO.description}"></span>
                 </div>
                 <div class="time">
-                    <span th:text="${'Thời gian: ' + testDTO.minuteTime +' phút'}"></span>
+                    <span th:text="${'Thời gian: ' + testCollectionDTO.minuteTime +' phút'}"></span>
                 </div>
                 <div class="num-of-test">
-                    <span th:text="${'Số câu hỏi: ' + (testDTO.numberChooseTest + testDTO.numberWriteTest)}"></span>
+                    <span th:text="${'Số câu hỏi: ' + (testCollectionDTO.numberChooseTest + testCollectionDTO.numberWriteTest)}"></span>
                 </div>
             </div>
             <div class="right-container">
                 <div class="thumbnail">
-                    <img th:src="@{'/resource/' + ${testDTO.thumbnailFile}}" alt="Lesson Image" >
+                    <img th:src="@{'/resource/' + ${testCollectionDTO.thumbnailFile}}" alt="Lesson Image" >
                 </div>
             </div>
         </div>
         <div class="button-start">
-            <button th:inline="javascript" th:onclick="saveUserDoTest([[${testDTO.slug}]])">
+            <button th:inline="javascript" th:onclick="saveUserDoTest([[${testCollectionDTO.slug}]])">
                 <a>Bắt đầu</a>
             </button>
         </div>
@@ -43,7 +43,7 @@
       fetch("/api/test/save-user-do-test", {
       method: "POST",
       body: JSON.stringify({
-        slug : slugValue
+        testSlug : slugValue
       }),
       headers: {
           "Content-type": "application/json; charset=UTF-8"
@@ -56,7 +56,7 @@
           console.log("1");
           if(res.status == '200'){
             console.log("2");
-            window.location = "/test/do/" + data.slug;
+            window.location = "/test/do/" + data.testSlug;
           } else {
             console.log("3");
             alert(res.message)

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Bài học - Ngôi nhà toán học</title>
+    <link rel="stylesheet" th:href="@{/css/lesson_page_other.css}">
+    <link rel="icon" type="image/x-icon" th:href="@{/images/ic_logo_app.png}">
+</head>
+<body>
+<div class="home-container">
+    <div class="container">
+        <div th:if="${subjectCollectionDTO != null}">
+            <h2 th:text="${subjectCollectionDTO.subjectCollectionName}"></h2>
+        </div>
+        <table class="dto-table">
+            <thead>
+            <tr>
+                <th>Xem</th>
+                <th>Tiêu đề</th>
+                <th>Mô tả</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Sample Row -->
+            <tr th:each="item : ${lessonDTOS}">
+                <td><a th:href="@{'/lesson/detail/'+${item.slug}}">Xem</a></td>
+                <td th:text="${item.lessonName}">John Doe</td>
+                <td th:text="${item.description}">Sample Title</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+
+</html>

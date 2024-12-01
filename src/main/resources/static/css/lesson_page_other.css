@@ -1,0 +1,374 @@
+body {
+    display: block;
+    margin: 0px;
+    font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.home-container {
+    height: 2000px;
+}
+.navbar {
+  overflow: hidden;
+  background-color: #333;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.navbar a {
+  float: left;
+  font-size: 16px;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.dropdown {
+    position: relative;
+    float: left;
+    align-self: center;
+    margin-right: 20px;
+}
+
+.dropdown .dropbtn {
+  font-size: 16px;
+  /* border: none;
+  outline: none;
+  color:#222;
+  padding: 14px 16px;
+  background-color: inherit; */
+  font: inherit;
+  margin: 0;
+}
+
+.navbar a:hover, .dropdown:hover .dropbtn {
+  /* background-color: red; */
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  /*width: 100%;*/
+  right: 0;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content .header {
+  /* background: red; */
+  padding: 16px;
+  color: white;
+}
+.dropdown-content .header a{
+    text-decoration: none;
+    color: #222;
+    font-size: 20px;
+
+}
+.dropdown-content .header a:hover{
+    text-decoration: none;
+    color: #4CAF50;
+    font-size: 21px;
+
+}
+.dropdown:hover .dropdown-content {
+  display: block;
+  width: 250px;
+}
+
+/* Create three equal columns that floats next to each other */
+.column {
+  float: left;
+  width: 33.33%;
+  padding: 10px;
+  background-color: #ccc;
+  height: 250px;
+}
+
+.column a {
+  float: none;
+  color: black;
+  padding: 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.column a:hover {
+  background-color: #ddd;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+  .column {
+    width: 100%;
+    height: auto;
+  }
+}
+button a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button:hover {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.login, .registry {
+    margin: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+button a span {
+    margin-left: 5px;
+    font-weight: bold;
+}
+
+button a:hover {
+    text-decoration: none;
+}
+.user-info{
+    width: 20%;
+    display: flex;
+}
+.user-info .user-content{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.user-content .full-name span:nth-child(1){
+    font-weight: 600;
+    color: black;
+    font-family: cursive;
+}
+
+.user-content .full-name span:nth-child(2){
+    font-weight: 600;
+    color: blueviolet;
+    font-family: cursive;
+}
+.user-content .avatar img{
+    width:50px;
+    height:50px;
+}
+#banner-container .banner-item img{
+    padding-top: 120px;
+    width: 100%;
+}
+
+#navigation-container{
+    width: 100%;
+    display: flex;
+    justify-content: center
+}
+nav {
+    width: fix-content;
+    background-color: #FFDC7F;
+    border-radius: 4px;
+}
+
+.parent-menu {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    width:100%;
+    padding:8px;
+}
+
+.parent-menu .parent-item {
+    position: relative;
+    margin-left: 20px;
+    margin-right: 20px;
+    min-width: 10%;
+    border: 2px solid red;
+    border-radius: 8px;
+}
+
+.parent-menu .parent-item a {
+    display: block;
+    padding: 10px;
+    color: #222;
+    text-decoration: none;
+    min-width: 10%;
+    font-weight:600;
+}
+
+.parent-menu .parent-item:hover .child-menu {
+    display: block;
+}
+
+.child-menu {
+    list-style-type: none;
+    position: absolute;
+    display: none;
+    top: 100%;
+    left: 0;
+    background-color: #FFDC7F;
+    padding: 0;
+    margin: 0;
+    border-radius: 4px;
+}
+
+.child-menu .child-item a {
+    display: block;
+    padding: 10px;
+    color: #222;
+    font-weight:600;
+    text-decoration: none;
+    min-width: 200px
+}
+
+.child-menu .child-item a:hover {
+    background-color: #eeba2d;
+    border-radius: 4px;
+}
+
+/*LESSON*/
+
+.lesson-container {
+
+    justify-content: center;
+    margin: 20px;
+}
+.lesson-container>h2{
+    margin: 110px 110px 20px 110px;
+}
+.lessons-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 4 items per row */
+    gap: 20px; /* Space between items */
+    /* max-width: 1200px; */
+    margin: 0px 110px;
+}
+
+.lesson-item {
+    background: url('/images/bg_random_word.png');
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    height: 100%; /* Ensure equal height for all items */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.lesson-item:hover{
+    cursor: pointer;
+    border-color: #F05C66;
+    box-shadow: #F05C66 3px 3px 1px;
+    transition: 0.8s;
+}
+.lesson-item img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px 8px 0px 0px;
+}
+.lesson-item>a {
+    text-decoration: none;
+}
+.lesson-item h3 {
+    color: #ff5722;
+    text-align: start;
+    margin: 10px 10px;
+}
+
+.lesson-item p {
+    color: #777;
+}
+
+.image-lesson{
+    width: 100%; /* Absolute width */
+    height: 200px; /* Absolute height */
+    overflow: hidden; /* Hide the parts of the image that are outside the container */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-lesson img {
+    width: 100%;
+    height: 100%;
+    transition: transform .4s ease;
+    object-fit: cover; /* This will maintain the aspect ratio while filling the container */
+    object-position: center; /* This centers the image within the container */
+}
+
+.image-lesson img:hover{
+    transform: scale(1.04) !important
+}
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f7f8fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    width: 90%;
+    max-width: 900px;
+    margin: 20px;
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.dto-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dto-table th, .dto-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.dto-table thead th {
+    background-color: #4a90e2;
+    color: #fff;
+    font-weight: bold;
+}
+
+.dto-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.dto-table tbody tr:hover {
+    background-color: #e0f7fa;
+}
+
+.dto-table .status.correct {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.dto-table .status.incorrect {
+    color: #d9534f;
+    font-weight: bold;
+}

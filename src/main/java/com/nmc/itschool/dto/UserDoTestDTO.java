@@ -15,7 +15,7 @@ public class UserDoTestDTO {
 
     private String userName;
 
-    private String slug;
+    private String testSlug;
 
     private String jsonListItemQuestion;
 

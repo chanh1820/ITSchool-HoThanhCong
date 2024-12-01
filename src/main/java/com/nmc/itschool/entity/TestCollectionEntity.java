@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@AttributeOverride(name = "id", column = @Column(name = "test_id"))
+@AttributeOverride(name = "id", column = @Column(name = "test_collection_id"))
 public class TestCollectionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,6 +41,18 @@ public class TestCollectionEntity {
 
     @Column(name = "collection_parent_prefix")
     private String collectionParentPrefix;
+
+    @Column(name = "max_point")
+    private Integer maxPoint;
+
+    @Column(name = "minute_time")
+    private Integer minuteTime;
+
+    @Column(name = "number_choose_test")
+    private Integer numberChooseTest;
+
+    @Column(name = "number_write_test")
+    private Integer numberWriteTest;
 
     @Column(name = "public_flag")
     private Boolean publicFlag;

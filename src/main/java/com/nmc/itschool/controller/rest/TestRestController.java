@@ -33,13 +33,15 @@ public class TestRestController {
     private ScoreService scoreService;
     @Autowired
     private UserDoTestService userDoTestService;
-    @PostMapping("/save-item")
-    public BaseResponse saveTestItem(@RequestBody TestDTO testDTO) {
-        logger.info("Start saveTestItem {}", testDTO);
+    @PostMapping("/save-result")
+    public BaseResponse saveResultTestItem(@RequestBody TestResultSaveDTO testResultSaveDTO) {
+        logger.info("Start saveResultTestItem {}", testResultSaveDTO);
 
-        TestDTO result = testService.saveItem(testDTO);
-        logger.info("End saveTestItem with data {}", ObjectMapperUtil.writeValueAsString(result));
-        return BaseResponse.success(result);
+        List<TestResultDTO> result = testService.saveResultItem(testResultSaveDTO);
+        TestDTO testDTO = testService.findById(result.get(0).getTestId());
+        logger.info("End saveResultTestItem with result {}", ObjectMapperUtil.writeValueAsString(result));
+        logger.info("End saveResultTestItem with testDTO {}", ObjectMapperUtil.writeValueAsString(testDTO));
+        return BaseResponse.success(testDTO);
     }
 
     @PostMapping("/save-user-do-test")

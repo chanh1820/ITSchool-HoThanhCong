@@ -15,4 +15,7 @@ public class DBConstant {
         add(new ContentDTO(1L, "", "Video", "Công nghệ số giúp học sinh hình dung và hiểu sâu về toán học thông qua việc sử dụng phần mềm và video", "/video", "/video.jpg"));
         add(new ContentDTO(1L, "", "Giải Toán Bằng Tiếng Anh", "Học toán bằng tiếng Anh giúp nắm vững kiến thức cơ bản và nâng cao, phát triển kỹ năng giải quyết vấn đề logic", "/giai-toan-bang-tieng-anh", "/giai_toan_bang_tieng_anh.jpg"));
     }};
+
+    public static final String TYPE_TEST_ANSWER_CHOOSE = "A";
+    public static final String TYPE_TEST_ANSWER_WRITE = "B";
 }

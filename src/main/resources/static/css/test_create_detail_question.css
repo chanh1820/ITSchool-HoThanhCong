@@ -116,7 +116,22 @@ body, html{
     margin: 0px;
     align-items: center;
 }
+.answer-input {
+    width: 100%;
+    max-width: 183px;
+    padding: 6px;
+    margin-left: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
 
+.answer-input:focus {
+    border-color: #007BFF; /* Change border color on focus */
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add a subtle glow */
+}
 .choose-question-item label {display: inline; padding: 5px; position: relative; padding-left: 20px;}
 .choose-question-item label input {display: none;}
 .choose-question-item label span {padding: 1px 6px 3px 6px; border: 1px solid #ccc; width: 15px; height: 15px; overflow: hidden; line-height: 1; text-align: center; border-radius: 100%; font-size: 15pt; left: 0; top: 50%; margin-top: -7.5px;}

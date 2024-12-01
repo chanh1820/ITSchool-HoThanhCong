@@ -55,6 +55,11 @@
                             </label>
                         </div>
                     </div>
+                    <div class="choose-question-item" th:each="index : ${#numbers.sequence(testDTO.numberChooseTest, (testDTO.numberChooseTest) + testDTO.numberWriteTest - 1)}">
+                        <h2 class="item-index">[[${index} + 1]]</h2>
+                        <input type="number" th:id="'answer' + i" th:class="'answer-input'"/>
+                        <br />
+                    </div>
                 </div>
             </div>
         </div>
@@ -62,7 +67,7 @@
 
 </body>
 <script>
-    let listAnswerChecked = [100];
+    let listAnswerChecked = [];
     const userDoTestId = window.location.pathname.split('/').pop()
     let display = document.getElementById('counter-timer');
     const time = display.getAttribute('data') * 60
@@ -96,7 +101,6 @@
         console.log(JSON.stringify(listAnswerChecked));
     }
     function submitQuestionItem(totalItem, userDoTestId){
-        // validate
         console.log(listAnswerChecked);
         var isAllChecked = true;
         var listNotChecked = [];
@@ -107,26 +111,53 @@
             }
         }
 
-        if(!isAllChecked){
+        const answers = [];
+        const emptyIndices = [];
+        console.log(listNotChecked);
+    
+        document.querySelectorAll(".answer-input").forEach((input, index) => {
+            if (input.value.trim() === "") {
+                emptyIndices.push(totalItem + index + 1); // Store 1-based index of empty fields
+            } else {
+                answers.push(input.value);
+            }
+        });
+
+        if(!isAllChecked || emptyIndices.length > 0){
             var listStr = "";
-            listNotChecked.map(item=>{
-                listStr += item
-                listStr += ","
-            })
-            listStr = listStr.substring(0, listStr.length - 1)
-            alert("Bạn chưa trả lời đủ đáp án, các câu chưa trả lời là: " + listStr)
+            listStr = listNotChecked.concat(emptyIndices).join(", ")
+            alert("Bạn chưa nhập đủ đáp án, các câu chưa nhập là: " + listStr)
             return;
         }
 
-        updateRealtimeAnswer(listAnswerChecked, userDoTestId);
+        // build object answer
+        let answerChooseList = [];
+        let answerWriteList = [];
+        for(var i = 0; i < totalItem; i++){
+            const item = {}
+            item.sortOder = i + 1
+            item.result = listAnswerChecked[i]
+            item.type = "A"
+            answerChooseList.push(item);
+        }
+
+        document.querySelectorAll(".answer-input").forEach((input, index) => {
+            const item = {}
+            item.sortOder = totalItem + index + 1
+            item.result = input.value
+            item.type = "B"
+            answerWriteList.push(item);
+        });
+
+        updateRealtimeAnswer(answerChooseList, answerWriteList, userDoTestId);
     }
 
-    function updateRealtimeAnswer(questionItems, userDoTestId) {
+    function updateRealtimeAnswer(answerChooseList, answerWriteList,userDoTestId) {
         fetch("/api/test/update-realtime-user-do-test", {
         method: "POST",
         body: JSON.stringify({
                 id :userDoTestId,
-                jsonListItemQuestion : JSON.stringify(arrayToMap(questionItems)),
+                jsonListItemQuestion : JSON.stringify(answerChooseList.concat(answerWriteList)),
                 minuteTime : timeRemain
             }),
         headers: {

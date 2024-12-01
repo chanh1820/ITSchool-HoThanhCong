@@ -18,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -46,13 +47,14 @@ public class TestController {
     SubjectCollectionMapper subjectCollectionMapper;
 
     @GetMapping("/create/{uuid}")
-    public String addTestInfo(Model model) {
+    public String addTestInfo(@PathVariable String uuid, Model model) {
         log.info("start addTestInfo");
 
         List<SubjectCollectionParentDTO> subjectCollectionParentDTOS = subjectCollectionParentService.getAll();
         log.info("data: {}", ObjectMapperUtil.writeValueAsString(subjectCollectionParentDTOS));
 //        model.addAttribute("pathFile", FileUtil.getPathResourceFile());
         model.addAttribute("subjectCollectionParentDTOS", subjectCollectionParentDTOS);
+        model.addAttribute("testCollectionDTO", testService.getCollectionByUUID(uuid));
 
         log.info("end addTestInfo");
 
@@ -110,22 +112,25 @@ public class TestController {
     @GetMapping("/delete/{id}")
     public String deleteTest(Model model, @PathVariable Long id) {
         log.info("start deleteTest");
-        testService.deleteById(id);
+        TestDTO testDTO = testService.findById(id);
+        if(testDTO != null){
+            testService.deleteById(id);
+        }
         log.info("end deleteTest");
-        return "redirect:/test/my-test";
+        return "redirect:/test/test-list-by-collection/" + testDTO.getTestCollectionUUID();
     }
     @GetMapping("/prepare/{slug}")
     public String prepareTest(Model model, @PathVariable String slug) throws UnsupportedEncodingException {
         log.info("start prepareTest");
 
-        TestDTO testDTO = testService.findBySlug(slug);
-        if(testDTO != null){
+        TestCollectionDTO testCollectionDTO = testService.getCollectionBySlug(slug);
+        if(testCollectionDTO != null){
 //            model.addAttribute("pathFile", FileUtil.getPathResourceFile());
-            model.addAttribute("testDTO", testDTO);
+            model.addAttribute("testCollectionDTO", testCollectionDTO);
         }else {
             throw new AppException(MessageEnum.ERR_LESSON_NOT_FOUND);
         }
-        log.info("data: {}", ObjectMapperUtil.writeValueAsString(testDTO));
+        log.info("data: {}", ObjectMapperUtil.writeValueAsString(testCollectionDTO));
         log.info("end prepareTest");
 
         return "test/test_prepare";
@@ -191,9 +196,11 @@ public class TestController {
         }
 
         TestDTO testDTO = testService.findBySlug(slug);
-        UserDoTestDTO userDoTestDTO = userDoTestService.findByUserNameAndSlug(userName, slug);
+        UserDoTestDTO userDoTestDTO = userDoTestService.getByTestSlugAndUserName(slug, userName);
         if(testDTO != null){
 //            model.addAttribute("pathFile", FileUtil.getPathResourceFile());
+            log.info("testDTO {}", testDTO);
+            log.info("userDoTestDTO {}", userDoTestDTO);
             model.addAttribute("testDTO", testDTO);
             model.addAttribute("userDoTestDTO", userDoTestDTO);
         }else {
@@ -221,9 +228,11 @@ public class TestController {
         return "test/score_result";
     }
 
-    @PostMapping("/api/save/{}")
+    @PostMapping("/api/save/{uuid}")
     public String saveLesson(
             @RequestParam("pdfFile") MultipartFile pdfFile,
+            @RequestParam("testTopicName") String testTopicName,
+            @PathVariable String uuid,
             Model model) {
 
         // Validate file types
@@ -234,28 +243,32 @@ public class TestController {
         FileUtil fileUtil = new FileUtil();
         // Save the files and get their URLs
         String pdfUrl = fileUtil.saveFile(pdfFile);
-        TestCollectionDTO testCollectionDTO =
+        TestCollectionDTO testCollectionDTO = testService.getCollectionByUUID(uuid);
+
+
         // Create and save the LessonDTO
         TestDTO testDTO = new TestDTO();
-        testDTO.setTestCode(testCode);
-        testDTO.setTestName(testName);
-        testDTO.setDescription(description);
-        testDTO.setSlug(StringUtil.convertToSlug(testName)+"-"+ UUID.randomUUID().toString());
-        testDTO.setCollectionPrefix(collectionPrefix);
-        testDTO.setCollectionParentPrefix(collectionParentPrefix);
-        testDTO.setThumbnailFile(imageUrl);
+        testDTO.setTestCode("");
+        testDTO.setTestName(testCollectionDTO.getTestCollectionName());
+        testDTO.setTestTopicName(testTopicName);
+        testDTO.setTestCollectionUUID(uuid);
+        testDTO.setDescription(testCollectionDTO.getDescription());
+        testDTO.setSlug(StringUtil.convertToSlug(testCollectionDTO.getSlug())+"-"+ UUID.randomUUID().toString());
+        testDTO.setCollectionPrefix(testCollectionDTO.getCollectionPrefix());
+        testDTO.setCollectionParentPrefix(testCollectionDTO.getCollectionParentPrefix());
+        testDTO.setThumbnailFile(testCollectionDTO.getThumbnailFile());
         testDTO.setPdfFile(pdfUrl);
         testDTO.setAuthor("");
-        testDTO.setNumberChooseTest(Integer.valueOf(numberChooseTest));
-        testDTO.setNumberWriteTest(Integer.valueOf(numberWriteTest));
-        testDTO.setMinuteTime(Integer.valueOf(minuteTime));
-        testDTO.setMaxPoint(Integer.valueOf(maxPoint));
+        testDTO.setNumberChooseTest(testCollectionDTO.getNumberChooseTest());
+        testDTO.setNumberWriteTest(testCollectionDTO.getNumberWriteTest());
+        testDTO.setMinuteTime(testCollectionDTO.getMinuteTime());
+        testDTO.setMaxPoint(testCollectionDTO.getMaxPoint());
 
         TestDTO result = testService.save(testDTO);
         // Here you would save lessonDTO to your database
         model.addAttribute("message", "Lesson saved successfully");
 
-        return "redirect:/test/create/info/"+result.getSlug();
+        return "redirect:/test/create/info/" + result.getSlug();
     }
     ///--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     ///--------------------------------------------TEST COLLECTION------------------------------------------------------------------------------------------------------------------------------------
@@ -337,5 +350,13 @@ public class TestController {
         model.addAttribute("message", "Lesson saved successfully");
 
         return "redirect:/test/test-list-by-collection/"+result.getTestCollectionUUID();
+    }
+
+    @GetMapping("/delete-collection/{id}")
+    public String deleteTestCollection(Model model, @PathVariable Long id) {
+        log.info("start deleteTestCollection");
+        testService.deleteCollectionById(id);
+        log.info("end deleteTestCollection");
+        return "redirect:/test/my-test-collection";
     }
 }

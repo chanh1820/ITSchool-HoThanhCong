@@ -130,6 +130,55 @@ public class LessonController {
 
         return "lesson/lesson_of_subject_page";
     }
+
+    @GetMapping("/other/{prefix}")
+    public String lessonOtherPageByPrefix(Model model, @PathVariable String prefix) {
+        prefix = "/" + prefix;
+        log.info("start lessonPageByPrefix with prefix {}", prefix);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        SubjectCollectionParentDTO subjectCollectionParentDTO = null;
+        SubjectCollectionDTO subjectCollectionDTO = null;
+        List<LessonDTO> lessonDTOS = new ArrayList<>();
+        // get Data
+        List<SubjectCollectionParentDTO> subjectCollectionParentDTOS
+                = subjectCollectionParentService.getAll();
+
+        for (SubjectCollectionParentDTO itemParent : subjectCollectionParentDTOS){
+            if(itemParent.getPrefix().equals(prefix)){
+                subjectCollectionParentDTO = itemParent;
+                break;
+            }
+            for(SubjectCollectionEntity childItem: itemParent.getSubjectCollectionEntities()){
+                if(childItem.getPrefix().equals(prefix)){
+                    subjectCollectionDTO = subjectCollectionMapper.toDTO(childItem);
+                    break;
+                }
+            }
+
+        }
+
+        // add data
+//        model.addAttribute("subjectCollectionParentDTOS", subjectCollectionParentDTOS);
+        if(subjectCollectionParentDTO != null){
+            log.info("1");
+            model.addAttribute("subjectCollectionParentDTO", subjectCollectionParentDTO);
+        }else if(subjectCollectionDTO != null){
+            log.info("2");
+            model.addAttribute("subjectCollectionDTO", subjectCollectionDTO);
+        }else {
+            log.info("3");
+            return null;
+        }
+        log.info("prefix: {}", prefix);
+
+        lessonDTOS = lessonService.findByPrefix(prefix);
+        model.addAttribute("lessonDTOS", lessonDTOS);
+        log.info("lessonDTOS: {}", ObjectMapperUtil.writeValueAsString(lessonDTOS));
+
+        log.info("end lessonPageByPrefix");
+
+        return "lesson/lesson_other";
+    }
     @GetMapping("/create")
     public String saveLessonPage(Model model) {
         log.info("start saveLessonPage");

@@ -25,6 +25,8 @@ public class TestDTO implements Serializable {
 
     private String testName;
 
+    private String testTopicName;
+
     private String description;
 
     private String slug;
@@ -54,6 +56,8 @@ public class TestDTO implements Serializable {
     private LocalDateTime createdDate;
 
     private LocalDateTime updatedDate;
+
+    private Boolean isAvailable;
 
     private Boolean deleteFlag;
 }

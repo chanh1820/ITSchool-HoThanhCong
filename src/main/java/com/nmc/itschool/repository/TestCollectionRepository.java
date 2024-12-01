@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface TestCollectionRepository extends JpaRepository<TestCollectionEntity, Long>{
-    @Query(value = "SELECT * FROM test_collection_tbl WHERE delete_flag = false ORDER BY test_id DESC LIMIT :limit" , nativeQuery = true)
+    @Query(value = "SELECT * FROM test_collection_tbl WHERE delete_flag = false ORDER BY test_collection_id DESC LIMIT :limit" , nativeQuery = true)
     Optional<List<TestCollectionEntity>> getAll(int limit);
 
     @Query(value = "SELECT * FROM test_collection_tbl WHERE slug=:slug AND delete_flag = false" , nativeQuery = true)

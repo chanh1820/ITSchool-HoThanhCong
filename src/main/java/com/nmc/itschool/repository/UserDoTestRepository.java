@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface UserDoTestRepository extends JpaRepository<UserDoTestEntity, Long>{
 
     @Query(value = "SELECT * FROM user_do_test_tbl " +
-            "WHERE slug=:slug AND user_name=:userName AND delete_flag = false ORDER BY user_do_test_id ASC", nativeQuery = true)
-    Optional<List<UserDoTestEntity>> findBySlugAndUserName(String userName, String slug);
+            "WHERE test_slug=:testSlug AND user_name=:userName AND delete_flag = false ORDER BY user_do_test_id ASC", nativeQuery = true)
+    Optional<List<UserDoTestEntity>> findByTestSlugAndUserName( String testSlug, String userName);
 
 }

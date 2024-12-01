@@ -28,6 +28,9 @@ public class TestEntity {
     @Column(name = "test_name")
     private String testName;
 
+    @Column(name = "test_topic_name")
+    private String testTopicName;
+
     @Column(name = "description")
     private String description;
 
@@ -73,9 +76,11 @@ public class TestEntity {
     @Column(name = "updated_date")
     private LocalDateTime updatedDate;
 
+    @Column(name = "is_available")
+    private Boolean isAvailable;
+
     @Column(name = "delete_flag")
     private Boolean deleteFlag;
-
     @ManyToOne
     @JoinColumn(name = "test_collection_id")
     private TestCollectionEntity testCollection;

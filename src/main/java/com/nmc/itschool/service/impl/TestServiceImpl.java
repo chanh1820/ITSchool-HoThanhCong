@@ -1,15 +1,13 @@
 package com.nmc.itschool.service.impl;
 
 import com.nmc.itschool.constant.MessageEnum;
-import com.nmc.itschool.dto.LessonDTO;
-import com.nmc.itschool.dto.QuestionItemDTO;
-import com.nmc.itschool.dto.TestCollectionDTO;
-import com.nmc.itschool.dto.TestDTO;
+import com.nmc.itschool.dto.*;
 import com.nmc.itschool.entity.*;
 import com.nmc.itschool.exceptions.AppException;
 import com.nmc.itschool.mapper.LessonMapper;
 import com.nmc.itschool.mapper.TestCollectionMapper;
 import com.nmc.itschool.mapper.TestMapper;
+import com.nmc.itschool.mapper.TestResultMapper;
 import com.nmc.itschool.repository.*;
 import com.nmc.itschool.service.LessonService;
 import com.nmc.itschool.service.TestService;
@@ -18,7 +16,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,17 +33,18 @@ public class TestServiceImpl implements TestService {
     TestRepository testRepository;
     @Autowired
     TestCollectionRepository testCollectionRepository;
-
+    @Autowired
+    TestResultRepository testResultRepository;
     @Autowired
     SubjectCollectionParentRepository subjectCollectionParentRepository;
-
     @Autowired
     SubjectCollectionRepository subjectCollectionRepository;
-
     @Autowired
     TestMapper testMapper;
     @Autowired
     TestCollectionMapper testCollectionMapper;
+    @Autowired
+    TestResultMapper testResultMapper;
     @Override
     public TestDTO save(TestDTO testDTO) {
         log.info(ObjectMapperUtil.writeValueAsString(testDTO));
@@ -56,20 +57,45 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public TestDTO saveItem(TestDTO testDTO) {
-        log.info(ObjectMapperUtil.writeValueAsString(testDTO));
-        TestEntity testEntity = null;
-        TestEntity result;
-        Optional<TestEntity> otp = testRepository.findById(testDTO.getId());
+    public TestDTO findById(Long id) {
+        Optional<TestEntity> otp = testRepository.findById(id);
+        if(otp.isPresent()){
+            return testMapper.toDTO(otp.get());
+        }
+        return null;
+    }
+
+    @Override
+    @Transactional
+    public List<TestResultDTO> saveResultItem(TestResultSaveDTO testResultSaveDTO) {
+        log.info(ObjectMapperUtil.writeValueAsString(testResultSaveDTO));
+        boolean result;
+        Optional<TestEntity> otp = testRepository.findById(testResultSaveDTO.getTestId());
         if (otp.isPresent()){
-            testEntity = otp.get();
-            testEntity.setJsonListItemQuestion(testDTO.getJsonListItemQuestion());
-            result = testRepository.save(testEntity);
+            List<TestResultDTO> chooseList = testResultSaveDTO.getAnswerChooseList();
+            List<TestResultDTO> writeList = testResultSaveDTO.getAnswerWriteList();
+            TestEntity testEntity = otp.get();
+            testEntity.setIsAvailable(true);
+
+            List<TestResultDTO> testResultDTOS = new ArrayList<>();
+            testResultDTOS.addAll(chooseList);
+            testResultDTOS.addAll(writeList);
+            int rowsAffected = testResultRepository.deleteByTestId(testResultSaveDTO.getTestId());
+            log.info("deleted {} test result item  by testId = {}", rowsAffected, testResultSaveDTO.getTestId());
+            List<TestResultEntity> testResultEntities = testResultRepository.saveAll(testResultMapper.toEntities(testResultDTOS));
+            return testResultMapper.toDTOs(testResultEntities);
         }else {
             throw new AppException(MessageEnum.ERR_TEST_NOT_FOUND);
         }
+    }
 
-        return testMapper.toDTO(result);
+    @Override
+    public List<TestResultDTO> getResultItem(Long testId) {
+        Optional<List<TestResultEntity>> optional = testResultRepository.findByTestId(testId);
+        if(optional.isPresent()){
+            return testResultMapper.toDTOs(optional.get());
+        }
+        return null;
     }
 
     @Override
@@ -140,10 +166,31 @@ public class TestServiceImpl implements TestService {
         Optional<TestCollectionEntity> otp = testCollectionRepository.findByUUID(uuid);
         if(otp.isPresent()){
             TestCollectionEntity testCollectionEntity = otp.get();
-            testCollectionEntity.setTestEntityList(testCollectionEntity.getTestEntityList());
+            Optional<List<TestEntity>> optionalTestEntities = testRepository.findByCollectionUUID(testCollectionEntity.getTestCollectionUUID());
+            if(optionalTestEntities.isPresent()){
+                testCollectionEntity.setTestEntityList(optionalTestEntities.get());
+            }
             return testCollectionMapper.toDTO(testCollectionEntity);
         }
         return null;
+    }
+
+    @Override
+    public TestCollectionDTO getCollectionBySlug(String slug) {
+        Optional<TestCollectionEntity> otp = testCollectionRepository.findBySlug(slug);
+        if(otp.isPresent()){
+            TestCollectionEntity testCollectionEntity = otp.get();
+            Optional<List<TestEntity>> optionalTestEntities = testRepository.findByCollectionUUID(testCollectionEntity.getTestCollectionUUID());
+            if(optionalTestEntities.isPresent()){
+                testCollectionEntity.setTestEntityList(optionalTestEntities.get());
+            }
+            return testCollectionMapper.toDTO(testCollectionEntity);
+        }
+        return null;    }
+
+    @Override
+    public void deleteCollectionById(Long id) {
+        testCollectionRepository.deleteById(id);
     }
 
     private void validateSaveLesson(String parentPrefix, String childPrefix) {

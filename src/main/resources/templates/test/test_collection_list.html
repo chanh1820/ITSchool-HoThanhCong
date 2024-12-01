@@ -29,7 +29,7 @@
         </td>
         <td class="actions">
             <!-- Delete button -->
-            <a th:href="@{/test/delete/{id}(id=${item.id})}" class="delete" title="Xoá">
+            <a th:href="@{/test/delete-collection/{id}(id=${item.id})}" class="delete" title="Xoá">
                 <img class="icon-button" th:src="@{/images/ic_delete.png}" />
             </a>
             <a th:href="@{/test/test-list-by-collection/{uuid}(uuid=${item.testCollectionUUID})}" class="delete" title="Chỉnh sửa">

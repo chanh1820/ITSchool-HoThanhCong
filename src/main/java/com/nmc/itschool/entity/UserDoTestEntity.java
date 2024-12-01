@@ -22,8 +22,8 @@ public class UserDoTestEntity {
     @Column(name = "user_name", nullable = false, length = 45)
     private String userName;
 
-    @Column(name = "slug")
-    private String slug;
+    @Column(name = "test_slug")
+    private String testSlug;
 
     @Column(name = "json_list_item_question")
     private String jsonListItemQuestion;

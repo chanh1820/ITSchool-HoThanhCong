@@ -23,17 +23,17 @@ import org.thymeleaf.util.StringUtils;
 
 import javax.persistence.Column;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Slf4j
 public class UserDoTestServiceImpl implements UserDoTestService {
-
+    @Autowired
+    TestService testService;
     @Autowired
     TestRepository testRepository;
+    @Autowired
+    TestCollectionRepository testCollectionRepository;
     @Autowired
     UserDoTestRepository userDoTestRepository;
     @Autowired
@@ -51,8 +51,8 @@ public class UserDoTestServiceImpl implements UserDoTestService {
     @Autowired
     ScoreMapper scoreMapper;
     @Override
-    public UserDoTestDTO findByUserNameAndSlug(String userName, String slug) {
-        Optional<List<UserDoTestEntity>> otp = userDoTestRepository.findBySlugAndUserName(userName, slug);
+    public UserDoTestDTO getByTestSlugAndUserName(String slug, String userName) {
+        Optional<List<UserDoTestEntity>> otp = userDoTestRepository.findByTestSlugAndUserName(slug, userName);
         log.info("otp.get().size() - 1: {} {}", userName, slug);
         if(otp.isPresent() && CollectionUtils.isNotEmpty(otp.get())){
             log.info("otp.get().size() - 1: {}", otp.get().size() - 1);
@@ -66,15 +66,23 @@ public class UserDoTestServiceImpl implements UserDoTestService {
     @Override
     public UserDoTestDTO save(UserDoTestDTO userDoTestDTO) {
         String userName = userDoTestDTO.getUserName();
-        String slug = userDoTestDTO.getSlug();
-        Optional<TestEntity> otp = testRepository.findBySlug(slug);
+        String testSlug = userDoTestDTO.getTestSlug();
+        Optional<TestCollectionEntity> otp = testCollectionRepository.findBySlug(userDoTestDTO.getTestSlug());
         if(otp.isPresent()){
-            TestEntity testEntity = otp.get();
+            TestCollectionEntity testCollectionEntity = otp.get();
+            log.info("testByCollectionUUID {}", ObjectMapperUtil.writeValueAsString(testCollectionEntity));
+
+            List<TestDTO> testDTOS = testService.getTestByCollectionUUID(testCollectionEntity.getTestCollectionUUID());
+            log.info("testByCollectionUUID {}", ObjectMapperUtil.writeValueAsString(testDTOS));
+            int indexRandom = new Random().nextInt(testDTOS.size());
+            log.info("indexRandom {}", indexRandom);
+            log.info("testDTOS.size() {}", testDTOS.size());
+            TestDTO testDTO = testDTOS.get(indexRandom);
             UserDoTestEntity userDoTestVO = new UserDoTestEntity();
             userDoTestVO.setUserName(userName);
-            userDoTestVO.setSlug(slug);
-            userDoTestVO.setJsonListItemQuestion(testEntity.getJsonListItemQuestion());
-            userDoTestVO.setMinuteTime(testEntity.getMinuteTime());
+            userDoTestVO.setTestSlug(testDTO.getSlug());
+            userDoTestVO.setJsonListItemQuestion(testDTO.getJsonListItemQuestion());
+            userDoTestVO.setMinuteTime(testDTO.getMinuteTime());
             userDoTestVO.setDeleteFlag(false);
             UserDoTestEntity entity = userDoTestRepository.save(userDoTestVO);
 

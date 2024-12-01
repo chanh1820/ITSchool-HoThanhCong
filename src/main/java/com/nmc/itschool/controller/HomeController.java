@@ -62,7 +62,7 @@ public class HomeController {
         List<SubjectCollectionParentDTO> subjectCollectionParentDTOS = subjectCollectionParentService.getAllInHome();
         List<LessonDTO> lessonDTOS = lessonService.getAll(15);
         List<LessonDTO> lessonPDFDTOS = lessonPDFService.getAll(15);
-        List<TestDTO> testDTOS = testService.getAll(15);
+        List<TestCollectionDTO> testCollectionDTOS = testService.getCollectionAll(15);
         QuickQuizDTO quickQuizDTO = quickQuizService.getPicked();
         List<ContentDTO> contentDTOS = DBConstant.CONTENT_DTOS;
 
@@ -73,7 +73,7 @@ public class HomeController {
         model.addAttribute("subjectCollectionParentDTOS", subjectCollectionParentDTOS);
         model.addAttribute("lessonDTOS", lessonDTOS);
         model.addAttribute("lessonPDFDTOS", lessonPDFDTOS);
-        model.addAttribute("testDTOS", testDTOS);
+        model.addAttribute("testCollectionDTOS", testCollectionDTOS);
         model.addAttribute("contentDTOS", contentDTOS);
         model.addAttribute("quickQuizDTO", quickQuizDTO);
 
