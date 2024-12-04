@@ -183,7 +183,7 @@ public class NewsController {
         log.info("start saveNewsPage");
 
         List<SubjectCollectionParentDTO> subjectCollectionParentDTOS
-                = subjectCollectionParentService.getAllByType(DBConstant.TYPE_COLLECTION_PARENT_NEWS);
+                = subjectCollectionParentService.getAllByType(DBConstant.TYPE_COLLECTION_PARENT_LESSON);
         log.info("data: {}", ObjectMapperUtil.writeValueAsString(subjectCollectionParentDTOS));
 //        model.addAttribute("pathFile", FileUtil.getPathResourceFile());
         model.addAttribute("subjectCollectionParentDTOS", subjectCollectionParentDTOS);
