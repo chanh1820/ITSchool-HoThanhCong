@@ -25,13 +25,13 @@ public class TestEntity {
     @Column(name = "test_collection_uuid")
     private String testCollectionUUID;
 
-    @Column(name = "test_name")
+    @Column(name = "test_name", length = 13383)
     private String testName;
 
-    @Column(name = "test_topic_name")
+    @Column(name = "test_topic_name", length = 13383)
     private String testTopicName;
 
-    @Column(name = "description")
+    @Column(name = "description", length = 13383)
     private String description;
 
     @Column(name = "slug")

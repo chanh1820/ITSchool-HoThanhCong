@@ -19,16 +19,16 @@ public class LessonPDFEntity {
     @Column(name = "lesson_id", nullable = false)
     private Long id;
 
-    @Column(name = "lesson_code")
+    @Column(name = "lesson_code", length = 13383)
     private String lessonCode;
 
-    @Column(name = "lesson_name")
+    @Column(name = "lesson_name", length = 13383)
     private String lessonName;
 
-    @Column(name = "description")
+    @Column(name = "description", length = 13383)
     private String description;
 
-    @Column(name = "slug")
+    @Column(name = "slug", length = 13383)
     private String slug;
 
     @Column(name = "image_url")

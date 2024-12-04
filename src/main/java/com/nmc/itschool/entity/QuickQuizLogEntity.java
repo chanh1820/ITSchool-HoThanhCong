@@ -30,7 +30,7 @@ public class QuickQuizLogEntity {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "question")
+    @Column(name = "question", length = 13383)
     private String question;
 
     @Column(name = "answer")

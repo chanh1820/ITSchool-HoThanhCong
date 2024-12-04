@@ -18,4 +18,6 @@ public class DBConstant {
 
     public static final String TYPE_TEST_ANSWER_CHOOSE = "A";
     public static final String TYPE_TEST_ANSWER_WRITE = "B";
+    public static final String TYPE_COLLECTION_PARENT_LESSON = "LESSON";
+    public static final String TYPE_COLLECTION_PARENT_NEWS = "NEWS";
 }

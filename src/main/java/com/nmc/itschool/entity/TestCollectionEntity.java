@@ -24,10 +24,10 @@ public class TestCollectionEntity {
     private String testCollectionUUID;
 
 
-    @Column(name = "test_collection_name")
+    @Column(name = "test_collection_name", length = 13383)
     private String testCollectionName;
 
-    @Column(name = "description")
+    @Column(name = "description", length = 13383)
     private String description;
 
     @Column(name = "slug")

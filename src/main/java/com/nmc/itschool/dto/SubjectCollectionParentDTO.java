@@ -26,6 +26,8 @@ public class SubjectCollectionParentDTO {
 
     private Integer sortOrder;
 
+    private String type;
+
     private LocalDateTime createdDate;
 
     private LocalDateTime updatedDate;

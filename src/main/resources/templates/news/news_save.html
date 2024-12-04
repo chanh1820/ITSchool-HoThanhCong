@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Lưu bài học</title>
+    <link rel="icon" type="image/x-icon" th:href="@{/images/ic_logo_app.png}">
+    <link rel="stylesheet" th:href="@{/css/lesson_save.css}">
+</head>
+<body>
+<h1>Tạo bài học</h1>
+
+<form action="#" th:action="@{/news/api/create}" th:method="post" enctype="multipart/form-data">
+    <div>
+        <label for="newsName">Tiêu đề:</label>
+        <input type="text" id="newsName" name="newsName" required>
+    </div>
+    <div>
+        <label for="description">Mô tả:</label>
+        <textarea id="description" name="description" required></textarea>
+    </div>
+    <div>
+        <label for="collectionParentPrefix">Nhóm:</label>
+        <select id="collectionParentPrefix" name="collectionParentPrefix" required>
+            <option value="">-- Chọn nhóm --</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="collectionPrefix">Danh mục:</label>
+        <select id="collectionPrefix" name="collectionPrefix" required>
+            <option value="">-- Chọn danh mục --</option>
+        </select>
+    </div>
+<!--    <div>-->
+<!--        <label for="imageFile">Ảnh bìa (PNG/JPG):</label>-->
+<!--        <input type="file" id="imageFile" name="imageFile" accept="image/png, image/jpeg">-->
+<!--    </div>-->
+    <div>
+        <label>Loại tài liệu:</label>
+        <div class="choose-type-document">
+            <input type="radio" id="pdfUpload" name="uploadType" value="pdf" required>
+            <label for="pdfUpload">PDF</label>
+        </div>
+        <div class="choose-type-document">
+            <input type="radio" id="videoUpload" name="uploadType" value="video" required>
+            <label for="videoUpload">Video Youtube</label>
+        </div>
+    </div>
+    <div id="fileUploadContainer">
+        <!-- PDF Upload Section -->
+        <div id="pdfUploadSection" style="display: none;">
+            <label for="pdfFile">Tải file PDF:</label>
+            <input type="file" id="pdfFile" name="pdfFile" accept="application/pdf">
+        </div>
+
+        <!-- Video ID Section -->
+        <div id="videoUploadSection" style="display: none;">
+            <label for="videoId">ID Video: </label>
+            <div>Copy link video Youtube và đi đến trang <a href="https://commentpicker.com/youtube-video-id.php" target="_blank">commentpicker.com</a> để lấy ID Video</div>
+            <input type="text" id="videoId" name="videoId">
+        </div>
+    </div>
+    <button type="submit">Lưu bài học</button>
+</form>
+</body>
+<script>
+    var subjectParentList = [];
+      var subjectParentItemPicked = [];
+      function loadNews() {
+          fetch('/api/subject/get-news')
+              .then(response => response.json())
+              .then(data => {
+                  subjectParentList = data;
+                  var parentSelect = document.getElementById("collectionParentPrefix");
+                  data.forEach(function(subject) {
+                      var option = document.createElement("option");
+                      option.value = subject.prefix; // Using newsCode as the value
+                      option.text = subject.subjectCollectionParentName; // Display newsName
+                      parentSelect.appendChild(option);
+                  });
+              })
+              .catch(error => console.error('Error loading news:', error));
+      }
+
+      // Event listener to update the child combo box when a news is selected
+      document.getElementById("collectionParentPrefix").addEventListener("change", function () {
+            var prefix = this.value;
+            subjectParentItemPicked = subjectParentList.find(item => item.prefix === prefix)
+            var childSelect = document.getElementById("collectionPrefix");
+
+            childSelect.innerHTML = '<option value="">-- Chọn môn học --</option>';
+
+            subjectParentItemPicked.subjectCollectionEntities.forEach(function(subject) {
+                var option = document.createElement("option");
+                option.value = subject.prefix; // Using subjectCollectionCode as the value
+                option.text = subject.subjectCollectionName; // Display subjectCollectionName
+                childSelect.appendChild(option);
+            });
+      });
+
+      // Load the lessons when the page is ready
+    document.addEventListener("DOMContentLoaded", loadNews);
+
+    const pdfUpload = document.getElementById('pdfUpload');
+    const videoUpload = document.getElementById('videoUpload');
+    const pdfUploadSection = document.getElementById('pdfUploadSection');
+    const videoUploadSection = document.getElementById('videoUploadSection');
+    const pdfFileInput = document.getElementById('pdfFile');
+    const videoIdInput = document.getElementById('videoId');
+
+    // Reset fields and required attributes initially
+    function resetUploadFields() {
+        pdfFileInput.required = false;
+        videoIdInput.required = false;
+        pdfFileInput.value = '';
+        videoIdInput.value = '';
+    }
+
+    pdfUpload.addEventListener('change', function() {
+        if (this.checked) {
+            pdfUploadSection.style.display = 'block';
+            videoUploadSection.style.display = 'none';
+            pdfFileInput.required = true;
+            videoIdInput.required = false; // Ensure video field is not required
+            videoIdInput.value = ''; // Clear the video input
+        }
+    });
+
+    videoUpload.addEventListener('change', function() {
+        if (this.checked) {
+            videoUploadSection.style.display = 'block';
+            pdfUploadSection.style.display = 'none';
+            videoIdInput.required = true;
+            pdfFileInput.required = false; // Ensure PDF field is not required
+            pdfFileInput.value = ''; // Clear the PDF input
+        }
+    });
+
+    // Ensure fields reset on form load
+    window.onload = resetUploadFields;
+
+</script>
+</html>

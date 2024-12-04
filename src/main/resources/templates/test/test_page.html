@@ -25,12 +25,12 @@
             <div class="lesson-container">
                 <h2>Trắc nghiệm</h2>
                 <div class="lessons-grid">
-                    <div class="lesson-item" th:each="test : ${testDTOS}">
+                    <div class="lesson-item" th:each="test : ${testCollectionDTOS}">
                         <a th:href="@{'/test/prepare/'+${test.slug}}">
                             <div class="image-lesson">
                                 <img th:src="@{'/resource/' + ${test.thumbnailFile}}" alt="Lesson Image" class="lesson-image">
                             </div>
-                            <h3 th:text="${test.testName}">Lesson Name</h3>
+                            <h3 th:text="${test.testCollectionName}">Lesson Name</h3>
                             <p th:text="${test.description}">Description</p>
                         </a>
                     </div>

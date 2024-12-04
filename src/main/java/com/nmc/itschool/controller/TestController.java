@@ -1,5 +1,6 @@
 package com.nmc.itschool.controller;
 
+import com.nmc.itschool.constant.DBConstant;
 import com.nmc.itschool.constant.MessageEnum;
 import com.nmc.itschool.dto.*;
 import com.nmc.itschool.entity.SubjectCollectionEntity;
@@ -50,7 +51,8 @@ public class TestController {
     public String addTestInfo(@PathVariable String uuid, Model model) {
         log.info("start addTestInfo");
 
-        List<SubjectCollectionParentDTO> subjectCollectionParentDTOS = subjectCollectionParentService.getAll();
+        List<SubjectCollectionParentDTO> subjectCollectionParentDTOS
+                = subjectCollectionParentService.getAllByType(DBConstant.TYPE_COLLECTION_PARENT_LESSON);
         log.info("data: {}", ObjectMapperUtil.writeValueAsString(subjectCollectionParentDTOS));
 //        model.addAttribute("pathFile", FileUtil.getPathResourceFile());
         model.addAttribute("subjectCollectionParentDTOS", subjectCollectionParentDTOS);
@@ -84,14 +86,15 @@ public class TestController {
         log.info("start testPage");
 
         // get Data
-        List<SubjectCollectionParentDTO> subjectCollectionParentDTOS = subjectCollectionParentService.getAll();
-        List<TestDTO> testDTOS = testService.getAll(999);
+        List<SubjectCollectionParentDTO> subjectCollectionParentDTOS
+                = subjectCollectionParentService.getAllByType(DBConstant.TYPE_COLLECTION_PARENT_LESSON);
+        List<TestCollectionDTO> testCollectionDTOS = testService.getCollectionAll(999);
 
         // add data
-        log.info("data: {}", ObjectMapperUtil.writeValueAsString(testDTOS));
+        log.info("data: {}", ObjectMapperUtil.writeValueAsString(testCollectionDTOS));
 //        model.addAttribute("pathFile", FileUtil.getPathResourceFile());
         model.addAttribute("subjectCollectionParentDTOS", subjectCollectionParentDTOS);
-        model.addAttribute("testDTOS", testDTOS);
+        model.addAttribute("testCollectionDTOS", testCollectionDTOS);
 
         log.info("end testPage");
 
@@ -144,7 +147,7 @@ public class TestController {
         List<TestDTO> testDTOS = new ArrayList<>();
         // get Data
         List<SubjectCollectionParentDTO> subjectCollectionParentDTOS
-                = subjectCollectionParentService.getAll();
+                = subjectCollectionParentService.getAllByType(DBConstant.TYPE_COLLECTION_PARENT_LESSON);
 
         for (SubjectCollectionParentDTO itemParent : subjectCollectionParentDTOS){
             if(itemParent.getPrefix().equals(prefix)){
@@ -278,7 +281,8 @@ public class TestController {
     public String addTestCollectionInfo(Model model) {
         log.info("start addTestCollectionInfo");
 
-        List<SubjectCollectionParentDTO> subjectCollectionParentDTOS = subjectCollectionParentService.getAll();
+        List<SubjectCollectionParentDTO> subjectCollectionParentDTOS
+                = subjectCollectionParentService.getAllByType(DBConstant.TYPE_COLLECTION_PARENT_LESSON);
         log.info("data: {}", ObjectMapperUtil.writeValueAsString(subjectCollectionParentDTOS));
 //        model.addAttribute("pathFile", FileUtil.getPathResourceFile());
         model.addAttribute("subjectCollectionParentDTOS", subjectCollectionParentDTOS);

@@ -1,5 +1,6 @@
 package com.nmc.itschool.controller.rest;
 
+import com.nmc.itschool.constant.DBConstant;
 import com.nmc.itschool.dto.LessonDTO;
 import com.nmc.itschool.dto.SubjectCollectionParentDTO;
 import com.nmc.itschool.dto.base.BaseResponse;
@@ -22,13 +23,19 @@ public class SubjectRestController {
     @Autowired
     private SubjectCollectionParentService subjectCollectionParentService;
 
-    @GetMapping("/get-all")
-    public List<SubjectCollectionParentDTO> getAllSubject() {
-        logger.info("Start getAllSubject");
-        List<SubjectCollectionParentDTO> result = subjectCollectionParentService.getAll();
-        logger.info("End getAllSubject with data {}", ObjectMapperUtil.writeValueAsString(result));
+    @GetMapping("/get-lesson")
+    public List<SubjectCollectionParentDTO> getAllLessonSubject() {
+        logger.info("Start getAllLessonSubject");
+        List<SubjectCollectionParentDTO> result = subjectCollectionParentService.getAllByType(DBConstant.TYPE_COLLECTION_PARENT_LESSON);
+        logger.info("End getAllLessonSubject with data {}", ObjectMapperUtil.writeValueAsString(result));
         return result;
     }
 
-
+    @GetMapping("/get-news")
+    public List<SubjectCollectionParentDTO> getAllNewsSubjectBy() {
+        logger.info("Start getAllNewsSubjectBy");
+        List<SubjectCollectionParentDTO> result = subjectCollectionParentService.getAllByType(DBConstant.TYPE_COLLECTION_PARENT_NEWS);
+        logger.info("End getAllNewsSubjectBy with data {}", ObjectMapperUtil.writeValueAsString(result));
+        return result;
+    }
 }

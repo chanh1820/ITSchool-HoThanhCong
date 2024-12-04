@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Bài học - Ngôi nhà toán học</title>
+    <link rel="stylesheet" th:href="@{/css/lesson_page.css}">
+    <link rel="icon" type="image/x-icon" th:href="@{/images/ic_logo_app.png}">
+</head>
+<body>
+    <div class="home-container">
+        <div id="content-container">
+            <div class="lesson-container">
+                <div th:if="${subjectCollectionParentDTO != null}" >
+                    <h2 th:text="${subjectCollectionParentDTO.subjectCollectionParentName}"></h2>
+                </div>
+                <div th:if="${subjectCollectionDTO != null}">
+                    <h2 th:text="${subjectCollectionDTO.subjectCollectionName}"></h2>
+                </div>
+                <p class="no-lessons" style=" color: red;
+                    text-align: center;
+                    font-weight: bold;
+                    margin-top: 20px;"
+                   th:if="${#lists.isEmpty(lessonDTOS)}">Danh sách trống</p>
+                <div class="lessons-grid">
+                    <div class="lesson-item" th:each="news : ${newsDTO}">
+                        <a th:href="@{'/news/detail/'+${lesson.slug}}">
+                            <div class="image-lesson">
+                                <img th:src="@{'/resource/' + ${news.imageUrl}}" alt="Lesson Image" class="lesson-image">
+                            </div>
+                            <h3 th:text="${news.lessonName}">Lesson Name</h3>
+                            <p th:text="${news.description}">Description</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

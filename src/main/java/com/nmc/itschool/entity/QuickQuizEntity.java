@@ -23,25 +23,25 @@ public class QuickQuizEntity {
     @Column(name = "random_id")
     private String randomId;
 
-    @Column(name = "title")
+    @Column(name = "title", length = 13383)
     private String title;
 
-    @Column(name = "question")
+    @Column(name = "question", length = 13383)
     private String question;
 
     @Column(name = "image_content_file")
     private String imageContentFile;
 
-    @Column(name = "answer_a")
+    @Column(name = "answer_a", length = 13383)
     private String answerA;
 
-    @Column(name = "answer_b")
+    @Column(name = "answer_b", length = 13383)
     private String answerB;
 
-    @Column(name = "answer_c")
+    @Column(name = "answer_c", length = 13383)
     private String answerC;
 
-    @Column(name = "answer_d")
+    @Column(name = "answer_d", length = 13383)
     private String answerD;
 
     @Column(name = "result")

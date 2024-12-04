@@ -71,7 +71,7 @@
     var subjectParentList = [];
       var subjectParentItemPicked = [];
       function loadLessons() {
-          fetch('/api/subject/get-all')
+          fetch('/api/subject/get-lesson')
               .then(response => response.json())
               .then(data => {
                   subjectParentList = data;

@@ -1,5 +1,6 @@
 package com.nmc.itschool.controller;
 
+import com.nmc.itschool.constant.DBConstant;
 import com.nmc.itschool.constant.MessageEnum;
 import com.nmc.itschool.dto.*;
 import com.nmc.itschool.entity.SubjectCollectionEntity;
@@ -48,7 +49,8 @@ public class LessonController {
         log.info("start lessonPage");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         // get Data
-        List<SubjectCollectionParentDTO> subjectCollectionParentDTOS = subjectCollectionParentService.getAll();
+        List<SubjectCollectionParentDTO> subjectCollectionParentDTOS
+                = subjectCollectionParentService.getAllByType(DBConstant.TYPE_COLLECTION_PARENT_LESSON);
         List<LessonDTO> lessonDTOS = lessonService.getAll(99999);
 
         // add data
@@ -92,7 +94,7 @@ public class LessonController {
         List<LessonDTO> lessonDTOS = new ArrayList<>();
         // get Data
         List<SubjectCollectionParentDTO> subjectCollectionParentDTOS
-                = subjectCollectionParentService.getAll();
+                = subjectCollectionParentService.getAllByType(DBConstant.TYPE_COLLECTION_PARENT_LESSON);
 
         for (SubjectCollectionParentDTO itemParent : subjectCollectionParentDTOS){
             if(itemParent.getPrefix().equals(prefix)){
@@ -141,7 +143,7 @@ public class LessonController {
         List<LessonDTO> lessonDTOS = new ArrayList<>();
         // get Data
         List<SubjectCollectionParentDTO> subjectCollectionParentDTOS
-                = subjectCollectionParentService.getAll();
+                = subjectCollectionParentService.getAllByType(DBConstant.TYPE_COLLECTION_PARENT_LESSON);
 
         for (SubjectCollectionParentDTO itemParent : subjectCollectionParentDTOS){
             if(itemParent.getPrefix().equals(prefix)){
@@ -183,7 +185,8 @@ public class LessonController {
     public String saveLessonPage(Model model) {
         log.info("start saveLessonPage");
 
-        List<SubjectCollectionParentDTO> subjectCollectionParentDTOS = subjectCollectionParentService.getAll();
+        List<SubjectCollectionParentDTO> subjectCollectionParentDTOS
+                = subjectCollectionParentService.getAllByType(DBConstant.TYPE_COLLECTION_PARENT_LESSON);
         log.info("data: {}", ObjectMapperUtil.writeValueAsString(subjectCollectionParentDTOS));
 //        model.addAttribute("pathFile", FileUtil.getPathResourceFile());
         model.addAttribute("subjectCollectionParentDTOS", subjectCollectionParentDTOS);

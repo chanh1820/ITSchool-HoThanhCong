@@ -23,13 +23,13 @@ public class LessonEntity {
     @Column(name = "lesson_code")
     private String lessonCode;
 
-    @Column(name = "lesson_name")
+    @Column(name = "lesson_name", length = 13383)
     private String lessonName;
 
-    @Column(name = "description")
+    @Column(name = "description", length = 13383)
     private String description;
 
-    @Column(name = "slug")
+    @Column(name = "slug", length = 13383)
     private String slug;
 
     @Column(name = "image_url")

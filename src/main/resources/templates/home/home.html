@@ -52,6 +52,7 @@
                         <div class="header">
                             <h2><a href="/lesson/my-lesson">Quản lý bài học</a></h2>
                             <h2><a href="/lesson-pdf/my-lesson">Quản lý bài tập tự luyện</a></h2>
+                            <h2><a href="/news/my-news">Quản lý tin tức</a></h2>
                             <h2><a href="/test/my-test-collection">Quản lý bài tập trắc nghiệm</a></h2>
                             <h2><a href="/quick-quiz/my-quick-quiz">Quản lý câu đố</a></h2>
                         </div>
@@ -185,7 +186,7 @@
                 <h2>Khác</h2>
                 <div class="lessons-grid">
                     <div class="lesson-item" th:each="content : ${contentDTOS}">
-                        <a th:href="@{'/lesson/other' + ${content.slug}}">
+                        <a th:href="@{'/news/other' + ${content.slug}}">
                             <div class="image-lesson">
                                 <img th:src="@{'/images' + ${content.imageUrl}}" alt="Lesson Image" class="lesson-image">
                             </div>

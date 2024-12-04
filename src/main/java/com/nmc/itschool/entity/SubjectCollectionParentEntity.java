@@ -32,6 +32,9 @@ public class SubjectCollectionParentEntity {
     @Column(name = "sort_order")
     private Integer sortOrder;
 
+    @Column(name = "type")
+    private String type;
+
     @Column(name = "created_date")
     private LocalDateTime createdDate;
 

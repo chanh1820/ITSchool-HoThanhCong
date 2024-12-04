@@ -44,11 +44,11 @@
         </div>
         <div>
             <label for="numberChooseTest">Số câu hỏi trắc nghiệm:</label>
-            <input type="number" id="numberChooseTest" name="numberChooseTest" min="1" max="100">
+            <input type="number" id="numberChooseTest" name="numberChooseTest" min="0" max="100">
         </div>
         <div>
             <label for="numberWriteTest">Số câu hỏi điền đáp án:</label>
-            <input type="number" id="numberWriteTest" name="numberWriteTest" min="1" max="100">
+            <input type="number" id="numberWriteTest" name="numberWriteTest" min="0" max="100">
         </div>
         <div>
             <label for="minuteTime">Thời gian (Phút):</label>
@@ -66,7 +66,7 @@
       var subjectParentList = [];
       var subjectParentItemPicked = [];
       function loadLessons() {
-          fetch('/api/subject/get-all')
+          fetch('/api/subject/get-lesson')
               .then(response => response.json())
               .then(data => {
                   subjectParentList = data;

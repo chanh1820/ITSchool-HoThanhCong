@@ -33,7 +33,7 @@ public class SubjectCollectionParentServiceImpl implements SubjectCollectionPare
     @Override
     public List<SubjectCollectionParentDTO> getAllInHome() {
         List<SubjectCollectionParentEntity> result = new ArrayList<>();
-        Optional<List<SubjectCollectionParentEntity>> optional = subjectCollectionParentRepository.getAll();
+        Optional<List<SubjectCollectionParentEntity>> optional = subjectCollectionParentRepository.getAllByType(DBConstant.TYPE_COLLECTION_PARENT_LESSON);
         if (optional.isPresent() && CollectionUtils.isNotEmpty(optional.get())){
             result = optional.get();
             result.removeIf(
@@ -45,9 +45,9 @@ public class SubjectCollectionParentServiceImpl implements SubjectCollectionPare
     }
 
     @Override
-    public List<SubjectCollectionParentDTO> getAll() {
+    public List<SubjectCollectionParentDTO> getAllByType(String type) {
         List<SubjectCollectionParentEntity> result = new ArrayList<>();
-        Optional<List<SubjectCollectionParentEntity>> optional = subjectCollectionParentRepository.getAll();
+        Optional<List<SubjectCollectionParentEntity>> optional = subjectCollectionParentRepository.getAllByType(type);
         if (optional.isPresent() && CollectionUtils.isNotEmpty(optional.get())){
             result = optional.get();
             return subjectCollectionParentMapper.toDTOs(result);

@@ -23,7 +23,7 @@ public class SubjectCollectionEntity {
     @Column(name = "subject_collection_code")
     private String subjectCollectionCode;
 
-    @Column(name = "subject_collection_name")
+    @Column(name = "subject_collection_name", length = 13383)
     private String subjectCollectionName;
 
     @Column(name = "prefix")
