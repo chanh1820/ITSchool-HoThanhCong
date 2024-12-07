@@ -67,6 +67,22 @@ public class QuickQuizRestController {
         return baseResponse;
     }
 
+    @PostMapping("/disable-item")
+    public BaseResponse<String> disableQuickQuiz(@RequestBody QuickQuizDTO quickQuizDTO) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        String userName = userDetails.getUsername();
+
+        logger.info("Start disableQuickQuiz with {}", userName);
+
+        BaseResponse baseResponse = new BaseResponse();
+        baseResponse.setStatus(200);
+        baseResponse.setData(quickQuizService.disable(quickQuizDTO.getRandomId()));
+
+        logger.info("End disableQuickQuiz");
+        return baseResponse;
+    }
+
     @PostMapping("/submit-answer")
     public BaseResponse<Boolean> submitAnswer(@RequestBody QuickQuizAnswerDTO quickQuizAnswerDTO) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

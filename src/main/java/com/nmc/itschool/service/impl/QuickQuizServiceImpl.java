@@ -102,6 +102,19 @@ public class QuickQuizServiceImpl implements QuickQuizService {
     }
 
     @Override
+    public QuickQuizDTO disable(String randomId) {
+//        quickQuizRepository.disablePickedAll();
+        QuickQuizDTO quickQuizDTO = new QuickQuizDTO();
+        Optional<QuickQuizEntity> otp = quickQuizRepository.findByRandomId(randomId);
+        if(otp.isPresent()){
+            QuickQuizEntity quickQuizEntity = otp.get();
+            quickQuizEntity.setPicked(false);
+            quickQuizDTO = quickQuizMapper.toDTO(quickQuizRepository.save(quickQuizEntity));
+        }
+        return quickQuizDTO;
+    }
+
+    @Override
     public boolean submitAnswer(QuickQuizAnswerDTO quickQuizAnswerDTO) {
         Optional<QuickQuizEntity> otpQuickQuiz = quickQuizRepository.findByRandomId(quickQuizAnswerDTO.getRandomId());
         QuickQuizLogEntity quickQuizLogEntity = new QuickQuizLogEntity();
@@ -140,33 +153,44 @@ public class QuickQuizServiceImpl implements QuickQuizService {
         long numberTrue = quickQuizLogDTOS.stream()
                 .filter(QuickQuizLogDTO::isCorrect)  // Filters only items with isCorrect = true
                 .count();
-        String personTrueTemplate = "Bạn kfyenasd đã có đáp đúng nhất";
-        StringBuilder personTrue = new StringBuilder();
-        int deltaCurrent = 0;
-        int deltaMin = 0;
-        int onlyPerson = 1;
-        List<String> userNameTrued = new ArrayList<>();
-        for (QuickQuizLogDTO quickQuizLogDTO : quickQuizLogDTOS){
-            deltaCurrent =  quickQuizLogDTO.getAnswerNumberTrue() - (int) numberTrue;
-            if(deltaCurrent < deltaMin){
-                deltaMin = deltaCurrent;
-            }
-        }
-        for (QuickQuizLogDTO quickQuizLogDTO : quickQuizLogDTOS){
-            if(deltaCurrent == deltaMin && !CollectionUtils.containsAny(userNameTrued, quickQuizLogDTO.getUserName())){
-                personTrue.append(quickQuizLogDTO.getFullName());
-                userNameTrued.add(quickQuizLogDTO.getUserName());
-                if(onlyPerson != 1){
-                    personTrue.append(", ");
-                }
-                onlyPerson ++;
-
-            }
-        }
-        log.info("personTrue.toString() {} ", personTrue.toString());
-        personTrueTemplate = personTrueTemplate.replace("kfyenasd", personTrue);
+//        String personTrueTemplate = "Bạn kfyenasd đã có đáp đúng nhất";
+//        StringBuilder personTrue = new StringBuilder();
+//        int deltaCurrent = 0;
+//        int deltaMin = 99999;
+//        int onlyPerson = 0;
+//        List<String> userNameTrued = new ArrayList<>();
+//        List<QuickQuizLogDTO> quickQuizListName = new ArrayList<>();
+//
+//        for (QuickQuizLogDTO quickQuizLogDTO : quickQuizLogDTOS){
+//            deltaCurrent =  Math.abs(quickQuizLogDTO.getAnswerNumberTrue() - (int) numberTrue);
+//            log.info("deltaCurrent {}", deltaCurrent);
+//
+//            if(deltaCurrent < deltaMin){
+//                deltaMin = deltaCurrent;
+//            }
+//        }
+//        for (QuickQuizLogDTO quickQuizLogDTO : quickQuizLogDTOS){
+//            log.info("quickQuizLogDTO {}", quickQuizLogDTO);
+//            log.info("deltaCurrent {}", deltaCurrent + "--"+ deltaMin);
+//            deltaCurrent =  Math.abs(quickQuizLogDTO.getAnswerNumberTrue() - (int) numberTrue);
+//
+//            if( deltaMin <= deltaCurrent  && !CollectionUtils.containsAny(userNameTrued, quickQuizLogDTO.getUserName())){
+//                if(onlyPerson == 3){
+//                    break;
+//                }
+//                personTrue.append(quickQuizLogDTO.getFullName());
+//                userNameTrued.add(quickQuizLogDTO.getUserName());
+//                if(onlyPerson != 0){
+//                    personTrue.append(", ");
+//                }
+//                onlyPerson ++;
+//
+//            }
+//        }
+//        log.info("personTrue.toString() {} ", personTrue.toString());
+//        personTrueTemplate = personTrueTemplate.replace("kfyenasd", personTrue);
         QuickQuizRankDTO quickQuizRankDTO = new QuickQuizRankDTO();
-        quickQuizRankDTO.setPersonTrue(personTrueTemplate);
+//        quickQuizRankDTO.setPersonTrue(personTrueTemplate);
         quickQuizRankDTO.setNumberPointTrue("Số người trả lời đúng: " + numberTrue);
         return quickQuizRankDTO;
     }

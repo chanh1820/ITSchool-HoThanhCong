@@ -3,14 +3,17 @@ package com.nmc.itschool.dto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class QuickQuizLogDTO {
+@ToString
+public class QuickQuizLogDTO implements Serializable {
 
     private Long id;
 

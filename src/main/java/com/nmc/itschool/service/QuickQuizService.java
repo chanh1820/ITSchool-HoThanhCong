@@ -18,6 +18,8 @@ public interface QuickQuizService {
 
     QuickQuizDTO enable(String randomId);
 
+    QuickQuizDTO disable(String randomId);
+
     boolean submitAnswer(QuickQuizAnswerDTO quickQuizAnswerDTO);
 
     List<QuickQuizLogDTO> findQuickQuizLogs(String randomId);

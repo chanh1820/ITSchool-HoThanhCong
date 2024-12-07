@@ -39,8 +39,8 @@
                 <img class="icon-button" th:src="@{/images/ic_quick_quiz_log_list.png}" />
             </a>
             <a th:switch="${quickQuiz.isPicked}" class="delete">
-                <img class="icon-button" th:case="true" th:src="@{/images/ic_show.png}" title="Tắt"/>
-                <img class="icon-button" th:case="false" th:src="@{/images/ic_hide.png}" title="Bật"th:onclick="handleEnableQuickQuiz([[${quickQuiz.randomId}]])"/>
+                <img class="icon-button" th:case="true" th:src="@{/images/ic_show.png}" title="Tắt" th:onclick="handleDisableQuickQuiz([[${quickQuiz.randomId}]])"/>
+                <img class="icon-button" th:case="false" th:src="@{/images/ic_hide.png}" title="Bật" th:onclick="handleEnableQuickQuiz([[${quickQuiz.randomId}]])"/>
             </a>
         </td>
     </tr>
@@ -90,6 +90,28 @@
               }
           });
      }
+            function handleDisableQuickQuiz(randomId) {
+          fetch("/api/quick-quiz/disable-item", {
+          method: "POST",
+          body: JSON.stringify({
+                randomId : randomId
+              }),
+          headers: {
+              "Content-type": "application/json; charset=UTF-8"
+          }
+          })
+          .then(res => res.json())
+          .then(res => {
+              console.log(res);
+              var data = res.data
+              if(res.status == '200'){
+                  location.reload();
+              } else {
+                  alert(res.message)
+              }
+          });
+     }
+
 </script>
 </body>
 </html>
