@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -153,50 +154,31 @@ public class QuickQuizServiceImpl implements QuickQuizService {
         long numberTrue = quickQuizLogDTOS.stream()
                 .filter(QuickQuizLogDTO::isCorrect)  // Filters only items with isCorrect = true
                 .count();
-//        String personTrueTemplate = "Bạn kfyenasd đã có đáp đúng nhất";
-//        StringBuilder personTrue = new StringBuilder();
-//        int deltaCurrent = 0;
-//        int deltaMin = 99999;
-//        int onlyPerson = 0;
-//        List<String> userNameTrued = new ArrayList<>();
-//        List<QuickQuizLogDTO> quickQuizListName = new ArrayList<>();
-//
-//        for (QuickQuizLogDTO quickQuizLogDTO : quickQuizLogDTOS){
-//            deltaCurrent =  Math.abs(quickQuizLogDTO.getAnswerNumberTrue() - (int) numberTrue);
-//            log.info("deltaCurrent {}", deltaCurrent);
-//
-//            if(deltaCurrent < deltaMin){
-//                deltaMin = deltaCurrent;
-//            }
-//        }
-//        for (QuickQuizLogDTO quickQuizLogDTO : quickQuizLogDTOS){
-//            log.info("quickQuizLogDTO {}", quickQuizLogDTO);
-//            log.info("deltaCurrent {}", deltaCurrent + "--"+ deltaMin);
-//            deltaCurrent =  Math.abs(quickQuizLogDTO.getAnswerNumberTrue() - (int) numberTrue);
-//
-//            if( deltaMin <= deltaCurrent  && !CollectionUtils.containsAny(userNameTrued, quickQuizLogDTO.getUserName())){
-//                if(onlyPerson == 3){
-//                    break;
-//                }
-//                personTrue.append(quickQuizLogDTO.getFullName());
-//                userNameTrued.add(quickQuizLogDTO.getUserName());
-//                if(onlyPerson != 0){
-//                    personTrue.append(", ");
-//                }
-//                onlyPerson ++;
-//
-//            }
-//        }
-//        log.info("personTrue.toString() {} ", personTrue.toString());
-//        personTrueTemplate = personTrueTemplate.replace("kfyenasd", personTrue);
+        int target = (int) numberTrue; // Target number
+        int n = 3; // Number of closest objects to find
+
+        List<QuickQuizLogDTO> closest = findClosest(quickQuizLogDTOS, target, n);
+        System.out.println("Closest " + n + " objects to " + target + ": " + closest);
+        List<String> personTrueStr = closest.stream()
+                .map(QuickQuizLogDTO::getFullName)
+                .collect(Collectors.toList());
+        String personTrue = String.join(", ", personTrueStr);
         QuickQuizRankDTO quickQuizRankDTO = new QuickQuizRankDTO();
-//        quickQuizRankDTO.setPersonTrue(personTrueTemplate);
-        quickQuizRankDTO.setNumberPointTrue("Số người trả lời đúng: " + numberTrue);
+        quickQuizRankDTO.setPersonTrue("Xin chúc mừng bạn: " + personTrue+ " đã có dự đoán chính xác nhất");
+        quickQuizRankDTO.setNumberPointTrue("Số người trả lời đúng: " + numberTrue );
         return quickQuizRankDTO;
     }
 
     @Override
     public void deleteById(Long id) {
         quickQuizRepository.deleteById(id);
+    }
+
+    public List<QuickQuizLogDTO> findClosest(List<QuickQuizLogDTO> list, int target, int n) {
+        // Sort the list based on the absolute difference between `answerNumberTrue` and the target
+        list.sort(Comparator.comparingInt(o -> Math.abs(o.getAnswerNumberTrue() - target)));
+
+        // Return the first `n` elements
+        return list.subList(0, Math.min(n, list.size()));
     }
 }
