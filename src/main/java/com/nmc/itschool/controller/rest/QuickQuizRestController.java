@@ -79,7 +79,7 @@ public class QuickQuizRestController {
         baseResponse.setStatus(200);
         baseResponse.setData(quickQuizService.disable(quickQuizDTO.getRandomId()));
 
-        logger.info("End disableQuickQuiz");
+        logger.info("End disableQuickQuiz ");
         return baseResponse;
     }
 
