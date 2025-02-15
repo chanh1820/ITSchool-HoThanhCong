@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ghi chú</title>
+    <link rel="stylesheet" th:href="@{/css/rate_history.css}">
+
+</head>
+<body>
+<div class="container">
+    <h1>Danh sách người dùng đánh giá</h1>
+    <div style="
+        text-align: left;
+    ">
+        <h1 style="color: red;">Tỉ lệ bình chọn</h1>
+        <h1 style="color: green;" th:text="${avgRate}"></h1>
+    </div>
+
+    <table class="dto-table">
+        <thead>
+        <tr>
+            <th>Tên</th>
+            <th>Đánh giá (Sao)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Sample Row -->
+        <tr th:each="item : ${rateDTOS}">
+            <td th:text="${item.fullName}"></td>
+            <td th:text="${item.rateValue}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

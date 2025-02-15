@@ -21,13 +21,21 @@
                     <a href="/lesson/bai-hoc">Bài học</a>
                 </div>
                 <div class="item">
-                    <a href="/lesson-pdf/bai-hoc">Bài tập tự luyện</a>
+                    <a href="/lesson-pdf/bai-hoc">Tự luyện</a>
                 </div>
                 <div class="item">
                     <a  href="/test/trac-nghiem">Trắc nghiệm</a>
                 </div>
                 <div class="item">
                     <a  href="/note/my-note">Ghi chú</a>
+                </div>
+                <div th:if="${userInfo != 'null'}">
+                    <div class="item">
+                        <a  th:href="@{'/quick-quiz/'+${quickQuizDTO.randomId}}">Đố vui</a>
+                    </div>
+                </div>
+                <div class="item">
+                    <a  href="/rate/submit">Đánh giá</a>
                 </div>
             </div>
 
@@ -55,6 +63,7 @@
                             <h2><a href="/news/my-news">Quản lý tin tức</a></h2>
                             <h2><a href="/test/my-test-collection">Quản lý bài tập trắc nghiệm</a></h2>
                             <h2><a href="/quick-quiz/my-quick-quiz">Quản lý câu đố</a></h2>
+                            <h2><a href="/rate/history">Quản lý bình chọn</a></h2>
                         </div>
                     </div>
                 </div>

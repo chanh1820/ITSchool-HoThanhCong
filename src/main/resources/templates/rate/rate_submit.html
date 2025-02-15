@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Đánh giá - Ngôi nhà toán học</title>
+    <link rel="stylesheet" th:href="@{/css/rate_submit.css}">
+    <link rel="icon" type="image/x-icon" th:href="@{/images/ic_logo_app.png}">
+</head>
+<body>
+<h2>Hãy đánh giá cho trang web bạn nhé</h2>
+<div class="rating">
+    <input type="radio" id="star5" name="rating" value="5">
+    <label for="star5">★</label>
+    <input type="radio" id="star4" name="rating" value="4">
+    <label for="star4">★</label>
+    <input type="radio" id="star3" name="rating" value="3">
+    <label for="star3">★</label>
+    <input type="radio" id="star2" name="rating" value="2">
+    <label for="star2">★</label>
+    <input type="radio" id="star1" name="rating" value="1">
+    <label for="star1">★</label>
+</div>
+<button onclick="getRating()">Gửi</button>
+
+<script>
+    function getRating() {
+        const ratings = document.getElementsByName('rating');
+        let selectedRating = 0;
+        for (let i = 0; i < ratings.length; i++) {
+            if (ratings[i].checked) {
+                selectedRating = ratings[i].value;
+
+                fetch("/api/rate/submit", {
+                method: "POST",
+                body: JSON.stringify({
+                    rateValue : selectedRating,
+                    feedback: "",
+                }),
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                }
+                })
+                .then(res => res.json())
+                .then(res => {
+                    console.log(res);
+                    var data = res.data
+                    if(res.status == '200'){
+                        window.location = "/rate/thanks-you";
+                    } else {
+                        alert(data.message)
+                    }
+                });
+
+                break;
+            }
+        }
+
+
+    }
+</script>
+
+<script>
+    function handleSubmitAnswer(randomId){
+    var selectedAnswer = "";
+    var numberTrue = 0;
+        try {
+            selectedAnswer = document.querySelector('input[name="answer"]:checked').value;
+            numberTrue = document.getElementById("numberInput").value;
+            console.error(selectedAnswer);
+            console.error(numberTrue);
+
+            if(!numberTrue || numberTrue === 0 ){
+                alert("Bạn chưa nhập đầy đủ đáp án");
+                return;
+            }
+        } catch (error) {
+            console.error(error);
+            alert("Bạn chưa nhập đầy đủ đáp án");
+            return;
+        }
+        console.log(selectedAnswer);
+          fetch("/api/quick-quiz/submit-answer", {
+            method: "POST",
+            body: JSON.stringify({
+                answer: selectedAnswer,
+                answerNumberTrue: numberTrue,
+                randomId: randomId
+            }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+            })
+            .then(res => res.json())
+            .then(res => {
+                console.log(res);
+                var data = res.data
+                if(res.status == '200'){
+                    window.location = "/quick-quiz/thanks-you";
+                } else {
+                    alert(data.message)
+                }
+            });
+    }
+</script>
+</body>
+</html>
