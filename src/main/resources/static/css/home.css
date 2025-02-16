@@ -380,3 +380,62 @@ nav {
 .image-lesson img:hover{
     transform: scale(1.04) !important
 }
+
+
+.rating-card {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    max-width: 100%;
+    margin: 80px 130px 20px 130px;
+}
+.rating-card h2 {
+    margin-bottom: 15px;
+    color: #1f2937;
+    font-size: 1.5em;
+}
+.stars {
+    font-size: 2em;
+    color: #facc15;
+    margin-bottom: 10px;
+}
+.rating-value {
+    font-size: 1.2em;
+    color: #374151;
+    margin-bottom: 20px;
+}
+.rate-prompt {
+    color: #6b7280;
+    margin-bottom: 25px;
+}
+.rate-stars {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.rate-stars .star {
+    font-size: 2em;
+    color: #d1d5db;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+.rate-stars .star:hover,
+.rate-stars .star.active {
+    color: #f59e0b;
+}
+.rating-card button {
+    background-color: #3b82f6;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 1em;
+}
+.rating-card button:hover {
+    background-color: #2563eb;
+}

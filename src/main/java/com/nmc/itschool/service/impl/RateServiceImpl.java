@@ -20,7 +20,10 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.util.NumberUtils;
 
+import javax.print.attribute.standard.NumberUp;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -57,6 +60,9 @@ public class RateServiceImpl implements RateService {
 
     @Override
     public Float getAvg() {
-        return rateRepository.getAvg();
+        float avgValue = rateRepository.getAvg();
+        DecimalFormat df = new DecimalFormat("#0.##");
+        String format = df.format(avgValue);
+        return Float.parseFloat(format);
     }
 }

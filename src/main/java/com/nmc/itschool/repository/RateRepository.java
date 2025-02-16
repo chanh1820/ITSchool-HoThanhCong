@@ -13,6 +13,6 @@ public interface RateRepository extends JpaRepository<RateEntity, Long> {
     @Query(value = "SELECT * FROM rate_tbl", nativeQuery = true)
     Optional<List<RateEntity>> getAll();
 
-    @Query(value = "select avg(rate_value) from rate_tbl", nativeQuery = true)
+    @Query(value = "SELECT IFNULL(AVG(rate_value), 0) FROM rate_tbl", nativeQuery = true)
     Float getAvg();
 }

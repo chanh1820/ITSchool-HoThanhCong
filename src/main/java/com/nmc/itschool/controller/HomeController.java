@@ -32,7 +32,8 @@ public class HomeController {
     TestService testService;
     @Autowired
     QuickQuizService quickQuizService;
-
+    @Autowired
+    RateService rateService;
     @GetMapping("/home/index")
     public String homePageIndex(Model model) {
         return homePage(model);
@@ -76,6 +77,7 @@ public class HomeController {
         model.addAttribute("testCollectionDTOS", testCollectionDTOS);
         model.addAttribute("contentDTOS", contentDTOS);
         model.addAttribute("quickQuizDTO", quickQuizDTO);
+        model.addAttribute("avgRate", rateService.getAvg());
 
         log.info("end homePage");
 
