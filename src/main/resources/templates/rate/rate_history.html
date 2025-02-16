@@ -20,15 +20,17 @@
     <table class="dto-table">
         <thead>
         <tr>
+            <th style="text-align: center;">STT</th>
             <th>Tên</th>
-            <th>Đánh giá (Sao)</th>
+            <th style="text-align: center;">Đánh giá (Sao)</th>
         </tr>
         </thead>
         <tbody>
         <!-- Sample Row -->
-        <tr th:each="item : ${rateDTOS}">
+        <tr th:each="item, iter : ${rateDTOS}">
+            <td th:text="${iter.index + 1}" style="text-align: center;"></td>
             <td th:text="${item.fullName}"></td>
-            <td th:text="${item.rateValue}"></td>
+            <td th:text="${item.rateValue}" style="text-align: center;"></td>
         </tr>
         </tbody>
     </table>
