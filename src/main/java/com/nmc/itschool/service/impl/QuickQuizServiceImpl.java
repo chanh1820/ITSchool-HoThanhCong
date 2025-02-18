@@ -14,6 +14,7 @@ import com.nmc.itschool.repository.QuickQuizLogRepository;
 import com.nmc.itschool.repository.QuickQuizRepository;
 import com.nmc.itschool.repository.UserRepository;
 import com.nmc.itschool.service.QuickQuizService;
+import com.nmc.itschool.util.ObjectMapperUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -157,8 +158,13 @@ public class QuickQuizServiceImpl implements QuickQuizService {
         int target = (int) numberTrue; // Target number
         int n = 3; // Number of closest objects to find
 
+        QuickQuizDTO quickQuizDTO = findByRandomId(quickQuizLogDTOS.get(0).getRandomId());
+        if(quickQuizDTO != null){
+            quickQuizLogDTOS = quickQuizLogDTOS.stream().filter(item -> item.getAnswer().equals(quickQuizDTO.getResult())).collect(Collectors.toList());
+
+        }
+
         List<QuickQuizLogDTO> closest = findClosest(quickQuizLogDTOS, target, n);
-        System.out.println("Closest " + n + " objects to " + target + ": " + closest);
         List<String> personTrueStr = closest.stream()
                 .map(QuickQuizLogDTO::getFullName)
                 .collect(Collectors.toList());

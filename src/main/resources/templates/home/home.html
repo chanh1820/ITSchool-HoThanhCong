@@ -29,9 +29,11 @@
                 <div class="item">
                     <a  href="/note/my-note">Ghi chú</a>
                 </div>
-                <div th:if="${userInfo != 'null'}">
-                    <div class="item">
-                        <a  th:href="@{'/quick-quiz/'+${quickQuizDTO.randomId}}">Đố vui</a>
+                <div th:if="${quickQuizDTO != null}">
+                    <div th:if="${userInfo != 'null'}">
+                        <div class="item">
+                            <a  th:href="@{'/quick-quiz/'+${quickQuizDTO.randomId}}">Đố vui</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -216,11 +218,12 @@
             </div>
         </div>
     </div>
-
-    <div th:if="${userInfo != 'null'}" id="popupOverlay" class="popup-overlay">
-        <div class="popup-box">
-            <img th:onclick="redirectQuickQuiz([[${quickQuizDTO.randomId}]])" th:src="@{/images/popup_cau_do_1.png}" style="width: 100%;">
-            <button onclick="closePopup()">Đóng</button>
+    <div th:if="${quickQuizDTO != null}">
+        <div th:if="${userInfo != 'null'}" id="popupOverlay" class="popup-overlay">
+            <div class="popup-box">
+                <img th:onclick="redirectQuickQuiz([[${quickQuizDTO.randomId}]])" th:src="@{/images/popup_cau_do_1.png}" style="width: 100%;">
+                <button onclick="closePopup()">Đóng</button>
+            </div>
         </div>
     </div>
     <script th:src="@{/js/swiper-bundle.min.js}"></script>
