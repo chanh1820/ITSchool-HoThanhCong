@@ -35,7 +35,7 @@
                 font-weight: 600;
                 font-size: large;
                 margin-top: 10px;
-            ">Bạn dự đoán còn bao có nhiêu người trả lời đúng:</label>
+            ">Bạn dự đoán có bao nhiêu người trả lời đúng:</label>
             <input type="number" id="numberInput" name="numberInput" min="0" max="1000" step="1">
             <button type="button" th:onclick="handleSubmitAnswer([[${quickQuizDTO.randomId}]])" class="submit-btn">Gửi</button>
         </form>
